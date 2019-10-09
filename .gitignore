@@ -1,0 +1,46 @@
+# C++源代码
+*.sdf
+*.suo
+*.exp
+*.pdb
+*.cd
+
+# Python编译文件
+*.pyc
+*.pyo
+
+# WingIDE文件
+*.wpr
+*.wpu
+
+# 压缩文件
+*.zip
+
+# 其他文件
+*.dump
+*.vssettings
+*.klg
+*.lkc
+
+# 不想同步的
+*.local
+*.temp
+*.vt
+*.log
+
+
+# R 的编译文件
+*.Rhistory
+.RData
+
+# 不想要同步的文件夹
+*.temp
+*.vt
+*.dat
+*.bak
+*.dir
+*.local
+*.csv
+*.so
+*.con
+*.pyd
