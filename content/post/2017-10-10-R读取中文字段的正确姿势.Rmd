@@ -1,0 +1,71 @@
+---
+title: "R读取中文字段的正确姿势"
+author: William
+date: 2017-10-10
+lastmod: 2017-10-10
+categories: [Data]
+tags: [R,数据处理,中文]
+description: 使用`R`的软件包`readr`中的函数`read_csv`读取包含中文字段的数据文件。
+draft: false
+ToC: true
+---
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(comment = "")
+```
+
+# `readr` 软件包
+
+## 读取数据
+
+`readr` 是大神**Hadley Wickham**开发的用于读取数据文件的软件包，可以读取多个格式的文件，如 `.csv`, `.txt` 等，而且其提供了丰富的调用函数。
+
+对于一般的数据文件，我通常是使用另外一个包`data.table`里面的`fread`，这是因为该函数读取大容量的数据文件速度较快，而且直接生成`data.table`格式，方便之后的数据清理。但是，该函数由于接口限制，暂时还无法处理其他格式的文件，而且对多语言的支持也比较弱，目前还无法用来读取包含中文字段的文件。因此，我只能使用`read_csv`来读取*在2010年的期货交易数据*，因为这份数据的表头字段是中文。
+
+## 功能介绍
+
+目前我主要还是使用`readr`当中的函数，`read_csv`。具体的函数说明，可以通过帮助来获得。
+
+```{r readr}
+Sys.setlocale("LC_ALL", 'en_US.UTF-8')
+library(readr)
+library(magrittr)
+
+?read_csv
+```
+
+> read_csv(file, col_names = TRUE, col_types = NULL,locale = default_locale(), na = c("", "NA"), quoted_na = TRUE, quote = "\"", comment = "", trim_ws = TRUE, skip = 0, n_max = Inf, guess_max = min(1000, n_max), progress = show_progress())
+
+
+这里有几个参数需要设置：
+
+- 首先设置系统的默认编码格式，`Sys.setlocale("LC_ALL", 'en_US.UTF-8')`
+- 使用 `guess_encodng(file)` 来获取文件的编码格式
+- 利用 `locale=locale(encoding = 'GB18030'))` 来解码中文字段
+- 同时，我们还可以使用 `iconv(x, from, to)` 来转码
+
+
+# 代码演示
+
+```{r 读取数据, warning=FALSE}
+dataFile <- "https://raw.githubusercontent.com/williamlfang/williamlfang.github.io/sources/content/files/a1005.csv"
+```
+
+## 错误姿势
+
+> 没有设置编码格式
+
+```{r eval=FALSE}
+dt <- dataFile %>% read_csv()
+```
+
+## 正确姿势
+
+```{r warning=FALSE, eval=FALSE}
+dt <- dataFile %>% read_csv(., locale = locale(encoding = "GB18030"))
+
+knitr::kable(dt)
+```
+
+
+

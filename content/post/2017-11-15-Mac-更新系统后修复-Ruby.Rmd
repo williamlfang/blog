@@ -1,0 +1,121 @@
+---
+title: "Mac 更新系统后修复 Ruby"
+author: William
+date: 2017-11-15
+lastmod: 2017-11-15
+categories: [Programming]
+tags: [Mac, Ruby]
+description: Mac 更新系统后，出现无法使用 `Ruby` 的错误。通过重新安装，重新链接即可解决此问题。
+draft: false
+ToC: true
+---
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(comment = '',
+                      fig.align = 'center',
+                      eval = FALSE)
+```
+
+我一般写博客都使用 `Ruby` 的 `rake` 功能，具体的流程是
+
+- 先建立一个文章模板（通常是 `.Rmd` 格式）
+- 模板里面预先设定的各种参数与格式，比如我使用的 `R` 软件包、画图偏好等
+- 之后直接编写博客内容即可，使用 `md` 语法，简洁、优雅、高效、通用
+- 连文件命令、博客链接等这些常规的属性都能预处理
+
+不过，最近一次更新完 `Mac` 系统后，在终端输入命令会出现以下错误：
+
+```{bash}
+rake post title='New blog'
+
+-bash: /usr/local/bin/rake: /System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/bin/ruby: bad interpreter: No such file or directory
+```
+
+这个错误在网上找了半天，也不见得都是能够解决的方法。似乎这个问题是新版本的 `Mac` 系统才出现。 
+
+后来通过重新安装 `Ruby`，并将新的程序路径添加到系统环境才算完全解决。这里作一次记录。
+
+# 开启 `Rootless` 功能
+
+网上提示可能是新的系统启用了 `rootless` 功能，已经不允许程序直接写入根目录文件。我们需要
+
+- 重启系统，然后按住 `Ctrl + R` 进入恢复模式
+- 打开 `Termial`, 输入命令 `csrutil disable` 来停止此项功能。如果将来想重新恢复，命令为 `csrutil enable`
+
+# 重新安装 Homebrew
+
+首先需要重新安装 `HomeBrew`，然后再通过 `brew` 安装 `Ruby`。这里不推荐在 `root` 超级权限下安装，因为有可能会破坏系统的环境路径。
+
+```{bash}
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+brew update
+
+# 安装 Ruby
+brew install ruby
+```
+
+# 设置环境变量
+
+系统原始版本的 `/usr/bin/ruby` 我们并不删除，只是更改 `PATH环境变量`，且将 `/usr/local/bin` 添加到 `PATH` 的前面。
+
+## 查看原来的系统路径
+
+```{bash}
+fangliandeMacBook-Pro:~ williamfang$ whereis ruby
+/usr/bin/ruby
+```
+
+## 重新设定链接
+
+我们使用命令来重新链接 `Ruby`
+
+```{bash}
+fangliandeMacBook-Pro:~ williamfang$ brew install ruby
+Warning: ruby 2.4.2_1 is already installed, it's just not linked.
+You can use `brew link ruby` to link this version.
+fangliandeMacBook-Pro:~ williamfang$ brew link ruby
+Linking /usr/local/Cellar/ruby/2.4.2_1... 
+Error: Could not symlink bin/rake
+Target /usr/local/bin/rake
+already exists. You may want to remove it:
+  rm '/usr/local/bin/rake'
+
+To force the link and overwrite all conflicting files:
+  brew link --overwrite ruby
+
+To list all files that would be deleted:
+  brew link --overwrite --dry-run ruby
+```
+
+好像有报错，根据提示再重新运行一下命令，这次选择直接覆盖原来的链接试试看
+
+```{bash}
+fangliandeMacBook-Pro:~ williamfang$ brew link --overwrite ruby
+Linking /usr/local/Cellar/ruby/2.4.2_1... 3004 symlinks created
+```
+
+提示已经添加到环境变量了，使用命令看看是否成功链接
+
+```{bash}
+fangliandeMacBook-Pro:~ williamfang$ which ruby
+/usr/local/bin/ruby
+```
+
+这样，我们便使用 `/usr/local/bin/ruby` 路径下的 `Ruby` 而非系统原来的程序了。
+
+# 安装 Ruby 插件
+
+由于我的博客命名规则为中英文互译，因此需要使用到一个软件包 `hz2py`。通过命令行来安装一下即可
+
+```{bash}
+fangliandeMacBook-Pro:williamlfang.github.io williamfang$ gem install hz2py
+
+Fetching: hz2py-1.0.0.gem (100%)
+Successfully installed hz2py-1.0.0
+Parsing documentation for hz2py-1.0.0
+Installing ri documentation for hz2py-1.0.0
+Done installing documentation for hz2py after 0 seconds
+1 gem installed
+```
+

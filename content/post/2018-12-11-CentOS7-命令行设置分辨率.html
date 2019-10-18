@@ -1,0 +1,129 @@
+---
+title: "CentOS7 命令行设置分辨率"
+author: William
+date: 2018-12-11
+lastmod: 2018-12-11
+categories: [Programming]
+tags: [CentOS,xrandr,分辨率]
+description: 通过命令行修改 CentOS 操作系统的屏幕分辨率大小。
+draft: false
+ToC: true
+---
+
+
+
+<p><code>CentOS</code> 可以通过命令行来设置（修改）屏幕分辨率大小。使用的命令是</p>
+<blockquote>
+<p>xrandr</p>
+</blockquote>
+<!--more-->
+<pre class="bash"><code>[trader@localhost ~]$ xrandr --help
+usage: xrandr [options]
+  where options are:
+  --display &lt;display&gt; or -d &lt;display&gt;
+  --help
+  -o &lt;normal,inverted,left,right,0,1,2,3&gt;
+            or --orientation &lt;normal,inverted,left,right,0,1,2,3&gt;
+  -q        or --query
+  -s &lt;size&gt;/&lt;width&gt;x&lt;height&gt; or --size &lt;size&gt;/&lt;width&gt;x&lt;height&gt;
+  -r &lt;rate&gt; or --rate &lt;rate&gt; or --refresh &lt;rate&gt;
+  -v        or --version
+  -x        (reflect in x)
+  -y        (reflect in y)
+  --screen &lt;screen&gt;
+  --verbose
+  --current
+  --dryrun
+  --nograb
+  --prop or --properties
+  --fb &lt;width&gt;x&lt;height&gt;
+  --fbmm &lt;width&gt;x&lt;height&gt;
+  --dpi &lt;dpi&gt;/&lt;output&gt;
+  --output &lt;output&gt;
+      --auto
+      --mode &lt;mode&gt;
+      --preferred
+      --pos &lt;x&gt;x&lt;y&gt;
+      --rate &lt;rate&gt; or --refresh &lt;rate&gt;
+      --reflect normal,x,y,xy
+      --rotate normal,inverted,left,right
+      --left-of &lt;output&gt;
+      --right-of &lt;output&gt;
+      --above &lt;output&gt;
+      --below &lt;output&gt;
+      --same-as &lt;output&gt;
+      --set &lt;property&gt; &lt;value&gt;
+      --scale &lt;x&gt;x&lt;y&gt;
+      --scale-from &lt;w&gt;x&lt;h&gt;
+      --transform &lt;a&gt;,&lt;b&gt;,&lt;c&gt;,&lt;d&gt;,&lt;e&gt;,&lt;f&gt;,&lt;g&gt;,&lt;h&gt;,&lt;i&gt;
+      --off
+      --crtc &lt;crtc&gt;
+      --panning &lt;w&gt;x&lt;h&gt;[+&lt;x&gt;+&lt;y&gt;[/&lt;track:w&gt;x&lt;h&gt;+&lt;x&gt;+&lt;y&gt;[/&lt;border:l&gt;/&lt;t&gt;/&lt;r&gt;/&lt;b&gt;]]]
+      --gamma &lt;r&gt;:&lt;g&gt;:&lt;b&gt;
+      --brightness &lt;value&gt;
+      --primary
+  --noprimary
+  --newmode &lt;name&gt; &lt;clock MHz&gt;
+            &lt;hdisp&gt; &lt;hsync-start&gt; &lt;hsync-end&gt; &lt;htotal&gt;
+            &lt;vdisp&gt; &lt;vsync-start&gt; &lt;vsync-end&gt; &lt;vtotal&gt;
+            [flags...]
+            Valid flags: +HSync -HSync +VSync -VSync
+                         +CSync -CSync CSync Interlace DoubleScan
+  --rmmode &lt;name&gt;
+  --addmode &lt;output&gt; &lt;name&gt;
+  --delmode &lt;output&gt; &lt;name&gt;
+  --listproviders
+  --setprovideroutputsource &lt;prov-xid&gt; &lt;source-xid&gt;
+  --setprovideroffloadsink &lt;prov-xid&gt; &lt;sink-xid&gt;
+  --listmonitors
+  --listactivemonitors
+  --setmonitor &lt;name&gt; {auto|&lt;w&gt;/&lt;mmw&gt;x&lt;h&gt;/&lt;mmh&gt;+&lt;x&gt;+&lt;y&gt;} {none|&lt;output&gt;,&lt;output&gt;,...}
+  --delmonitor &lt;name&gt;</code></pre>
+<div class="section level2">
+<h2>显示当前桌面的分辨率</h2>
+<p>直接使用命令 <code>xrandr</code> 来查看当前的分辨率大小：</p>
+<pre class="bash"><code>VGA-1 connected primary 1920x1080+0+0 (normal left inverted right x axis y axis) 476mm x 267mm
+   1600x900      60.00  
+   1280x1024     75.02    60.02  
+   1152x864      75.00  
+   1024x768      75.03    60.00  
+   800x600       75.00    60.32  
+   640x480       75.00    59.94  
+   1920x1080_60.00  59.96* </code></pre>
+<p>其中标记 <code>*</code> 的就是当前的参数设置。我们可以看到当前系统可以支持多个显示设置。</p>
+</div>
+<div class="section level2">
+<h2>选择某个设置</h2>
+<p>使用选项 <code>-s</code> 来指定某个设置</p>
+<pre class="bash"><code>xrandr -s 0 // 1600x900</code></pre>
+</div>
+<div class="section level2">
+<h2>直接设置分辨率</h2>
+<p>也可以在命令行直接指定设置：</p>
+<pre class="bash"><code>xrandr -s 1920x1080_60.00</code></pre>
+</div>
+<div id="errors.-badname" class="section level2">
+<h2><code>errors. BadName</code></h2>
+<p><code>bash Xrandr errors. BadName (named color or font does not exist)</code>bash</p>
+<p>出现这个问题，一般是由于之前已经有一个显示的配置了，导致重命名。</p>
+<blockquote>
+<p>I had a similar problem, I believe it was because I had already created that setting before (then rebooted). If I skip that stage and go straight to:</p>
+</blockquote>
+<p>可以参考 <a href="https://stackoverflow.com/questions/851704/xrandr-errors-badname-named-color-or-font-does-not-exist">SO: Xrandr errors. BadName (named color or font does not exist) [closed]</a></p>
+</div>
+<div id="display.sh" class="section level2">
+<h2>集成脚本<code>display.sh</code></h2>
+<pre class="bash"><code>## 首次需要建立一个 --newmode
+## 以后就不需要了，可以注释掉
+## ------------------------
+xrandr --newmode &quot;1920x1080_20.00&quot;  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync
+
+xrandr --addmode VGA-1 &quot;1920x1080_20.00&quot;
+
+xrandr -s 1920x1080</code></pre>
+</div>
+<div class="section level2">
+<h2>开机自动调整分辨率</h2>
+<p>把以上的 <code>display.sh</code> 添加到 <code>~/.bashrc</code> 配置文件(run configure)。这样，每次开机后，会优先读取 <code>.bashrc</code> 文件，然后启动 <code>display.sh</code>。</p>
+<pre class="bash"><code>echo &quot;bash ~/Desktop/display.sh&quot; &gt;&gt; ~/.bashrc</code></pre>
+</div>

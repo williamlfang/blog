@@ -1,0 +1,33 @@
+---
+title: "Mac 启动 IPV6"
+author: William
+date: 2017-12-06
+lastmod: 2017-12-06
+categories: [Programming]
+tags: [Mac, IPV6]
+description: 一个小脚本实现在 Mac 系统下自动启动 IPV6.
+draft: false
+ToC: false
+---
+
+
+
+<p>最近因为需要使用 <code>IPV6</code> 来访问 google，所以写了一个小脚本来实现自动启动。</p>
+<ul>
+<li><p>第一个命名说明：首先通过查找是否之前已经启动了 <code>miredo</code></p>
+<ul>
+<li>使用 <code>ps aux | grep 'miredo'</code> 来获得进程的 <code>PID</code></li>
+<li>然后通过命令 <code>awk '{print $2}'</code> 把 <code>PID</code> 提取出来</li>
+<li>接着使用 <code>kill</code> 来杀掉进程</li>
+</ul></li>
+<li><p>第二个命令使用 <code>Tunnelblick</code> 创建一个虚拟网络环境</p></li>
+<li><p>第三个命令 <code>sudo miredo</code> 开启 <code>IPV6</code> 网络通信</p></li>
+</ul>
+<pre class="bash"><code>#!/bin/bash
+sudo kill $(ps aux | grep &#39;miredo&#39; | awk &#39;{print $2}&#39;)
+
+SIGNED_TUN_PATH=/Applications/Tunnelblick.app/Contents/Resources/
+
+cd $SIGNED_TUN_PATH
+sudo kextload tun-signed.kext
+sudo miredo</code></pre>

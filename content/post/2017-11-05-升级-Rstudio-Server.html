@@ -1,0 +1,72 @@
+---
+title: "升级 Rstudio Server"
+author: William
+date: 2017-11-05
+lastmod: 2017-11-05
+categories: [Programming]
+tags: [CentOS,Rstudio]
+description: 在 CentOS 操作系统更新 Rstudio-Server 软件，并进行相关的端口设置。
+draft: false
+ToC: true
+---
+
+
+
+<div id="-r-ide" class="section level1">
+<h1>强大的 <code>R IDE</code></h1>
+<p><code>Rstudio</code> 是非常强大的、专注于 <code>R</code> 统计语言编程环境的 <code>IDE</code>，基本取代了原生的操作界面而成为目前使用范围最广泛、功能最强大的编程软件。一般而言，我们在桌面 PC 操作系统，直接安装使用 <code>Rstudio</code> 即可实现代码编写、测试运行、画图等操作；而对于服务器，我们则需要安装 <code>Rstudio-Server</code> 这个版本，通过网页登录来模拟桌面的 <code>IDE</code>，实现完全无缝连接地使用我们最爱的 <code>R</code> 编辑与测试环境。</p>
+<div class="figure">
+<img src="/images/2017-11-05-升级-Rstudio-Server/fig01.png" alt="通过网页访问 Rstudio" />
+<p class="caption">通过网页访问 Rstudio</p>
+</div>
+<p>新版的 <code>Rstudio-Server</code> 还为我们贴心的提供了通过网页访问服务器 <code>Terminal</code> 的端口，即我们现在即可以在网页访问到 <code>R</code>，在上面进行编程、显示画图、测试运行，又可以通过终端进行 <code>shell</code> 命令操作，类似于实现了访问服务器终端的功能。</p>
+<div class="figure">
+<img src="/images/2017-11-05-升级-Rstudio-Server/fig02.png" alt="新版提供了直接访问服务器终端的功能" />
+<p class="caption">新版提供了直接访问服务器终端的功能</p>
+</div>
+<p>因此，我们决定对原来的 <code>CentOS</code> 操作系统安装的旧版进行省级。以下简要记录升级过程。</p>
+<hr />
+</div>
+<div class="section level1">
+<h1>升级过程</h1>
+<div class="section level2">
+<h2>下载新版软件</h2>
+<p>首先需要到 Rstudio 的官网下载最新版本的 Rstudio-server，记得选择 CentOS/RHEL</p>
+<pre class="bash"><code>cd /tmp
+
+## 下载最新版本号
+wget https://download2.rstudio.org/rstudio-server-rhel-1.1.383-x86_64.rpm
+
+## 使用管理员权限安装软件
+sudo yum install --nogpgcheck rstudio-server-rhel-1.1.383-x86_64.rpm</code></pre>
+</div>
+<div class="section level2">
+<h2>测试是否安装成功</h2>
+<p>安装完成后，默认的配置端口号为 <code>8787</code>，我们可以直接在浏览器输入：<code>192.168.1.166:8787</code>。</p>
+</div>
+<div class="section level2">
+<h2>异常排查</h2>
+<p>如果没有意外的话，我们是可以直接在网页打开 Rstudio 界面的。不过，如果我们的更新的过程中，不小心把原来的程序关闭了，这时候需要重启端口</p>
+<pre class="bash"><code>## 尝试重启服务
+sudo rstudio-server restart
+# initctl: Unknown instance
+# rsession no process restart
+
+## 增加远程访问 Rstudio 8787 端口
+# 1.FirewallD防火墙开放8787端口
+firewall-cmd --zone=public --add-port=8787/tcp --permanent
+# 2.重启防火墙
+systemctl restart firewalld.service
+
+## 使用以下三个步骤来重新配置 8787 端口
+
+## 1) check the process that used 8787
+sudo fuser 8787/tcp
+
+## 2) with the -k option to kill all process
+sudo fuser -k 8787/tcp
+
+## 3) start rstudio-server
+sudo rstudio-server start</code></pre>
+</div>
+</div>

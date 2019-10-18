@@ -1,0 +1,84 @@
+---
+title: "CentOS 安装 Sublime"
+author: William
+date: 2017-10-29
+lastmod: 2017-10-29
+categories: [Programming]
+tags: [CentOS,Sublime]
+description: 通过下载源文件，使用命令行实现在 `CentOS7` 操作系统上安装 `Sublime Text 3`。目前最新版本的是 **3143**，网上已经有该版本的注册码。
+draft: false
+ToC: true
+---
+
+通过下载源文件，使用命令行实现在 `CentOS7` 操作系统上安装 `Sublime Text 3`。目前最新版本的是 **3143**，网上已经有该版本的注册码。
+
+<!--more-->
+
+# 安装步骤
+
+## 下载源文件
+
+```bash
+cd /tmp
+wget https://download.sublimetext.com/sublime_text_3_build_3143_x64.tar.bz2
+```
+
+## 解压到安装目录
+
+一般而言，我们使用 `root` 安装软件，都是放在 `/opt` 这个目录文件下面。因此，我把源文件解压到该目录。当然，如果你没有 `root` 权限的话，也可以放在个人主目录下面。
+
+```bash
+sudo tar -vxjf sublime_text_3_build_3143_x64.tar.bz2 -C /opt
+```
+
+## 测试安装
+
+现在，我们已经把 `Sublime` 的程序安装在了相应的目录文件，现在通过在命令行即可打开该程序。
+
+```bash
+sublime3
+```
+
+## 建立桌面图标
+
+我们可以通过两种方式来启动 `Sublime`：
+
+- 命令行方式：直接在命令行启动 `sublime3`
+- 图形化启动：点击图标来启动程序
+
+为了能够在 `CentOS` 操作系统下使用图形化启动方式，我们需要增加相应的配置。
+
+```bash
+sudo sublime3 /usr/share/applications/sublime3.desktop
+sudo vim /usr/share/applications/sublime3.desktop
+```
+
+在打开的文件里，添加以下内容：
+
+```bash
+[Desktop Entry]
+Name=Sublime3
+Exec=sublime3
+Terminal=false
+Icon=/opt/sublime_text_3/Icon/48x48/sublime-text.png
+Type=Application
+Categories=TextEditor;IDE;Development
+X-Ayatana-Desktop-Shortcuts=NewWindow
+ 
+[NewWindow Shortcut Group]
+Name=New Window
+Exec=sublime -n
+TargetEnvironment=Unity
+```
+
+这样，我们就可以通过鼠标点击 `Sublime` 的图标来启动程序了。
+
+
+# 配置
+
+安装程序结束后，我们只是得到了一个原始的 `Sublime`，为了增强其功能，我们还需要做相关的设置。
+
+- 安装 `Package Control`
+- 安装增强包
+
+具体的设置，可以参考之前写过的[另一篇文章](https://williamlfang.github.io/post/2017-10-13-%E6%88%91%E7%9A%84-sublime-text-%E8%AE%BE%E7%BD%AE/)，这里就不赘述了。

@@ -1,0 +1,43 @@
+---
+title: "R slidify"
+author: William
+date: 2019-09-10
+lastmod: 2019-09-10
+categories: [Programming]
+tags: [R,slidify,revealjs]
+description: 使用 R-slidify 制作讲演课件
+draft: false
+ToC: true
+---
+
+
+
+<div class="section level1">
+<h1>安装</h1>
+<div id="-slidify" class="section level2">
+<h2>安装 <code>slidify</code>软件包</h2>
+<pre class="r"><code>library(devtools)
+install_github(&#39;ramnathv/slidify&#39;)
+install_github(&#39;ramnathv/slidifyLibraries&#39;)</code></pre>
+</div>
+</div>
+<div id="demo" class="section level1">
+<h1>Demo</h1>
+<div class="section level2">
+<h2>初始化</h2>
+<pre class="r"><code>library(slidify)
+author(&#39;mydeck&#39;)</code></pre>
+</div>
+<div class="section level2">
+<h2>格式</h2>
+</div>
+</div>
+<div id="-github" class="section level1">
+<h1>上传到 Github</h1>
+<pre class="r"><code># publish to github
+# create an empty repo on github. replace USER and REPO with your repo details
+  publish(user = &#39;williamlfang&#39;, repo = &#39;myslidify&#39;) 
+
+# publish to rpubs
+publish(title = &#39;My Deck&#39;, &#39;index.html&#39;, host = &#39;rpubs&#39;)</code></pre>
+</div>

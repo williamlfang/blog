@@ -1,0 +1,69 @@
+---
+title: "CentOS 安装 Sublime"
+author: William
+date: 2017-10-29
+lastmod: 2017-10-29
+categories: [Programming]
+tags: [CentOS,Sublime]
+description: 通过下载源文件，使用命令行实现在 `CentOS7` 操作系统上安装 `Sublime Text 3`。目前最新版本的是 **3143**，网上已经有该版本的注册码。
+draft: false
+ToC: true
+---
+
+
+
+<p>通过下载源文件，使用命令行实现在 <code>CentOS7</code> 操作系统上安装 <code>Sublime Text 3</code>。目前最新版本的是 <strong>3143</strong>，网上已经有该版本的注册码。</p>
+<!--more-->
+<div class="section level1">
+<h1>安装步骤</h1>
+<div class="section level2">
+<h2>下载源文件</h2>
+<pre class="bash"><code>cd /tmp
+wget https://download.sublimetext.com/sublime_text_3_build_3143_x64.tar.bz2</code></pre>
+</div>
+<div class="section level2">
+<h2>解压到安装目录</h2>
+<p>一般而言，我们使用 <code>root</code> 安装软件，都是放在 <code>/opt</code> 这个目录文件下面。因此，我把源文件解压到该目录。当然，如果你没有 <code>root</code> 权限的话，也可以放在个人主目录下面。</p>
+<pre class="bash"><code>sudo tar -vxjf sublime_text_3_build_3143_x64.tar.bz2 -C /opt</code></pre>
+</div>
+<div class="section level2">
+<h2>测试安装</h2>
+<p>现在，我们已经把 <code>Sublime</code> 的程序安装在了相应的目录文件，现在通过在命令行即可打开该程序。</p>
+<pre class="bash"><code>sublime3</code></pre>
+</div>
+<div class="section level2">
+<h2>建立桌面图标</h2>
+<p>我们可以通过两种方式来启动 <code>Sublime</code>：</p>
+<ul>
+<li>命令行方式：直接在命令行启动 <code>sublime3</code></li>
+<li>图形化启动：点击图标来启动程序</li>
+</ul>
+<p>为了能够在 <code>CentOS</code> 操作系统下使用图形化启动方式，我们需要增加相应的配置。</p>
+<pre class="bash"><code>sudo sublime3 /usr/share/applications/sublime3.desktop
+sudo vim /usr/share/applications/sublime3.desktop</code></pre>
+<p>在打开的文件里，添加以下内容：</p>
+<pre class="bash"><code>[Desktop Entry]
+Name=Sublime3
+Exec=sublime3
+Terminal=false
+Icon=/opt/sublime_text_3/Icon/48x48/sublime-text.png
+Type=Application
+Categories=TextEditor;IDE;Development
+X-Ayatana-Desktop-Shortcuts=NewWindow
+ 
+[NewWindow Shortcut Group]
+Name=New Window
+Exec=sublime -n
+TargetEnvironment=Unity</code></pre>
+<p>这样，我们就可以通过鼠标点击 <code>Sublime</code> 的图标来启动程序了。</p>
+</div>
+</div>
+<div class="section level1">
+<h1>配置</h1>
+<p>安装程序结束后，我们只是得到了一个原始的 <code>Sublime</code>，为了增强其功能，我们还需要做相关的设置。</p>
+<ul>
+<li>安装 <code>Package Control</code></li>
+<li>安装增强包</li>
+</ul>
+<p>具体的设置，可以参考之前写过的<a href="https://williamlfang.github.io/post/2017-10-13-%E6%88%91%E7%9A%84-sublime-text-%E8%AE%BE%E7%BD%AE/">另一篇文章</a>，这里就不赘述了。</p>
+</div>

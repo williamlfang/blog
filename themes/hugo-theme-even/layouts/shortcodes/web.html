@@ -1,0 +1,85 @@
+  {{/*
+      ## Github Page
+  
+      ### Params:
+  
+      - `website`
+  
+        required param
+  
+      - Fiddle `title`
+  
+        optional param
+  
+      ### Examples:
+  
+      - Simple
+
+        {{% github "google.com" "google" %}}
+  
+      - Named Params
+
+        {{% github website="google.com" title="google" %}}
+  
+  */}}
+  
+<!--   {{- /* DEFAULTS */ -}}
+  {{ $title := "" }} -->
+  
+  {{- if .IsNamedParams -}}
+  
+<!--     <iframe style="max-width: 100%"
+      frameborder="no"
+      border="0"
+      marginwidth="0"
+      marginheight="0"
+      width="330"
+      height="86"
+      src="{{ .Get "website" }}">
+    </iframe> -->
+    <blockquote style="margin-top: 5px; margin-bottom: 0px;">
+    {{ .Get "title" }}
+    </blockquote>
+    <iframe src="{{ .Get "website" }}" style="width:100%; height:550px; 
+    border-left:3px solid rgba(192,91,77,.3);
+    border-right:0px solid rgba(192,91,77,.3);
+    border-top: 0px solid rgb(235, 205, 200);
+    border-bottom: 3px solid rgba(192,91,77,.3);">
+    </iframe>
+
+    <p style="margin-top: 0px; text-align:right; font-size:10px;">
+    <a target="_blank" 
+    href="{{ .Get "website" }}">
+      全屏查看
+    </a>
+    </p>
+
+  {{- else -}}
+  
+<!--     <iframe style="max-width: 100%"
+      frameborder="no"
+      border="0"
+      marginwidth="0"
+      marginheight="0"
+      width="330"
+      height="86"
+      src="{{ .Get 0 }}">
+    </iframe> -->
+    <blockquote style="margin-top: 5px; margin-bottom: 0px;">
+    {{ .Get 1 }}
+    </blockquote>    
+    <iframe src="{{ .Get 0 }}" style="width:100%; height:550px; 
+    border-left:3px solid rgba(192,91,77,.3);
+    border-right:0px solid rgba(192,91,77,.3);
+    border-top: 0px solid rgb(235, 205, 200);
+    border-bottom: 3px solid rgba(192,91,77,.3);">
+    </iframe>
+
+    <p style="margin-top: 0px; text-align:right; font-size:10px;">
+    <a target="_blank" 
+    href="{{ .Get 0 }}">
+      全屏查看
+    </a>
+    </p>
+  {{- end -}}
+  

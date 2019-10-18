@@ -1,0 +1,452 @@
+---
+title: "交易所数据爬虫之郑商所"
+author: William
+date: 2017-10-28
+lastmod: 2017-10-28
+categories: [Data]
+tags: [Futures,期货,数据,R]
+description: 利用 `R` 对郑州商品交易所进行网络爬虫，获取日行情数据、成交排名、仓单数据等。
+draft: false
+ToC: true
+---
+
+
+
+<p>上回我介绍了如何<a href="https://williamlfang.github.io/post/2017-10-23-%E4%BA%A4%E6%98%93%E6%89%80%E6%95%B0%E6%8D%AE%E7%88%AC%E8%99%AB%E4%B9%8B%E4%B8%AD%E9%87%91%E6%89%80/">对中金所进行网络爬虫</a>，获得了股指期货相关的历史日行情数据和成交排名数据。同样的，我们也可以使用类似的爬虫技术，对郑商所进行网络爬虫。</p>
+<div class="section level1">
+<h1>诡异的郑商所</h1>
+<p>不过与中金所网络爬虫不一样的一点是，中金所本身提供了数据文件的<strong>静态链接地址</strong>，我们只需要解析到不同交易日期所对应的链接，就能够把数据下载到本地。而郑商所虽然也同样提供了文件的静态链接，<strong>但是</strong>，我在爬虫的过程中发现了一个小小的问题：有部分的交易数据，郑商所不知道出于何种原因（有可能是原始的数据文件丢失，或者路径存储错误），竟然找不到当日对应的数据文件链接。也就是说，对于这些交易日，我们是无法直接下载文件的。因此，对于这些没有提供链接的数据，我们只能采用页面爬虫的技术，通过读取网页的数据，经过数据清理、规整等步骤，再保存到本地文件。</p>
+<p>针对网站页面的数据进行爬虫，会涉及到 <code>DOM</code> 构造、<code>HTML</code> 元素解析、文本识别、正则表达等诸多方面的技术。在接下来的内容里，我会重点介绍如何在网页中找到我们需要的数据。</p>
+<div class="figure">
+<img src="/images/2017-10-28-交易所数据爬虫之郑商所/czce01.png" alt="郑商所网站提供期货与期权相关的数据" />
+<p class="caption">郑商所网站提供期货与期权相关的数据</p>
+</div>
+</div>
+<div class="section level1">
+<h1>工具箱</h1>
+<p>对于网页内容进行爬虫、识别网页内容、获取目标数据或文本等，我们需要使用到 <code>HTML</code> 相关的技术手段。最原始的一种办法是通过 <code>wget</code> 把整个网页下载到本地，然后再进行内容解析；或者使用 <code>libcur</code> 来读取远程的内容并传递到系统的内存。这些技术难度较大，而且得到的数据并不是结构性的，使用正则获取目标数据比较坎坷。万幸的是，已经有人通过软件包的形式，为我们把这些基础的工作都处理完成了，我们只需要调用相关的函数，即可实现简单的网页爬虫。</p>
+<p>以下两个 <code>R</code> 的扩展包就是针对网络爬虫而开发的。</p>
+<div id="rselenium" class="section level2">
+<h2><code>RSelenium</code></h2>
+<p><code>Selenium</code> 是一款网络驱动，作为<strong>无头浏览器</strong>(headless webdriver)驱动，提供了高性能的网络测试、页面加载、网络解析等功能。基于这项技术所提供的 <code>API</code> 调用端口，我们可以使用不同的编程语言来调用浏览器功能，从而实现了开发-测试的无缝连接。</p>
+<p><code>RSelenium</code> 就是 <code>Selenium</code> 在 <code>R</code> 语言下的扩展包，集成了大量可供调用的函数，使得我们只需要在 <code>R</code> 中调用函数并传入参数，即可对网页进行解析。</p>
+</div>
+<div id="rvest" class="section level2">
+<h2><code>rvest</code></h2>
+<p>这个是大神 <strong>Wickham Hadley</strong> 编写的一个针对网页爬虫的扩展包，封装了 <code>Linux</code> 下的 <code>libcur</code> 库，因此能够提供对网页页面的 <code>DOM</code> 解析。这个包返回一个结构化的对象，可以通过 <code>R</code> 的函数对其进行数据清理；同时它还针对不同的编码进行自动化的识别，这点对于中文网站尤其重要，否则，编码错误会导致我们爬虫的数据出现乱码的悲剧。</p>
+</div>
+</div>
+<div class="section level1">
+<h1>日行情数据</h1>
+<div class="section level2">
+<h2>静态链接</h2>
+<p>我们在对中金所进行爬虫的那篇博客里面，已经讲到如何通过 <code>Chrome</code> 的 <code>Inspect</code> 功能来获取网页的元素。通过查找特定位置的 <code>HTML</code> 标签，我们可以得到该位置所对应的具体信息。</p>
+<div class="section level3">
+<h3>定位网页</h3>
+<p>首先我们需要做的是先尝试定位某个交易日的日行情数据存放网页，通过输入交易日，然后点击查询，我们便可以看到需要查找的交易数据。</p>
+<div class="figure">
+<img src="/images/2017-10-28-交易所数据爬虫之郑商所/daily01.png" alt="通过交易日期查找日行情数据" />
+<p class="caption">通过交易日期查找日行情数据</p>
+</div>
+<p>这个便是我们需要进行爬虫的单独网页。</p>
+<div class="figure">
+<img src="/images/2017-10-28-交易所数据爬虫之郑商所/daily02.png" alt="承载数据的具体网页" />
+<p class="caption">承载数据的具体网页</p>
+</div>
+<p>我们来看看当天的网页地址，比如：<code>http://www.czce.com.cn/portal/DFSStaticFiles/Future/2017/20171026/FutureDataDaily.htm</code>。主要是由以下几个部分组成的：</p>
+<ul>
+<li><code>http://www.czce.com.cn/portal/DFSStaticFiles/Future/</code>：这个可以当成是日行情的根目录。</li>
+<li><code>2017/20171026/FutureDataDaily.htm</code>：这个命名规则很明显，由 <code>YYYY/YYYYmm/FutureDataDaily.htm</code> 构成。我们可以根据交易日来提取日期组成。</li>
+</ul>
+</div>
+<div class="section level3">
+<h3>下载数据文件</h3>
+<p>在数据文件对应的 <code>excel</code> / <code>txt</code> 点击右键，然后使用 <code>Ctrl + F</code> 查找 <code>excel</code>，我们便可以定位到数据文件了。</p>
+<div class="figure">
+<img src="/images/2017-10-28-交易所数据爬虫之郑商所/daily03.png" alt="通过元素审查获取标签的具体信息" />
+<p class="caption">通过元素审查获取标签的具体信息</p>
+</div>
+<p>一看吓一跳，似乎这个数据文件是一个动态的脚本，好像很难识别的样子。不过，各位不要被这个「纸老虎」吓到了，我们可以手动打开一个网页试试看，有木有惊喜呢。</p>
+<div class="figure">
+<img src="/images/2017-10-28-交易所数据爬虫之郑商所/daily04.png" alt="原来也是一个静态文件地址" />
+<p class="caption">原来也是一个静态文件地址</p>
+</div>
+<p>具体地，我们看到这个数据文件对应的链接地址是：<code>http://www.czce.com.cn/portal/DFSStaticFiles/Future/2017/20171026/FutureDataDaily.xls</code>，对其进行拆解看：</p>
+<ul>
+<li><code>http://www.czce.com.cn/portal/DFSStaticFiles/Future/</code>：数据文件所在的根目录</li>
+<li><code>2017/20171026/FutureDataDaily.xls</code>：具体的文件地址，通用格式为 <code>YYYY/YYYYmmdd/FutureDataDaily.xls</code>，也就是说，我们可以根据历史的交易日期来生成所以交易日的文件链接，然后呢，通过遍礼下载得到我们想要的数据即可。</li>
+</ul>
+<p>不过，这里有一个小小的坑，就是郑商所在 <code>2015-10-01</code> 前后有变动过相对路径的根目录的名称，也就是说，这个地方需要我们用交易日期来判断。我们来看看这段代码是这样写的：</p>
+<pre class="r"><code>## 在 2015-10-01 之前
+exchURL1 &lt;- &quot;http://www.czce.com.cn/portal/exchange/&quot;
+
+## 在 2015-10-01 之后
+exchURL2 &lt;- &quot;http://www.czce.com.cn/portal/DFSStaticFiles/Future/&quot;
+
+tempDir &lt;- paste0(dataPath,exchCalendar[i,calendarYear])
+
+if (!dir.exists(tempDir)) dir.create(tempDir)
+
+tempYear &lt;- exchCalendar[i,calendarYear]
+tempTradingDay &lt;- exchCalendar[i,days]
+
+## 需要改变根目录地址
+tempURL &lt;- ifelse(tempTradingDay &lt; &#39;20151001&#39;,
+                  paste0(exchURL1, tempYear, &#39;/datadaily/&#39;, tempTradingDay, &#39;.txt&#39;),
+                  paste0(exchURL2, tempYear, &#39;/&#39;, tempTradingDay, &#39;/FutureDataDaily.xls&#39;))
+
+destFile &lt;-  paste0(dataPath, &#39;/&#39;, exchCalendar[i,calendarYear],
+                    &quot;/&quot;, tempTradingDay,
+                    ifelse(tempTradingDay &lt; &#39;20151001&#39;,&#39;.txt&#39;,&#39;.xls&#39;))</code></pre>
+<p>然后便可以开启并行模式下载数据了：</p>
+<pre class="r"><code>try(download.file(tempURL, destFile, mode = &#39;wb&#39;))</code></pre>
+</div>
+</div>
+<div class="section level2">
+<h2>网页内容爬虫</h2>
+<p>如果事情都是按照我们预期，作为强迫症的我，必然要求这个世界能够按照自然界最优雅的方式来运行。可以，世界太大，坏人太多，结局很不好。</p>
+<p>以上介绍了使用静态网页链接地址来下载文件，可惜对于部分的交易日期，郑商所似乎把原始的数据文件弄丢了。这个不得了，我们得程序现在罢工了，无法再继续下载数据了。</p>
+<p>不过所幸的是，我们还有另外一套网页爬虫的技术。</p>
+<div class="section level3">
+<h3>识别网页内容</h3>
+<p>我们知道，任何的网页，后面其实都是一堆的 <code>HTML</code> 代码而已，无他。所以，即使我们无法找到（郑商所没有提供）数据文件的链接地址，我们还是可以通过爬虫抓取网页的数据。这个就需要用到 <code>Selenium</code>。</p>
+<p>首先需要做的是，开启 <code>selenium</code> 驱动，通过命令行来模拟网页访问，读取网页内容。</p>
+<pre class="bash"><code>java -jar selenium-server-standalone-3.5.1.jar</code></pre>
+<p>接下来，我们可以通过 <code>RSelenium</code> 提供的端口，把数据载入内容。这样，我们通过使用 <code>Firefox</code> 来模拟登陆网页，然后读取具体的信息，找到相应的数据节点，并正确的识别节点内容。</p>
+<pre class="r"><code>tempPage &lt;- paste0(&#39;http://www.czce.com.cn/portal/exchange/jyxx/hq/hq&#39;, tempTradingDay, &#39;.html&#39;)
+
+remDr &lt;- remoteDriver(remoteServerAddr =&#39;localhost&#39;
+                ,port = 4444
+                ,browserName = &#39;firefox&#39;)
+remDr$getStatus()
+
+remDr$open(silent = TRUE)
+remDr$navigate(tempPage)
+tempTable &lt;- remDr$findElements(using = &#39;tag&#39;, value = &#39;table&#39;)[[3]]
+tempHTML &lt;- tempTable$getElementAttribute(&#39;outerHTML&#39;)[[1]]</code></pre>
+<p>现在，我们把整个网页的内容加载到 <code>R</code> 的工作空间，接下来便可以使用 <code>rvest</code> 来解析网页内容了：</p>
+<pre class="r"><code>webData &lt;- tempHTML %&gt;% 
+    read_html(encoding=&#39;GB18030&#39;) %&gt;% 
+    html_node(&#39;table&#39;) %&gt;% 
+    html_table(fill = TRUE, header=FALSE) %&gt;% 
+    as.data.table() %&gt;% 
+    .[-1] %&gt;% 
+    rbind(data.table(X1 = c(&#39;&#39;)), ., fill = TRUE)
+
+webData[1, X1 := paste0(&#39;郑州商品交易所每日行情表(&#39;,
+                         as.Date(as.character(tempTradingDay), format = &#39;%Y%m%d&#39;),
+                         &#39;)&#39;)]</code></pre>
+<p>整理数据，并写入文件</p>
+<pre class="r"><code>cols &lt;- colnames(webData)[2:ncol(webData)]
+webData[, (cols) := lapply(.SD, function(x){
+  gsub(&#39;,&#39;,&#39;&#39;,x)
+}), .SDcols = cols]
+
+print(webData)
+
+fwrite(webData, destFile, col.names = FALSE)</code></pre>
+<p>最后是扫尾工作，记得把不用的内存空间释放出来，下面是在 <code>Linux</code> 操作系统的命令，<code>Windows</code> 的各位可以自行 Google 搜索（不要用百度！不要用百度！不要用百度！）</p>
+<pre class="r"><code># remDr$quit()
+try({
+  system(&#39;pkill -f firefox&#39;)
+  system(&#39;pkill -f geckodriver&#39;)
+  system(&#39;rm -rf /tmp/rust_mozprofile*&#39;)
+})</code></pre>
+</div>
+</div>
+<div id="demo" class="section level2">
+<h2>Demo</h2>
+<pre class="r"><code>################################################################################
+##! czce.R
+## 这是主函数:
+## 用于从 郑商所 网站爬虫期货交易的日行情数据
+## daily
+##
+##
+## 注意:
+##
+## Author: fl@hicloud-investment.com
+## CreateDate: 2017-10-16
+################################################################################
+
+
+################################################################################
+## STEP 0: 初始化，载入包，设定初始条件
+################################################################################
+rm(list = ls())
+logMainScript &lt;- c(&quot;czce.R&quot;)
+
+if (class(try(setwd(&#39;/home/fl/myData/&#39;))) == &#39;try-error&#39;) {
+  setwd(&#39;/run/user/1000/gvfs/sftp:host=192.168.1.166,user=fl/home/fl/myData&#39;)
+}
+suppressMessages({
+  source(&#39;./R/Rconfig/myInit.R&#39;)
+})
+library(RSelenium)
+################################################################################
+## STEP 1: 获取对应的交易日期
+################################################################################
+ChinaFuturesCalendar &lt;- fread(&quot;./data/ChinaFuturesCalendar/ChinaFuturesCalendar.csv&quot;,
+                              colClasses = list(character = c(&quot;nights&quot;,&quot;days&quot;))) %&gt;% 
+                              .[days &lt; format(Sys.Date(),&#39;%Y%m%d&#39;)]
+
+exchCalendar &lt;- ChinaFuturesCalendar[,&quot;:=&quot;(calendarYear = substr(days,1,4),
+                                           calendarYearMonth = substr(days,1,6),
+                                           calendarMonth = substr(days,5,6),
+                                           calendarDay = substr(days,7,8))]
+dataPath &lt;- &#39;/home/william/Documents/Exchange/CZCE/&#39;
+# dataPath &lt;- &quot;./data/Bar/Exchange/CZCE/&quot;
+
+##------------------------------------------------------------------------------
+if(Sys.info()[&#39;sysname&#39;] == &#39;Windows&#39;){
+  Sys.setenv(&quot;R_ZIPCMD&quot; = &quot;D:/Program Files/Rtools/bin/zip.exe&quot;) ## path to zip.exe
+}
+##------------------------------------------------------------------------------
+
+################################################################################
+## CZCE: 郑商所
+## 1.持仓排名
+## 2.仓单日报
+################################################################################
+## 在 2015-10-01 之前
+exchURL1 &lt;- &quot;http://www.czce.com.cn/portal/exchange/&quot;
+
+## 在 2015-10-01 之后
+exchURL2 &lt;- &quot;http://www.czce.com.cn/portal/DFSStaticFiles/Future/&quot;
+## =============================================================================
+
+czceData &lt;- function(i) {
+  tempDir &lt;- paste0(dataPath,exchCalendar[i,calendarYear])
+
+  if (!dir.exists(tempDir)) dir.create(tempDir)
+
+  tempYear &lt;- exchCalendar[i,calendarYear]
+  tempTradingDay &lt;- exchCalendar[i,days]
+      
+  tempURL &lt;- ifelse(tempTradingDay &lt; &#39;20151001&#39;,
+                    paste0(exchURL1, tempYear, &#39;/datadaily/&#39;, tempTradingDay, &#39;.txt&#39;),
+                    paste0(exchURL2, tempYear, &#39;/&#39;, tempTradingDay, &#39;/FutureDataDaily.xls&#39;))
+  
+  destFile &lt;-  paste0(dataPath, &#39;/&#39;, exchCalendar[i,calendarYear],
+                      &quot;/&quot;, tempTradingDay,
+                      ifelse(tempTradingDay &lt; &#39;20151001&#39;,&#39;.txt&#39;,&#39;.xls&#39;))
+
+  tryNo &lt;- 0
+  ## ---------------------------------------------------------------------------
+  while( (!file.exists(destFile) | file.size(destFile) &lt; 1000) &amp; (tryNo &lt; 20)){
+    if (class(try(download.file(tempURL, destFile, mode = &#39;wb&#39;))) == &#39;try-error&#39;) {
+      tempPage &lt;- paste0(&#39;http://www.czce.com.cn/portal/exchange/jyxx/hq/hq&#39;, tempTradingDay, &#39;.html&#39;)
+      
+      remDr &lt;- remoteDriver(remoteServerAddr =&#39;localhost&#39;
+                      ,port = 4444
+                      ,browserName = &#39;firefox&#39;)
+      remDr$getStatus()
+
+      remDr$open(silent = TRUE)
+      remDr$navigate(tempPage)
+      tempTable &lt;- remDr$findElements(using = &#39;tag&#39;, value = &#39;table&#39;)[[3]]
+      tempHTML &lt;- tempTable$getElementAttribute(&#39;outerHTML&#39;)[[1]]
+
+      webData &lt;- tempHTML %&gt;% 
+          read_html(encoding=&#39;GB18030&#39;) %&gt;% 
+          html_node(&#39;table&#39;) %&gt;% 
+          html_table(fill = TRUE, header=FALSE) %&gt;% 
+          as.data.table() %&gt;% 
+          .[-1] %&gt;% 
+          rbind(data.table(X1 = c(&#39;&#39;)), ., fill = TRUE)
+
+      webData[1, X1 := paste0(&#39;郑州商品交易所每日行情表(&#39;,
+                               as.Date(as.character(tempTradingDay), format = &#39;%Y%m%d&#39;),
+                               &#39;)&#39;)]
+
+      cols &lt;- colnames(webData)[2:ncol(webData)]
+      webData[, (cols) := lapply(.SD, function(x){
+        gsub(&#39;,&#39;,&#39;&#39;,x)
+      }), .SDcols = cols]
+
+      print(webData)
+
+      fwrite(webData, destFile, col.names = FALSE)
+
+      # remDr$quit()
+      try({
+        system(&#39;pkill -f firefox&#39;)
+        system(&#39;pkill -f geckodriver&#39;)
+        system(&#39;rm -rf /tmp/rust_mozprofile*&#39;)
+      })
+    }
+    tryNo &lt;- tryNo + 1
+  }
+  ## ---------------------------------------------------------------------------
+}
+
+################################################################################
+## STEP 2: 开启并行计算模式，下载数据 
+################################################################################
+# cl &lt;- makeCluster(max(round(detectCores()*3/4),4), type=&#39;FORK&#39;)
+# parSapply(cl, 1:nrow(ChinaFuturesCalendar), function(i){
+#   ## ---------------------------------------------------------------------------
+#   try(czceData(i))
+#   ## ---------------------------------------------------------------------------
+# })
+# stopCluster(cl)
+
+
+## =============================================================================
+sapply(1:nrow(ChinaFuturesCalendar), function(i){
+  try(czceData(i))
+})
+## =============================================================================</code></pre>
+</div>
+</div>
+<div class="section level1">
+<h1>成交持仓排名</h1>
+<div class="section level2">
+<h2>持仓排名地址</h2>
+<p>与日行情数据爬虫相类似，我们也一样可以对期货公司层面的成交持仓排名数据进行网络爬虫。这里需要做的，其实就是把日行情数据的网页地址换成持仓排名的网页地址，即</p>
+<pre class="r"><code>## 直接下载文件的链接
+tempURL &lt;- ifelse(tempTradingDay &lt; &#39;20151001&#39;,
+                  paste0(exchURL1, tempYear, &#39;/datatradeholding/&#39;, tempTradingDay, &#39;.txt&#39;),
+                  paste0(exchURL2, tempYear, &#39;/&#39;, tempTradingDay, &#39;/FutureDataHolding.xls&#39;))
+
+## 数据爬虫的网页地址
+tempPage &lt;- paste0(&#39;http://www.czce.com.cn/portal/exchange/jyxx/pm/pm&#39;, tempTradingDay, &#39;.html&#39;)</code></pre>
+</div>
+<div id="demo-1" class="section level2">
+<h2>Demo</h2>
+<p>好吧，剩下就就直接上干货喽。</p>
+<pre class="r"><code>################################################################################
+## czce.R
+## 用于下载郑商所期货公司持仓排名数据
+##
+## Author: William Fang
+## Date  : 2017-08-21
+################################################################################
+
+################################################################################
+## STEP 0: 初始化，载入包，设定初始条件
+################################################################################
+rm(list = ls())
+logMainScript &lt;- c(&quot;czce.R&quot;)
+
+# setwd(&#39;/home/fl/myData/&#39;)
+if (class(try(setwd(&#39;/home/fl/myData/&#39;))) == &#39;try-error&#39;) {
+  setwd(&#39;/run/user/1000/gvfs/sftp:host=192.168.1.166,user=fl/home/fl/myData&#39;)
+}
+
+suppressMessages({
+  source(&#39;./R/Rconfig/myInit.R&#39;)
+})
+library(RSelenium)
+Sys.setlocale(&quot;LC_ALL&quot;, &#39;en_US.UTF-8&#39;)
+
+ChinaFuturesCalendar &lt;- fread(&quot;./data/ChinaFuturesCalendar/ChinaFuturesCalendar.csv&quot;,
+                              colClasses = list(character = c(&quot;nights&quot;,&quot;days&quot;))) %&gt;% 
+                              .[days &lt; format(Sys.Date(),&#39;%Y%m%d&#39;)]
+
+exchCalendar &lt;- ChinaFuturesCalendar[,&quot;:=&quot;(calendarYear = substr(days,1,4),
+                                           calendarYearMonth = substr(days,1,6),
+                                           calendarMonth = substr(days,5,6),
+                                           calendarDay = substr(days,7,8))]
+dataPath &lt;- &#39;/home/william/Documents/oiRank/CZCE/&#39;
+# dataPath &lt;- &quot;./data/Bar/Exchange/CZCE/&quot;
+
+##------------------------------------------------------------------------------
+if(Sys.info()[&#39;sysname&#39;] == &#39;Windows&#39;){
+  Sys.setenv(&quot;R_ZIPCMD&quot; = &quot;D:/Program Files/Rtools/bin/zip.exe&quot;) ## path to zip.exe
+}
+##------------------------------------------------------------------------------
+
+################################################################################
+## CZCE: 郑商所
+## 1.持仓排名
+## 2.仓单日报
+################################################################################
+## 在 2015-10-01 之前
+exchURL1 &lt;- &quot;http://www.czce.com.cn/portal/exchange/&quot;
+
+## 在 2015-10-01 之后
+exchURL2 &lt;- &quot;http://www.czce.com.cn/portal/DFSStaticFiles/Future/&quot;
+## =============================================================================
+
+
+czceData &lt;- function(i) {
+  tempDir &lt;- paste0(dataPath,exchCalendar[i,calendarYear])
+
+  if (!dir.exists(tempDir)) dir.create(tempDir, recursive = TRUE)
+
+  tempYear &lt;- exchCalendar[i,calendarYear]
+  tempTradingDay &lt;- exchCalendar[i,days]
+      
+  tempURL &lt;- ifelse(tempTradingDay &lt; &#39;20151001&#39;,
+                    paste0(exchURL1, tempYear, &#39;/datatradeholding/&#39;, tempTradingDay, &#39;.txt&#39;),
+                    paste0(exchURL2, tempYear, &#39;/&#39;, tempTradingDay, &#39;/FutureDataHolding.xls&#39;))
+  
+  destFile &lt;-  paste0(dataPath, &#39;/&#39;, exchCalendar[i,calendarYear],
+                      &quot;/&quot;, tempTradingDay,
+                      ifelse(tempTradingDay &lt; &#39;20151001&#39;,&#39;.txt&#39;,&#39;.xls&#39;))
+
+  tryNo &lt;- 0
+  ## ---------------------------------------------------------------------------
+  while( (!file.exists(destFile) | file.size(destFile) &lt; 1000) &amp; (tryNo &lt; 20)){
+    if (class(try(download.file(tempURL, destFile, mode = &#39;wb&#39;))) == &#39;try-error&#39;) {
+      tempPage &lt;- paste0(&#39;http://www.czce.com.cn/portal/exchange/jyxx/pm/pm&#39;, tempTradingDay, &#39;.html&#39;)
+      
+      webData &lt;- tempPage %&gt;% 
+                  read_html(encoding = &#39;GB18030&#39;) %&gt;% 
+                  html_nodes(&#39;table&#39;) %&gt;% 
+                  html_table(fill=TRUE, header=FALSE) %&gt;% 
+                  .[-1] %&gt;% 
+                  .[[1]] %&gt;% 
+                  as.data.table() %&gt;% 
+                  rbind(data.table(X1 = c(&#39;&#39;,&#39;&#39;)), ., fill = TRUE)
+      webData[1, X1 := paste0(&#39;郑州商品交易所持仓排行表(&#39;,
+                               as.Date(as.character(tempTradingDay), format = &#39;%Y%m%d&#39;),
+                               &#39;)&#39;)]
+
+      cols &lt;- colnames(webData)[2:ncol(webData)]
+      webData[, (cols) := lapply(.SD, function(x){
+        gsub(&#39;,&#39;,&#39;&#39;,x)
+      }), .SDcols = cols]
+
+      # grep(&quot;名次&quot;, tempData$X1) %&gt;% length()
+
+      webTitle &lt;- tempPage %&gt;% 
+                  read_html(encoding = &#39;GB18030&#39;) %&gt;% 
+                  html_nodes(&#39;font&#39;) %&gt;% 
+                  html_text() %&gt;% 
+                  .[grep(&#39;品种|合约代码&#39;,.)]
+
+      for (j in 1:length(webTitle)) {
+        tempRow &lt;- grep(&quot;名次&quot;, webData$X1)[j] - 1
+        webData[tempRow, X1 := webTitle[j]]
+      }
+
+      print(webData)
+
+      fwrite(webData, destFile, col.names = FALSE)
+    }
+    tryNo &lt;- tryNo + 1
+  }
+  ## ---------------------------------------------------------------------------
+}
+
+################################################################################
+## STEP 2: 开启并行计算模式，下载数据 
+################################################################################
+cl &lt;- makeCluster(max(round(detectCores()*3/4),4), type=&#39;FORK&#39;)
+parSapply(cl, 1:nrow(ChinaFuturesCalendar), function(i){
+  ## ---------------------------------------------------------------------------
+  try(czceData(i))
+  ## ---------------------------------------------------------------------------
+})
+stopCluster(cl)
+
+
+# ## =============================================================================
+# sapply(1:nrow(ChinaFuturesCalendar), function(i){
+#   try(czceData(i))
+# })
+# ## =============================================================================</code></pre>
+</div>
+</div>

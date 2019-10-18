@@ -1,0 +1,29 @@
+---
+title: "CentOS7 安装 Qt5"
+author: William
+date: 2018-12-11
+lastmod: 2018-12-11
+categories: [Programming]
+tags: [CentOS7,Qt]
+description: 在 CentOS7 系统下安装 Qt5，满足 teamviewer 等软件使用。
+draft: true
+ToC: false
+---
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(comment = '',
+                      fig.align = 'center',
+                      eval = FALSE)
+```
+
+## 安装连接器
+
+```bash
+yum -y install mesa-libGL-devel mesa-libGLU-devel freeglut-devel
+```
+
+# 下载 `Qt` 软件包
+
+从网站[下载](http://download.qt.io/archive/qt/)得到需要的软件包，我这里选择 `Qt5.10.1`
+
+https://www.electronproton.com/solved-team-viewer-installation-on-cent-os-7/

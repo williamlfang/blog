@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>william.TODO</title>
+<style type="text/css">
+ * {
+  margin:0; padding:0;
+ }
+ span { display: inline-block; }         /* prevent unsupposed empty lines */
+ span[class|="tag"] { display: inline; } /* add proper wrapping for tags */
+ pre {
+  margin: 30px;
+  font-family: "Consolas", "Monaco", monospace;
+  font-size: 15px;
+  font-style: italic;
+  line-height: 20px;
+  white-space: pre-wrap;
+ }
+ .empty-line {
+  /* span, either empty or containing whitespaces/tabs */
+ }
+ body { background: rgba(45,45,45,1.0); color: rgba(211,208,200,1.0); font-weight: normal; font-style: normal; }
+.done { font-weight: normal; font-style: italic; color: rgba(116,115,105,1.0); }
+.tag { color: rgba(249,145,87,1.0); font-weight: bold; font-style: normal; }
+.note { color: rgba(81,81,81,1.0); font-weight: normal; font-style: normal; }
+.open { font-weight: normal; font-style: italic; color: rgba(211,208,200,1.0); }
+.bullet-done { color: rgba(153,204,153,1.0); font-weight: bold; font-style: normal; }
+.bullet-pending { color: rgba(102,153,204,1.0); font-weight: normal; font-style: normal; }
+.bullet-cancelled { color: rgba(242,119,122,1.0); font-weight: normal; font-style: normal; }
+.cancelled { color: rgba(116,115,105,1.0); font-weight: normal; font-style: italic; }
+.tag-done { color: rgba(211,208,200,0.31); font-weight: normal; font-style: normal; }
+.tag-cancelled { color: rgba(211,208,200,0.31); font-weight: normal; font-style: normal; }
+.header { color: rgba(249,145,87,1.0); background: rgba(0,0,0,0.06); font-weight: bold; font-style: normal; width: 100%; }
+.sep-archive { color: rgba(81,81,81,1.0); font-weight: normal; font-style: normal; }
+.sep { color: rgba(81,81,81,1.0); font-weight: normal; font-style: normal; }
+a { color: rgba(0,62,114,0.56); font-weight: bold; font-style: normal; }
+.tag-today { color: rgba(255,204,102,1.0); background: rgba(242,240,206,1.0); font-weight: bold; font-style: normal; }
+.tag-high { color: rgba(0,0,0,1.0); background: rgba(255,127,0,1.0); font-weight: bold; font-style: normal; }
+.tag-low { color: rgba(255,255,255,1.0); background: rgba(34,34,34,1.0); font-weight: bold; font-style: normal; }
+.tag-critical { color: rgba(0,0,0,1.0); background: rgba(255,0,0,1.0); font-weight: bold; font-style: normal; }
+</style>
+</head>
+<body>
+<pre>
+<span class="header">2019.09.23 ~ 2019.09.27:</span>
+<span class="header">    ChinaFutures:</span>
+<span class="open">        <span class="bullet-pending">☐</span> 新的 twap 算法交易 <span class="tag">@fl</span></span>
+<span class="open">        <span class="bullet-pending">☐</span> CTP-c++ CodeReview <span class="tag">@lzx @fl</span></span>
+<span class="empty-line"></span>
+<span class="header">    ChinaStocks:</span>
+<span class="done">        <span class="bullet-done">✔</span> 中泰服务器升级，需要更改连接 IP <span class="tag-done">@fl @done (2019-09-23 15:29)</span></span>
+<span class="open">        <span class="bullet-pending">☐</span> 聚宽数据的每日更新 <span class="tag">@lj</span></span>
+<span class="open">        <span class="bullet-pending">☐</span> 50ETF期权数据获取与入库</span>
+<span class="header">        中泰 XTP:</span>
+<span class="open">            <span class="bullet-pending">☐</span> 期权程序化交易接口 <span class="tag">@fl @pc</span></span>
+<span class="open">            <span class="bullet-pending">☐</span> python3k xtpGateway 的类封装 <span class="tag">@fl @lj</span></span>
+<span class="header">        华鑫奇点:</span>
+<span class="open">            <span class="bullet-pending">☐</span> 测试模拟账户的登录、下单等基本功能</span>
+<span class="open">            <span class="bullet-pending">☐</span> 封装 python 接口</span>
+<span class="open">            <span class="bullet-pending">☐</span> 开户，商讨合作细节</span>
+<span class="empty-line"></span>
+<span class="header">    DirtyWork:</span>
+<span class="done">        <span class="bullet-done">✔</span> 使用阿里云与本地服务器保持连接，</span>
+<span class="note">           用于检查是否断电断网，并发送邮件预警（1hour） @fl @done (2019-09-23 10:00)</span>
+<span class="open">        <span class="bullet-pending">☐</span> hicloudR 软件包发布 0.1.0 <span class="tag">@fl</span></span>
+<span class="empty-line"></span>
+<span class="empty-line"></span>
+<span class="header">2019.09.16 ~ 2019.09.20:</span>
+<span class="header">ChinaFutures:</span>
+<span class="header">    CTP·SimNow 完整日盘、夜盘交易测试 @lzx @fl:</span>
+<span class="done">        <span class="bullet-done">✔</span> twap 下单 <span class="tag-done">@done (19-09-18 17:23)</span></span>
+<span class="done">        <span class="bullet-done">✔</span> 涨跌停平仓单 <span class="tag-done">@done (19-09-18 17:23)</span></span>
+<span class="done">        <span class="bullet-done">✔</span> 账户成交异常监控 <span class="tag-done">@done (19-09-18 17:23)</span></span>
+<span class="header">    vnpy-python3k 系统升级 @lj @fl:</span>
+<span class="done">        <span class="bullet-done">✔</span> LinuxOS 使用 ztsec/python3.0 版本的 api <span class="tag-done">@done (19-09-17 20:11)</span></span>
+<span class="done">        <span class="bullet-done">✔</span> XTP 账户登录 <span class="tag-done">@done (19-09-17 20:11)</span></span>
+<span class="done">        <span class="bullet-done">✔</span> 基本下单指令 <span class="tag-done">@done (19-09-18 16:22)</span></span>
+<span class="open">        <span class="bullet-pending">☐</span> xtpGateway 类的封装与调用</span>
+<span class="header">    数据库维护 @fl @lhg:</span>
+<span class="done">        <span class="bullet-done">✔</span> HistoryData <span class="tag-done">@done (19-09-17 09:25)</span></span>
+<span class="done">        <span class="bullet-done">✔</span> MainContract 主力合约 <span class="tag-done">@done (19-09-19 10:21)</span></span>
+<span class="done">        <span class="bullet-done">✔</span> 数据入库的日常监控:每天 08:30 发送监控邮件 <span class="tag-done">@fl @done (19-09-18 11:33)</span></span>
+<span class="empty-line"></span>
+<span class="header">    ChinaStocks:</span>
+<span class="done">        <span class="bullet-done">✔</span> hytz1 交易检查 <span class="tag-done">@done (19-09-18 11:38)</span></span>
+<span class="done">        <span class="bullet-done">✔</span> Index_Futures 合并到稳定版 <span class="tag-done">@fl @done (19-09-18 15:10)</span></span>
+<span class="done">        <span class="bullet-done">✔</span> TickData 的每日同步检查与数据处理 <span class="tag-done">@done (19-09-18 11:38)</span></span>
+<span class="header">        JoinQuant 聚宽数据库的完全同步功能实现  @lj:</span>
+<span class="done">            <span class="bullet-done">✔</span> 获取当天所有交易标的的合约列表：get_all_securities <span class="tag-done">@done (19-09-19 10:21)</span></span>
+<span class="done">            <span class="bullet-done">✔</span> 获取指数成分股 <span class="tag-done">@done (19-09-19 10:21)</span></span>
+<span class="done">            <span class="bullet-done">✔</span> 获取融资融券标的列表及具体的信息 <span class="tag-done">@done (19-09-19 10:21)</span></span>
+<span class="done">            <span class="bullet-done">✔</span> 获取限售解禁列表 <span class="tag-done">@done (19-09-19 10:21)</span></span>
+<span class="done">            <span class="bullet-done">✔</span> 指数成分权重 <span class="tag-done">@done (19-09-19 10:21)</span></span>
+<span class="done">            <span class="bullet-done">✔</span> 获取行业概念成分 <span class="tag-done">@done (19-09-19 10:21)</span></span>
+<span class="done">            <span class="bullet-done">✔</span> 获取各个指数数据：行情＋估值 <span class="tag-done">@done (19-09-19 10:21)</span></span>
+<span class="done">            <span class="bullet-done">✔</span> 获取资金流、龙虎榜、 <span class="tag-done">@done (19-09-19 10:21)</span></span>
+<span class="done">            <span class="bullet-done">✔</span> 沪港通、深港通、港股通数据：AH对比、成交额度、持股信息等 <span class="tag-done">@done (19-09-19 10:21)</span></span>
+<span class="done">            <span class="bullet-done">✔</span> 获取当日有更新的财务数据 <span class="tag-done">@done (19-09-19 10:21)</span></span>
+<span class="done">            <span class="bullet-done">✔</span> 获取期权数据（商品期权、50ETF期权） <span class="tag-done">@done (19-09-19 10:21)</span></span>
+<span class="done">            <span class="bullet-done">✔</span> 聚宽因子库数据更新 <span class="tag-done">@done (19-09-19 10:21)</span></span>
+<span class="empty-line"></span>
+<span class="header">    FundManagement:</span>
+<span class="done">        <span class="bullet-done">✔</span> 基金净值报告的封装 <span class="tag-done">@fl @lzx @done (19-09-17 10:45)</span></span>
+<span class="open">        <span class="bullet-pending">☐</span> 对接华鑫证券技术，确定是否可用 vnpy-tora 接口 <span class="tag">@fl @lj</span></span>
+<span class="cancelled">        <span class="bullet-cancelled">✘</span> 写博客介绍如何配置 zsh-tmux-autojump 实现强大的终端功能 <span class="tag-cancelled">@cancelled (19-09-18 11:38)</span></span>
+<span class="cancelled">        <span class="bullet-cancelled">✘</span> 写博客介绍如何使用 Sublime Text 实现的 IDE 配置 <span class="tag-cancelled">@cancelled (19-09-17 09:36)</span></span>
+<span class="done">        <span class="bullet-done">✔</span> 开发 hicloudR 的 R 软件包，使用 Rcpp 封装常用函数 <span class="tag-done">@fl @pc @done (19-09-18 16:22)</span></span>
+<span class="done">        <span class="bullet-done">✔</span> 与风控委员会确定风控流程 <span class="tag-done">@fl @lny @done (19-09-18 11:38)</span></span>
+<span class="empty-line"></span>
+<span class="header">     HFT:</span>
+<span class="done">        <span class="bullet-done">✔</span> 获取期货、股票 Lv2 行情数据 <span class="tag-done">@fl @done (19-09-18 11:38)</span></span>
+<span class="cancelled">        <span class="bullet-cancelled">✘</span> 学习 <span class="tag-cancelled">@linyi @cancelled (19-09-19 10:21)</span></span>
+</pre>
+</body></html>

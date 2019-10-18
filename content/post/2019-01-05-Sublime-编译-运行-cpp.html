@@ -1,0 +1,110 @@
+---
+title: "Sublime 编译 运行 c/c++ 文件"
+author: William
+date: 2019-01-05
+lastmod: 2019-01-05
+categories: [Programming]
+tags: [Sublime,C++,编译]
+description: 在 Sublime Text 3 编辑器里实现对 C/C++ 文件的编译与运行。
+draft: false
+ToC: true
+---
+
+
+
+<div class="section level1">
+<h1>干中学</h1>
+<p>最近在学习一个 <code>C++</code> 项目，需要重新把以前的课本拿起来。学习的最好方法，尤其是编程技能的学习，就是对照着教材，边学边练，即 「Learning by doing」。这是我多年以来领悟到的最好经验。</p>
+<p>对于 <code>c/C++</code> 这类<strong>编译语言</strong>，需要在编写完源文件(source file)后，使用编译器进行编译，生成相应的可执行文件(executable file)。因此，一个既能提供高效文本编辑环境、同时又能提供快速编译功能的「软件」，对于实现项目开发是极为关键的。</p>
+</div>
+<div id="sublime" class="section level1">
+<h1><code>Sublime</code>编辑神器</h1>
+<p>基于使用习惯，我一般都是在 <code>Sublime</code> 进行文本的编辑，然后通过使用支持相关语言处理的配套插件，进行程序开发。这么多年来，<code>Sublime</code> 已经发展成了我得心应手的编辑器与<strong>开发环境</strong>。我之前有介绍过<a href="https://williamlfang.github.io/post/2017-10-13-我的-sublime-text-设置">如何配置</a>，今天这篇文章则介绍如何配置 <code>C/C++</code> 开发环境。</p>
+<div class="section level2">
+<h2>新建配置文件</h2>
+<p>在 “Tools -&gt; Build System”，点击 “New Build System”，会自动弹出一个文件，我们在这里写入相应的配置方案：</p>
+<pre class="bash"><code>{
+    &quot;cmd&quot;: [&quot;g++ -ggdb3 -std=c++11 -Wall ${file} -o ${file_base_name}&quot;],
+    &quot;file_regex&quot;: &quot;^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$&quot;,
+    &quot;working_dir&quot;: &quot;${file_path}&quot;,
+    &quot;selector&quot;: &quot;source.c, source.c++&quot;,
+    &quot;shell&quot;: true,
+    &quot;variants&quot;:
+    [
+        {
+            &quot;name&quot;: &quot;Run&quot;,
+            &quot;cmd&quot;: [&quot;${file_path}/${file_base_name}&quot;]
+        },
+        // ,
+        // {
+        //     &quot;name&quot;: &quot;RunInShell&quot;,
+        //     &quot;cmd&quot;: [&quot;gnome-terminal -x bash -c &#39;${file_path}/${file_base_name};read&#39; &quot;]
+        // }
+        {
+         &quot;name&quot;: &quot;Build_Project&quot;,
+         &quot;cmd&quot;: [&quot;g++ -ggdb3 -std=c++11 -Wall ${file_path}/*.cpp -o ${file_base_name}&quot;]
+        }
+    ]
+}
+</code></pre>
+<p>命令后保存到默认的文件夹<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>。在这里：</p>
+<ul>
+<li>在 <code>cmd</code> 命令里设置 <code>gcc/g++</code> 需要指定的参数，如 <code>-ggdb3</code>、<code>-std=c++11</code>、<code>-Wall</code> 等，可以方便的我们需要的配置集合到一个命令里</li>
+<li>指定运行 <code>shell</code></li>
+<li>同时，我们还指定其他的可选 <code>variants</code>，即这里使用到的 <code>Run</code> 模式，可以在源文件编译结束后，执行程序，并把结果直接输出到 <code>Sublime</code> 的 <code>console</code> 界面。</li>
+<li>当然，如何需要调试带有<strong>输入(cin)</strong>的程序，我们也可以再添加 <code>RunInShell</code> 模式。</li>
+</ul>
+<p>同样，我们也可以相应的配置 <code>c11</code> 运行环境</p>
+<pre class="bash"><code>{
+    &quot;cmd&quot;: [&quot;gcc -ggdb3 -std=c11 -Wall ${file} -o ${file_base_name}&quot;],
+    // 如果是工程项目
+    // &quot;cmd&quot;: [&quot;gcc -ggdb3 -std=c11 -Wall ${file_path}/*.c -o ${file_base_name}&quot;],
+    &quot;file_regex&quot;: &quot;^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$&quot;,
+    &quot;working_dir&quot;: &quot;${file_path}&quot;,
+    &quot;selector&quot;: &quot;source.c&quot;,
+    &quot;shell&quot;: true,
+    &quot;variants&quot;:
+    [
+        {
+            &quot;name&quot;: &quot;Run&quot;,
+            &quot;cmd&quot;: [&quot;${file_path}/${file_base_name}&quot;]
+        },
+        // ,
+        // {
+        //     &quot;name&quot;: &quot;RunInShell&quot;,
+        //     &quot;cmd&quot;: [&quot;gnome-terminal -x bash -c &#39;${file_path}/${file_base_name};read&#39; &quot;]
+        // }，
+        {
+         &quot;name&quot;: &quot;Build_Project&quot;,
+         &quot;cmd&quot;: [&quot;gcc -ggdb3 -std=c11 -Wall ${file_path}/*.c -o ${file_base_name}&quot;]
+        }
+    ]
+}</code></pre>
+</div>
+<div class="section level2">
+<h2>调试</h2>
+<p>我们可以在编辑一个 <code>C/C++</code> 文件后，直接调用 <code>Ctrl+B</code> 来编译文件，使用 <code>Ctrl+Shift+B</code> 选择指定的运行方式。</p>
+<div class="figure">
+<img src="/images/2019-01-05-Sublime-编译-运行-cpp/Selection_027.png" alt="build system" />
+<p class="caption">build system</p>
+</div>
+</div>
+<div class="section level2">
+<h2>设置快捷键</h2>
+<p>在 <code>Sublime</code> 里，我们可以十分方便的根据个人偏好，设置我们常用的一些快捷键。比如，运行一个已经编译好的 <code>C/C++</code> 可执行文件，我们就可以使用 <code>F1</code> 实现直接运行该文件。</p>
+<pre class="bash"><code>{&quot;keys&quot;: [&quot;f1&quot;], &quot;command&quot;: &quot;build&quot;, &quot;args&quot;: {&quot;variant&quot;: &quot;Run&quot;}}</code></pre>
+<p>其中，参数 <code>Run</code> 就是我们在 <code>Build System</code> 里面设置的 ‘variant’。</p>
+<p>终结一下，我现在处理 <code>C/C++</code> 项目的基本流程：</p>
+<ul>
+<li>编辑一个源文件<code>.cpp</code></li>
+<li>使用 <code>Ctrl+B</code> 编译该文件</li>
+<li>使用 <code>F1</code> 运行文件，直接把相应的结果显示出来。</li>
+</ul>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>一般在<code>~/.config/sublime-text-3/Packages/User</code><a href="#fnref1">↩</a></p></li>
+</ol>
+</div>

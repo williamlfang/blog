@@ -1,0 +1,298 @@
+---
+title: "中国期货交易日历"
+author: William
+date: 2017-10-10
+lastmod: 2017-10-13
+categories: [Trading]
+tags: [Futures,Calendar,R]
+description: 利用`R`编制中国期货市场交易日历表。
+draft: false
+ToC: true
+---
+
+
+
+<div class="section level1">
+<h1>期货交易日</h1>
+<p>利用<code>R</code>语言对日期的处理功能，我们可以借此来编制中国期货市场的交易日历表，用于策略回测（Backtesting）、自动化执行行情订阅（mdApi）、进行程序化交易（tdAip）等。</p>
+<div class="section level2">
+<h2>要点</h2>
+<p>在处理中国期货市场交易日期时，主要有以下几个要点需要特别注意：</p>
+<ul>
+<li>在当年年末，期货交易所会（提前）公布来年的所有节假日安排，这个可以通过查询<a href="http://www.shfe.com.cn/news/">上期所公告网站</a></li>
+<li>因为我们的历史数据最早可以追踪到<code>2010</code>年，所以这里的第一个起始年度为<code>2010</code>。更加具体地，第一个真正开始接收数据的日期是 <code>2010-04-16</code></li>
+<li>如果未来第二日开始放假，则当天的夜盘不交易。这个通过判断<code>days</code>与<code>nights</code>日期相差的时间超过<strong>3天</strong>来处理，因为正常的周五至下周一的相差刚好是<strong>3天</strong>，而节假日则破坏了这个规律</li>
+<li><code>2015</code>年的中秋节放假比较特别，只有放假两天，当时交易所规定了<code>2015-09-25</code>当天的夜盘不交易，所以这个需要在<code>nights</code>里面排除。请注意，这是一个大坑。</li>
+</ul>
+</div>
+<div class="section level2">
+<h2>代码</h2>
+<pre class="r"><code>## =============================================================================
+## myChinaFuturesCalendar.R
+##
+## 生成中国期货交易日
+## 1. days  :日盘时间
+## 2. nights:夜盘时间
+##
+## =============================================================================
+rm(list = ls())
+setwd(&#39;/home/fl/myData&#39;)
+
+## =============================================================================
+## 需要安装的 package: bizdays
+pkgs &lt;- c(&quot;data.table&quot;,&#39;magrittr&#39;)
+
+if (length(pkgs[!pkgs %in% installed.packages()]) != 0) {
+  sapply(pkgs[!pkgs %in% installed.packages()], install.packages)
+}
+
+sapply(pkgs, require, character.only = TRUE)
+
+## -----------------------------------------------------------------------------
+## 这里需要做选择
+## 对于周末的时间，日盘和夜盘的间隔不应该超过 3 天
+## 但是，如果是节假日，有可能超过 3 天，那么夜盘就是 NA 了。
+## 这个应该很好理解。
+setNights &lt;- function(x) {
+    for (i in 1:nrow(x)) {
+        if (is.na(x$nights[i])) next
+
+        if( (x$days[i] - x$nights[i]) &gt; 3){
+          #-- 如果有休假，则日盘与夜盘差超过 3 天
+          x$nights[i] &lt;- NA
+        }
+    }
+    x[, &quot;:=&quot;(
+        nights = gsub(&#39;-&#39;,&#39;&#39;, nights),
+        days   = gsub(&#39;-&#39;,&#39;&#39;, days))]
+    return(x)
+}
+## =============================================================================
+
+## =============================================================================
+## 查询交易所对节假日的安排
+## http://www.shfe.com.cn/news/
+## =============================================================================
+
+
+## =============================================================================
+## http://www.shfe.com.cn/news/notice/911232224.html
+yearID &lt;- 2010
+daysInYear &lt;- as.numeric(as.Date(paste0(yearID, &#39;-12-31&#39;)) -
+                         as.Date(paste0(yearID, &#39;-01-01&#39;)))
+days &lt;- as.Date(0:daysInYear, origin = paste0(yearID, &#39;-01-01&#39;)) %&gt;%
+        .[-which(weekdays(.) %in% c(&quot;Saturday&quot;, &quot;Sunday&quot;))] %&gt;%
+        .[-c(which(. &gt;= &quot;2010-01-01&quot; &amp; . &lt;= &quot;2010-01-03&quot;),
+             which(. &gt;= &quot;2010-02-13&quot; &amp; . &lt;= &quot;2010-02-19&quot;),
+             which(. &gt;= &quot;2010-04-03&quot; &amp; . &lt;= &quot;2010-04-05&quot;),
+             which(. &gt;= &quot;2010-05-01&quot; &amp; . &lt;= &quot;2010-05-03&quot;),
+             which(. &gt;= &quot;2010-06-14&quot; &amp; . &lt;= &quot;2010-06-16&quot;),
+             which(. &gt;= &quot;2010-09-22&quot; &amp; . &lt;= &quot;2010-09-24&quot;),
+             which(. &gt;= &quot;2010-10-01&quot; &amp; . &lt;= &quot;2010-10-07&quot;)
+          )] %&gt;%
+          .[which(. &gt;= &#39;2010-04-16&#39;)]
+nights &lt;- NA
+
+calendar2010 &lt;- data.table(nights, days) %&gt;% setNights()
+## =============================================================================
+
+
+## =============================================================================
+## http://www.shfe.com.cn/news/notice/11272678.html
+yearID &lt;- 2011
+daysInYear &lt;- as.numeric(as.Date(paste0(yearID, &#39;-12-31&#39;)) -
+                         as.Date(paste0(yearID, &#39;-01-01&#39;)))
+days &lt;- as.Date(0:daysInYear, origin = paste0(yearID, &#39;-01-01&#39;)) %&gt;%
+        .[-which(weekdays(.) %in% c(&quot;Saturday&quot;, &quot;Sunday&quot;))] %&gt;%
+        .[-c(which(. &gt;= &quot;2011-01-01&quot; &amp; . &lt;= &quot;2011-01-03&quot;),
+             which(. &gt;= &quot;2011-02-02&quot; &amp; . &lt;= &quot;2011-02-08&quot;),
+             which(. &gt;= &quot;2011-04-03&quot; &amp; . &lt;= &quot;2011-04-05&quot;),
+             which(. &gt;= &quot;2011-04-30&quot; &amp; . &lt;= &quot;2011-05-02&quot;),
+             which(. &gt;= &quot;2011-06-04&quot; &amp; . &lt;= &quot;2011-06-06&quot;),
+             which(. &gt;= &quot;2011-09-10&quot; &amp; . &lt;= &quot;2011-09-12&quot;),
+             which(. &gt;= &quot;2011-10-01&quot; &amp; . &lt;= &quot;2011-10-07&quot;)
+          )]
+nights &lt;- NA
+
+calendar2011 &lt;- data.table(nights, days) %&gt;% setNights()
+## =============================================================================
+
+
+## =============================================================================
+## http://www.shfe.com.cn/news/notice/111211125.html
+yearID &lt;- 2012
+daysInYear &lt;- as.numeric(as.Date(paste0(yearID, &#39;-12-31&#39;)) -
+                         as.Date(paste0(yearID, &#39;-01-01&#39;)))
+days &lt;- as.Date(0:daysInYear, origin = paste0(yearID, &#39;-01-01&#39;)) %&gt;%
+        .[-which(weekdays(.) %in% c(&quot;Saturday&quot;, &quot;Sunday&quot;))] %&gt;%
+        .[-c(which(. &gt;= &quot;2012-01-01&quot; &amp; . &lt;= &quot;2012-01-03&quot;),
+             which(. &gt;= &quot;2012-01-22&quot; &amp; . &lt;= &quot;2012-01-28&quot;),
+             which(. &gt;= &quot;2012-04-02&quot; &amp; . &lt;= &quot;2012-04-04&quot;),
+             which(. &gt;= &quot;2012-04-29&quot; &amp; . &lt;= &quot;2012-05-01&quot;),
+             which(. &gt;= &quot;2012-06-22&quot; &amp; . &lt;= &quot;2012-06-24&quot;),
+             which(. &gt;= &quot;2012-09-30&quot; &amp; . &lt;= &quot;2012-10-07&quot;)
+          )]
+nights &lt;- NA
+
+calendar2012 &lt;- data.table(nights, days) %&gt;% setNights()
+## =============================================================================
+
+
+## =============================================================================
+## http://www.shfe.com.cn/news/notice/211216642.html
+yearID &lt;- 2013
+daysInYear &lt;- as.numeric(as.Date(paste0(yearID, &#39;-12-31&#39;)) -
+                         as.Date(paste0(yearID, &#39;-01-01&#39;)))
+days &lt;- as.Date(0:daysInYear, origin = paste0(yearID, &#39;-01-01&#39;)) %&gt;%
+        .[-which(weekdays(.) %in% c(&quot;Saturday&quot;, &quot;Sunday&quot;))] %&gt;%
+        .[-c(which(. &gt;= &quot;2013-01-01&quot; &amp; . &lt;= &quot;2013-01-03&quot;),
+             which(. &gt;= &quot;2013-01-01&quot; &amp; . &lt;= &quot;2013-01-03&quot;),
+             which(. &gt;= &quot;2013-02-09&quot; &amp; . &lt;= &quot;2013-02-15&quot;),
+             which(. &gt;= &quot;2013-04-04&quot; &amp; . &lt;= &quot;2013-04-06&quot;),
+             which(. &gt;= &quot;2013-04-29&quot; &amp; . &lt;= &quot;2013-05-01&quot;),
+             which(. &gt;= &quot;2013-06-10&quot; &amp; . &lt;= &quot;2013-06-12&quot;),
+             which(. &gt;= &quot;2013-09-19&quot; &amp; . &lt;= &quot;2013-09-21&quot;),
+             which(. &gt;= &quot;2013-10-01&quot; &amp; . &lt;= &quot;2013-10-07&quot;)
+          )]
+nights &lt;- c(NA, days[-length(days)]) %&gt;% as.Date(., origin = &quot;1970-01-01&quot;)
+nights[which(nights &lt; &quot;2013-07-05&quot;)] &lt;- NA
+
+calendar2013 &lt;- data.table(nights, days) %&gt;% setNights()
+## =============================================================================
+
+
+## =============================================================================
+## http://www.shfe.com.cn/news/notice/211216642.html
+yearID &lt;- 2014
+daysInYear &lt;- as.numeric(as.Date(paste0(yearID, &#39;-12-31&#39;)) -
+                         as.Date(paste0(yearID, &#39;-01-01&#39;)))
+days &lt;- as.Date(0:daysInYear, origin = paste0(yearID, &#39;-01-01&#39;)) %&gt;%
+        .[-which(weekdays(.) %in% c(&quot;Saturday&quot;, &quot;Sunday&quot;))] %&gt;%
+        .[-c(which(. &gt;= &quot;2014-01-01&quot; &amp; . &lt;= &quot;2014-01-01&quot;),
+             which(. &gt;= &quot;2014-01-31&quot; &amp; . &lt;= &quot;2014-02-06&quot;),
+             which(. &gt;= &quot;2014-04-05&quot; &amp; . &lt;= &quot;2014-04-07&quot;),
+             which(. &gt;= &quot;2014-05-01&quot; &amp; . &lt;= &quot;2014-05-03&quot;),
+             which(. &gt;= &quot;2014-05-31&quot; &amp; . &lt;= &quot;2014-06-02&quot;),
+             which(. &gt;= &quot;2014-09-06&quot; &amp; . &lt;= &quot;2014-09-08&quot;),
+             which(. &gt;= &quot;2014-10-01&quot; &amp; . &lt;= &quot;2014-10-07&quot;)
+          )]
+nights &lt;- c(NA, days[-length(days)]) %&gt;% as.Date(., origin = &quot;1970-01-01&quot;)
+
+calendar2014 &lt;- data.table(nights, days) %&gt;% setNights()
+## =============================================================================
+
+
+## =============================================================================
+## http://www.shfe.com.cn/news/notice/211216642.html
+yearID &lt;- 2014
+daysInYear &lt;- as.numeric(as.Date(paste0(yearID, &#39;-12-31&#39;)) -
+                         as.Date(paste0(yearID, &#39;-01-01&#39;)))
+days &lt;- as.Date(0:daysInYear, origin = paste0(yearID, &#39;-01-01&#39;)) %&gt;%
+        .[-which(weekdays(.) %in% c(&quot;Saturday&quot;, &quot;Sunday&quot;))] %&gt;%
+        .[-c(which(. &gt;= &quot;2014-01-01&quot; &amp; . &lt;= &quot;2014-01-01&quot;),
+             which(. &gt;= &quot;2014-01-31&quot; &amp; . &lt;= &quot;2014-02-06&quot;),
+             which(. &gt;= &quot;2014-04-05&quot; &amp; . &lt;= &quot;2014-04-07&quot;),
+             which(. &gt;= &quot;2014-05-01&quot; &amp; . &lt;= &quot;2014-05-03&quot;),
+             which(. &gt;= &quot;2014-05-31&quot; &amp; . &lt;= &quot;2014-06-02&quot;),
+             which(. &gt;= &quot;2014-09-06&quot; &amp; . &lt;= &quot;2014-09-08&quot;),
+             which(. &gt;= &quot;2014-10-01&quot; &amp; . &lt;= &quot;2014-10-07&quot;)
+          )]
+nights &lt;- c(NA, days[-length(days)]) %&gt;% as.Date(., origin = &quot;1970-01-01&quot;)
+
+calendar2014 &lt;- data.table(nights, days) %&gt;% setNights()
+## =============================================================================
+
+
+## =============================================================================
+## http://www.shfe.com.cn/news/notice/911321768.html
+yearID &lt;- 2015
+daysInYear &lt;- as.numeric(as.Date(paste0(yearID, &#39;-12-31&#39;)) -
+                         as.Date(paste0(yearID, &#39;-01-01&#39;)))
+days &lt;- as.Date(0:daysInYear, origin = paste0(yearID, &#39;-01-01&#39;)) %&gt;%
+        .[-which(weekdays(.) %in% c(&quot;Saturday&quot;, &quot;Sunday&quot;))] %&gt;%
+        .[-c(which(. &gt;= &quot;2015-01-01&quot; &amp; . &lt;= &quot;2015-01-03&quot;),
+             which(. &gt;= &quot;2015-02-18&quot; &amp; . &lt;= &quot;2015-02-24&quot;),
+             which(. &gt;= &quot;2015-04-05&quot; &amp; . &lt;= &quot;2015-04-06&quot;),
+             which(. &gt;= &quot;2015-05-01&quot; &amp; . &lt;= &quot;2015-05-01&quot;),
+             which(. &gt;= &quot;2015-06-20&quot; &amp; . &lt;= &quot;2015-06-22&quot;),
+             which(. &gt;= &quot;2015-09-03&quot; &amp; . &lt;= &quot;2015-09-05&quot;),
+             which(days&gt;=&quot;2015-09-27&quot;&amp;days&lt;=&quot;2015-09-27&quot;),
+             which(. &gt;= &quot;2015-10-01&quot; &amp; . &lt;= &quot;2015-10-07&quot;)
+          )]
+nights &lt;- c(NA, days[-length(days)]) %&gt;% as.Date(., origin = &quot;1970-01-01&quot;)
+nights[which(nights == &#39;2015-09-25&#39;)] &lt;- NA
+
+calendar2015 &lt;- data.table(nights, days) %&gt;% setNights()
+## =============================================================================
+
+
+## =============================================================================
+## http://www.shfe.com.cn/news/notice/911323994.html
+yearID &lt;- 2016
+daysInYear &lt;- as.numeric(as.Date(paste0(yearID, &#39;-12-31&#39;)) -
+                         as.Date(paste0(yearID, &#39;-01-01&#39;)))
+days &lt;- as.Date(0:daysInYear, origin = paste0(yearID, &#39;-01-01&#39;)) %&gt;%
+        .[-which(weekdays(.) %in% c(&quot;Saturday&quot;, &quot;Sunday&quot;))] %&gt;%
+        .[-c(which(. &gt;= &quot;2016-01-01&quot; &amp; . &lt;= &quot;2016-01-03&quot;),
+             which(. &gt;= &quot;2016-02-07&quot; &amp; . &lt;= &quot;2016-02-13&quot;),
+             which(. &gt;= &quot;2016-04-02&quot; &amp; . &lt;= &quot;2016-04-04&quot;),
+             which(. &gt;= &quot;2016-04-30&quot; &amp; . &lt;= &quot;2016-05-02&quot;),
+             which(. &gt;= &quot;2016-06-09&quot; &amp; . &lt;= &quot;2016-06-11&quot;),
+             which(. &gt;= &quot;2016-09-15&quot; &amp; . &lt;= &quot;2016-09-17&quot;),
+             which(. &gt;= &quot;2016-10-01&quot; &amp; . &lt;= &quot;2016-10-07&quot;)
+          )]
+nights &lt;- c(NA, days[-length(days)]) %&gt;% as.Date(., origin = &quot;1970-01-01&quot;)
+
+calendar2016 &lt;- data.table(nights, days) %&gt;% setNights()
+## =============================================================================
+
+
+## =============================================================================
+## http://www.shfe.com.cn/news/notice/911326468.html
+yearID &lt;- 2017
+daysInYear &lt;- as.numeric(as.Date(paste0(yearID, &#39;-12-31&#39;)) -
+                         as.Date(paste0(yearID, &#39;-01-01&#39;)))
+days &lt;- as.Date(0:daysInYear, origin = paste0(yearID, &#39;-01-01&#39;)) %&gt;%
+        .[-which(weekdays(.) %in% c(&quot;Saturday&quot;, &quot;Sunday&quot;))] %&gt;%
+        .[-c(which(. &gt;= &quot;2017-01-01&quot; &amp; . &lt;= &quot;2017-01-02&quot;),
+             which(. &gt;= &quot;2017-01-27&quot; &amp; . &lt;= &quot;2017-02-02&quot;),
+             which(. &gt;= &quot;2017-04-02&quot; &amp; . &lt;= &quot;2017-04-04&quot;),
+             which(. &gt;= &quot;2017-04-29&quot; &amp; . &lt;= &quot;2017-05-01&quot;),
+             which(. &gt;= &quot;2017-05-28&quot; &amp; . &lt;= &quot;2017-05-30&quot;),
+             which(. &gt;= &quot;2017-10-01&quot; &amp; . &lt;= &quot;2017-10-08&quot;),
+             which(. == &quot;2017-12-31&quot;)
+          )]
+nights &lt;- c(NA, days[-length(days)]) %&gt;% as.Date(., origin = &quot;1970-01-01&quot;)
+
+calendar2017 &lt;- data.table(nights, days) %&gt;% setNights()
+## =============================================================================
+
+calendar &lt;- rbind(calendar2010, calendar2011, calendar2012, calendar2013,
+                  calendar2014, calendar2015, calendar2016, calendar2017)
+fwrite(calendar, &#39;./data/ChinaFuturesCalendar/ChinaFuturesCalendar.csv&#39;)
+
+## =============================================================================
+## 录入 MySQL 数据库
+library(RMySQL)
+mysql &lt;-   dbConnect(MySQL(),
+                     dbname   = &#39;dev&#39;,
+                     host     = &#39;192.168.1.166&#39;,
+                     port     = 3306,
+                     user     = &#39;fl&#39;,
+                     password = &#39;******&#39;)
+dbSendQuery(mysql, &quot;
+            CREATE TABLE IF NOT EXISTS dev.ChinaFuturesCalendar(
+              nights Date,
+              days Date NOT NULL
+            )
+            &quot;)
+dbSendQuery(mysql,&quot;truncate table ChinaFuturesCalendar&quot;)
+dbWriteTable(mysql, &quot;ChinaFuturesCalendar&quot;,
+             calendar, row.names=FALSE, append=TRUE)
+## =============================================================================</code></pre>
+</div>
+</div>
+<div class="section level1">
+<h1>数据下载</h1>
+<p>从<code>2010</code>年至<code>2017</code>年的交易日期已经存放在我的<code>github</code>网站，<a href="https://github.com/williamlfang/myData/blob/master/data/ChinaFuturesCalendar/ChinaFuturesCalendar.csv">点击查看</a>。</p>
+</div>

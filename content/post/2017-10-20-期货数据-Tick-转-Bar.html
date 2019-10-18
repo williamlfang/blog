@@ -1,0 +1,166 @@
+---
+title: "期货数据：Tick 转 Bar"
+author: William
+date: 2017-10-20
+lastmod: 2017-10-20
+categories: [Data]
+tags: [Futures,期货,数据,R]
+description: 介绍如何把 `Tick Data` 转化为 `Bar Data`。
+draft: false
+ToC: true
+---
+
+
+
+<p>继续 <strong>期货数据</strong> 系列。上一期我们已经<a href="https://williamlfang.github.io/post/2017-10-19-%E6%9C%9F%E8%B4%A7%E6%95%B0%E6%8D%AE-r%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6/">从数据文件读取</a>相关的数据，今天来介绍如何把 <code>Tick Data</code> 转化为 <code>Bar Data</code>。</p>
+<ul>
+<li>通过清洗数据，获得真实、可靠、符合逻辑的<a href="https://williamlfang.github.io/post/2017-10-18-%E6%9C%9F%E8%B4%A7%E6%95%B0%E6%8D%AE%E6%95%B0%E6%8D%AE%E6%B8%85%E7%90%86%E8%A6%81%E7%82%B9/">干净数据</a></li>
+<li>通过分笔数据来计算汇总日间（daily）的<code>OHLC</code>、<code>Volume</code>、<code>Turnover</code>、<code>OI</code>、<code>SettlementPrice</code></li>
+<li>通过计算分笔数据的 <code>Delta</code> 来汇总分钟之内的 <code>OHLC</code>、<code>Volume</code>、<code>Turnover</code></li>
+<li>对于每一笔交易的数据，我们要去其是<strong>真实成交的记录</strong>，因此需要提取的是 <span class="math inline">\(DeltaX \neq 0\)</span> 的数据行</li>
+<li><p>由于需要计算的分钟数据比较大，函数里面运用到了并行计算，默认开启 <code>parallel</code>:</p>
+<ul>
+<li><p>我们采用的是 <code>CentOS</code> 服务器，默认开始的模式是 <code>FORK</code></p>
+<pre class="r"><code>cl &lt;- makeCluster(no.cores, type=&quot;FORK&quot;)</code></pre></li>
+<li><p>如果在 <code>Windows</code> 操作系统，则需要开启 <code>PSOCK</code> 模式</p></li>
+</ul></li>
+</ul>
+<div id="daily" class="section level1">
+<h1>Daily</h1>
+<div class="section level2">
+<h2>文件</h2>
+<p>文件在 <code>/Rconfig/dt2DailyBar.R</code></p>
+</div>
+<div class="section level2">
+<h2>代码</h2>
+<pre class="r"><code>##! dt2DailyBar.R
+##
+## 功能：
+## 用于把 tick data 的数据转化为 daily 的数据，
+## 1. dt2DailyBar(dt,&quot;allday&quot;)：全天的数据
+## 2. dt2DailyBar(dt,&quot;day&quot;)：日盘的数据
+## 3. dt2DailyBar(dt,&quot;night&quot;)：夜盘的数据
+##############################################################################
+##----------------------------------------------------------------------------
+## 全天
+## dt_1d    &lt;- dt2DailyBar(dt,&quot;allday&quot;)
+## 日盘
+## dt_day   &lt;- dt2DailyBar(dt,&quot;day&quot;)
+## 夜盘
+## dt_night &lt;- dt2DailyBar(dt,&quot;night&quot;)
+dt2DailyBar &lt;- function(x, daySector){
+  #-----------------------------------------------------------------------------
+  if(daySector == &quot;allday&quot;){
+    temp &lt;- x
+  }else{
+    if(daySector == &quot;day&quot;){##-------------- dn == &quot;night&quot;
+      temp &lt;- x[UpdateTime %between% c(&quot;08:30:00&quot;, &quot;15:30:00&quot;)]
+    }else{##-------------- dn == &quot;night&quot;
+      temp &lt;- x[!(UpdateTime %between% c(&quot;08:30:00&quot;, &quot;15:30:00&quot;))]
+    }
+  }
+  #-----------------------------------------------------------------------------
+  #-----------------------------------------------------------------------------
+  tempRes &lt;- temp %&gt;%
+    .[,.SD[,.(
+      OpenPrice = ifelse(nrow(.SD[DeltaVolume != 0]) != 0,
+                .SD[DeltaVolume != 0][1, ifelse(is.na(OpenPrice) | OpenPrice == 0 | daySector == &#39;day&#39;,
+                  LastPrice, OpenPrice)],
+                .SD[Volume != 0][1, ifelse(is.na(OpenPrice) | OpenPrice == 0 | daySector == &#39;day&#39;,
+                  LastPrice, OpenPrice)]),
+      HighPrice = ifelse(all(is.na(.SD$HighestPrice)) | sum(.SD$HighestPrice, na.rm=TRUE) == 0,
+                         max(.SD[Volume != 0]$LastPrice, na.rm=TRUE),
+                         max(.SD[Volume != 0]$HighestPrice, na.rm=TRUE)),
+      LowPrice  = ifelse(all(is.na(.SD$LowestPrice)) | sum(.SD$LowestPrice, na.rm=TRUE) == 0,
+                         min(.SD[Volume != 0][LastPrice !=0]$LastPrice, na.rm=TRUE),
+                         min(.SD[Volume != 0]$LowestPrice, na.rm=TRUE)),
+      ## CZCE 郑商所的 ClosePrice 是有问题的，需要用到 LastPrice
+      ClosePrice = ifelse(all(is.na(.SD$ClosePrice)) | sum(.SD$ClosePrice, na.rm=TRUE) == 0 |
+                            .SD[,nchar(unique(gsub(&#39;[a-zA-Z]&#39;,&#39;&#39;,InstrumentID))) == 3],
+                          .SD[Volume != 0][.N,LastPrice],
+                          .SD[Volume != 0][.N,ClosePrice]),
+      #-----------------------------------------------------------------------------
+      Volume            = sum(.SD$DeltaVolume, na.rm=TRUE),
+      Turnover          = sum(.SD$DeltaTurnover, na.rm=TRUE),
+      #                 -----------------------------------------------------------------------------
+      OpenOpenInterest  = .SD[1,OpenInterest],
+      HighOpenInterest  = .SD[,max(OpenInterest, na.rm=TRUE)],
+      LowOpenInterest   = .SD[,min(OpenInterest, na.rm=TRUE)],
+      CloseOpenInterest = .SD[.N,OpenInterest],
+      #                 -----------------------------------------------------------------------------
+      UpperLimitPrice   = unique(na.omit(.SD$UpperLimitPrice)),
+      LowerLimitPrice   = unique(na.omit(.SD$LowerLimitPrice)),
+      SettlementPrice   = .SD[.N, SettlementPrice]
+    )], by = .(TradingDay, InstrumentID)] %&gt;%
+    .[Volume != 0 &amp; Turnover != 0] %&gt;%
+    .[, Sector := daySector]
+  #-----------------------------------------------------------------------------
+  #&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;
+  setcolorder(tempRes, c(&#39;TradingDay&#39;, &#39;Sector&#39;,
+                          colnames(tempRes)[2:(ncol(tempRes)-1)]))
+  return(tempRes)
+  #&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;
+}
+##############################################################################</code></pre>
+</div>
+</div>
+<div id="minute" class="section level1">
+<h1>Minute</h1>
+<div id="-1" class="section level2">
+<h2>文件</h2>
+<p>文件位于 <code>/Rconfig/dt2MinuteBar.R</code></p>
+</div>
+<div id="-1" class="section level2">
+<h2>代码</h2>
+<pre class="r"><code>##! dt2MinuteBar.R
+##
+## 功能：
+## 用于把 tick data 的数据转化为 分钟 的数据，
+## 1. dt2MinuteBar(dt)
+##############################################################################
+##----------------------------------------------------------------------------
+dt2MinuteBar &lt;- function(dt){
+  setkey(dt,InstrumentID)
+  temp &lt;- lapply(unique(dt$InstrumentID), function(ii){ dt[ii] })
+
+  no.cores &lt;- max(round(detectCores()/3), 4)
+  # no.cores &lt;- max(round(detectCores()/4), 4)
+  cl &lt;- makeCluster(no.cores, type=&quot;FORK&quot;)
+  # clusterExport(cl, c(&quot;dt&quot;,&quot;temp&quot;))
+  # clusterEvalQ(cl,{library(data.table);library(magrittr)})
+  dtMinute &lt;- parLapply(cl, 1:length(temp), function(ii){
+    ## -------------------------------------------------------------------------
+    temp[[ii]] %&gt;%
+      .[, .SD[,.(
+        #-----------------------------------------------------------------------------
+        NumericExchTime = .SD[1,NumericExchTime],
+        #-----------------------------------------------------------------------------
+        OpenPrice = .SD[DeltaVolume != 0][1,LastPrice],
+        HighPrice = .SD[DeltaVolume != 0, max(LastPrice, na.rm=TRUE)],
+        LowPrice  = .SD[DeltaVolume != 0, min(LastPrice, na.rm=TRUE)],
+        ClosePrice = ifelse(nrow(.SD[DeltaVolume != 0]) != 0,
+                      .SD[DeltaVolume != 0][nrow(.SD[DeltaVolume != 0]), LastPrice],
+                      .SD[.N,LastPrice]),
+        #-----------------------------------------------------------------------------
+        Volume            = sum(.SD$DeltaVolume, na.rm=TRUE),
+        Turnover          = sum(.SD$DeltaTurnover, na.rm=TRUE),
+        #                 -----------------------------------------------------------------------------
+        OpenOpenInterest  = .SD[1,OpenInterest],
+        HighOpenInterest  =.SD[,max(OpenInterest, na.rm=TRUE)],
+        LowOpenInterest   = .SD[,min(OpenInterest, na.rm=TRUE)],
+        CloseOpenInterest = .SD[.N,OpenInterest],
+        #                 -----------------------------------------------------------------------------
+        UpperLimitPrice   = unique(na.omit(.SD$UpperLimitPrice)),
+        LowerLimitPrice   = unique(na.omit(.SD$LowerLimitPrice)),
+        SettlementPrice   = .SD[.N, SettlementPrice]
+      )], by = .(TradingDay, InstrumentID, Minute)] %&gt;%
+      .[Volume != 0 &amp; Turnover != 0]
+    ## -------------------------------------------------------------------------
+  }) %&gt;% rbindlist()
+  stopCluster(cl)
+
+  return(dtMinute)
+}
+##############################################################################</code></pre>
+</div>
+</div>

@@ -1,0 +1,34 @@
+---
+title: "CentOS 调用显示器"
+author: William
+date: 2017-12-18
+lastmod: 2017-12-18
+categories: [Programming]
+tags: [CentOS,界面化,交易系统]
+description: CentOS 服务器调用系统的显示屏，实现使用 crontab 显示 vn.py 交易系统界面。
+draft: false
+ToC: true
+---
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(comment = '',
+                      fig.align = 'center',
+                      eval = FALSE)
+```
+
+参考链接：[Stack OverFlow](https://stackoverflow.com/questions/646930/cannot-connect-to-x-server-0-0-with-a-qt-application)
+
+# 在系统添加显示屏
+
+```bash
+export DISPLAY=:0.0
+xhost +HOSTNAME
+xhost +local:root
+```
+
+# 在交易系统调用屏幕
+
+```python
+import os
+os.putenv('DISPLAY', ':0.0')
+```
