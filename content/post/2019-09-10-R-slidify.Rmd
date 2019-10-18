@@ -26,8 +26,6 @@ install_github('ramnathv/slidify')
 install_github('ramnathv/slidifyLibraries')
 ```
 
-
-
 # Demo
 
 ## 初始化
@@ -35,12 +33,11 @@ install_github('ramnathv/slidifyLibraries')
 ```R
 library(slidify)
 author('mydeck')
+
+slidify("index.Rmd")
 ```
 
-
 ## 格式
-
-
 
 # 上传到 Github
 
@@ -53,5 +50,6 @@ author('mydeck')
 publish(title = 'My Deck', 'index.html', host = 'rpubs')
 ```
 
-
+## demo
+可以参考我的[小例](https://williamlfang.github.io/myslidify/)。
 
