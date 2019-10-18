@@ -43,7 +43,7 @@ ToC: true
 
 - 增加允许访问的端口。这个是需要通过 `7000` 的端口转发去访问的客户机端口，可以配置多个。比如我们在客户机的 `frpc.init` 增加了3个可以访问的端口，那么我们就需要告诉服务器，需要开放 `6011`、`6035`、`6066` 这3个端口的远程访问权限：
 
-   ```ba
+   ```bash
   [common]
   server_addr = 114.67.109.5
   server_port = 7000
@@ -69,7 +69,7 @@ ToC: true
 
   开放端口使用命令 `FirewallD`：
 
-  ```ba
+  ```bash
   ## 增加远程访问 端口
   # 1.FirewallD防火墙开放8787端口
   firewall-cmd --zone=public --add-port=6011/tcp --permanent
@@ -87,7 +87,7 @@ ToC: true
 
 - 开启后台服务，通过 `nohup` 实现不间断的运行服务，记得在服务器是启动 `frps` 服务：
 
-  ```bas
+  ```bash
   nohup ./frps -c frps.ini &
   ```
 
@@ -95,7 +95,7 @@ ToC: true
 
 - 下载、解压“：
 
-  ```ba
+  ```bash
   cd ~
   wget https://github.com/fatedier/frp/releases/download/v0.21.0/frp_0.21.0_linux_amd64.tar.gz
   
@@ -155,13 +155,13 @@ ToC: true
 
 - 客户机开启后台服务命令，配置文件是 `frpc.init`
 
-  ```ba
+  ```bash
   nohup ./frpc -c frpc.ini &
   ```
 
   提示连接成功：
 
-  ```bas
+  ```bash
   2019/10/08 20:11:19 [I] [proxy_manager.go:300] proxy removed: []
   2019/10/08 20:11:19 [I] [proxy_manager.go:310] proxy added: [ssh199 ssh166_rstudio ssh199_rstudio sshlocal ssh135 ssh166 ssh188]
   2019/10/08 20:11:19 [I] [proxy_manager.go:333] visitor removed: []
@@ -178,7 +178,7 @@ ToC: true
 
   并且我们可以在服务器端看到端口已经开启转发功能：
 
-  ```ba
+  ```bash
   [root@JD ~]# netstat -ntlp
   Active Internet connections (only servers)
   Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
