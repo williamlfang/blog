@@ -1,0 +1,248 @@
+---
+title: "使用 github 发布 gitbook 电子书"
+author: William
+date: 2019-10-29
+lastmod: 2019-10-29
+categories: [Programming]
+tags: [github,gitbook,blog,知识共享]
+description: gitbook 是一个用于生成现代电子书的工具，进过处理后可以得到`mobi`、`pdf`、静态网页等多种类型的书籍形式。
+draft: false
+ToC: true
+---
+
+`gitbook` 是一个用于生成现代电子书的工具，进过处理后可以得到`mobi`、`pdf`、静态网页等多种类型的书籍形式。对于生成后得到的静态网页，我们可以将其托管在 `github` 上面，使用 `gh-pages` 发布到网上，从而实现制作文档、发布知识分享。
+
+本篇博客总结了如何配置 `gitbook`、如何制作静态网页、如何使用 `github` 托管等方面的技巧。
+
+<!--  -->
+## 安装软件
+
+### 安装 gitbook
+需要使用 `npm` 执行命令
+
+```bash
+npm install gitbook -g
+```
+
+安装完成后，可以使用命令查找具体的可执行文件所在目录
+
+```{bash}
+$ whereis gitbook
+
+gitbook: /opt/node-v12.10.0-linux-x64/bin/gitbook
+```
+
+查看具体的版本号
+
+```{bash}
+alias gitbook='/opt/node-v12.10.0-linux-x64/bin/gitbook'
+gitbook -V
+```
+
+### 基本命令
+
+- 初始化，会自动生成 README.md 以及 SUMMARY.md
+    ```bash
+    ## gitbook init
+    ```
+- 生成静态网页，会得到 `_book` 的目录
+    ```bash
+    gitbook build
+    ```
+- 本地预览
+    ```bash
+    gitbook serve
+    ```
+
+### 安装插件
+由于使用的插件需要嵌入到静态网站，通常的做法是直接配置一个 `book.json` 的文件，里面会填入托管网站相关的信息，以及需要使用的配置参数。比如
+
+```json
+{
+    "author": "方莲",
+    "description": "To be betteR.",
+    "title": "betteR",
+    "variables": {},
+    "extension": null,
+    "generator": "site",
+    "isbn": "",
+    "links": {
+        "sharing": {
+            "all": null,
+            "facebook": null,
+            "google": null,
+            "twitter": null,
+            "weibo": null
+        },
+        "sidebar": {
+            "William's Blog": "https://williamlfang.github.io/"
+        }
+    },
+    "output": null,
+    "pdf": {
+        "fontSize": 12,
+        "footerTemplate": null,
+        "headerTemplate": null,
+        "margin": {
+            "bottom": 36,
+            "left": 62,
+            "right": 62,
+            "top": 36
+        },
+        "pageNumbers": false,
+        "paperSize": "a4"
+    },
+    "plugins": ["chapter-fold",
+                "expandable-chapters-small",
+                "expandable-chapters",
+                "advanced-emoji",
+                "github",
+                "splitter",
+                "-sharing", "sharing-plus",
+                "simple-page-toc",
+                "copy-code-button",
+                "page-toc-button",
+                "klipse",
+                "pageview-count",
+                "popup",
+                "tbfed-pagefooter",
+                "todo",
+                "prism", "-highlight"
+                ],
+    "pluginsConfig": {
+        "github": {"url": "https://github.com/williamlfang"},
+        "sharing": {
+                   "douban": true,
+                   "google": true,
+                   "twitter": true,
+                   "weibo": true,
+                   "all": [
+                       "google", "twitter", "weibo"
+                   ]
+               },
+        "simple-page-toc": {
+                "maxDepth": 3,
+                "skipFirstH1": true
+                },
+        "page-toc-button": {
+            "maxTocDepth": 3,
+            "minTocSize": 3
+           },
+        "tbfed-pagefooter": {
+                    "copyright":"",
+                    "modify_label": "该文件最后修改时间：",
+                    "modify_format": "YYYY-MM-DD HH:mm:ss"
+                },
+        "prism": {
+          "css": [
+            "prismjs/themes/prism-dracula.css"
+          ]
+        }
+    }
+}
+```
+
+在这个配置文件，我使用了一些外部插件。对于这些插件，我们可以在项目的`根目录`下执行命令进行安装
+
+```bash
+gitbook install ./
+```
+
+## 搭建 github 网页
+
+`github` 提供 `gh-pages` 功能，可以生成静态网站托管。
+
+- 在`github`创建新仓库，默认为 `master` 主干枝
+- 在本地拷贝远程仓库
+    ```bash
+    git clone git@github.com:williamlfang/ProjectName.git
+    ```
+- 在本地仓库搭建 `gitbook`
+    ```bash
+    cd ProjectName
+    ## 开始搭建静态网页
+    gitbook build
+    ```
+- 建立分支 `gh-pages` 用于显示静态网页
+    ```bash
+    git checkout -b gh-pages
+    ```
+- 同步拷贝 `master` 目录得到的 `_book` 到 `gh-pages`
+    ```bash
+    git checkout master -- _book
+    cp -r _book/* ./
+    ```
+- 提交更新
+    ```bash
+    git add ./*
+    git commit -m 'update gh-pages'
+    git push origin gh-pages
+    ```
+- 这样，我们便在 `gh-pages` 存放了生成的静态网页，通过浏览器访问可查看具体的[项目网页](https://williamlfang.github.io/betteR/)
+
+
+## 一键脚本
+我写了一个简单的脚本 `deploy.sh`，实现一键执行相关的操作
+
+```bash
+#!/usr/bin/env bash
+
+# Set the English locale for the `date` command.
+export LC_TIME=en_US.UTF-8
+
+# GitHub username.
+USERNAME=williamlfang
+# Name of the branch containing the Hugo source files.
+SOURCE=betteR
+# The commit message.
+MESSAGE="Gitbook rebuild $(date)"
+
+## -------------------------------------------
+msg() {
+    printf "\033[1;32m :: %s\n\033[0m" "$1"
+}
+## -------------------------------------------
+
+
+## -------------------------------------------
+## 切换到 master
+git checkout master
+msg "Pulling down from ${SOURCE}<master>"
+#从github更新原文件并生成静态页面
+# git pull
+
+## 使用 R 制作 md
+Rscript -e 'blogdown::build_dir(dir = ".", force = FALSE, ignore = "[.]Rproj$")'  2>&1 >/dev/null
+
+msg "Rebuild gitbook"
+## 安装插件
+# /opt/node-v12.10.0-linux-x64/bin/gitbook install ./
+## 建立静态网页
+/opt/node-v12.10.0-linux-x64/bin/gitbook build
+
+git add -A 
+git commit -m "update master"
+git push origin master
+## -------------------------------------------
+
+
+## -------------------------------------------
+msg "Pushing new info to gh-pages"
+## 创建分支
+# git checkout -b gh-pages
+git checkout gh-pages
+## 同步 master 的 _book 到 gh-pages
+git checkout master -- _book
+
+cp -r _book/* . 
+echo "node_modules
+_book">.gitignore
+
+git add -A 
+git commit -m "update gh-pages"
+git push origin gh-pages
+
+git checkout master
+msg "We've happily done."
+```
+
