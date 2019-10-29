@@ -1,0 +1,217 @@
+---
+title: "使用 github 发布 gitbook 电子书"
+author: William
+date: 2019-10-29
+lastmod: 2019-10-29
+categories: [Programming]
+tags: [github,gitbook,blog,知识共享]
+description: gitbook 是一个用于生成现代电子书的工具，进过处理后可以得到`mobi`、`pdf`、静态网页等多种类型的书籍形式。
+draft: false
+ToC: true
+---
+
+
+
+<p><code>gitbook</code> 是一个用于生成现代电子书的工具，进过处理后可以得到<code>mobi</code>、<code>pdf</code>、静态网页等多种类型的书籍形式。对于生成后得到的静态网页，我们可以将其托管在 <code>github</code> 上面，使用 <code>gh-pages</code> 发布到网上，从而实现制作文档、发布知识分享。</p>
+<p>本篇博客总结了如何配置 <code>gitbook</code>、如何制作静态网页、如何使用 <code>github</code> 托管等方面的技巧。</p>
+<!--  -->
+<div class="section level2">
+<h2>安装软件</h2>
+<div id="-gitbook" class="section level3">
+<h3>安装 gitbook</h3>
+<p>需要使用 <code>npm</code> 执行命令</p>
+<pre class="bash"><code>npm install gitbook -g</code></pre>
+<p>安装完成后，可以使用命令查找具体的可执行文件所在目录</p>
+<pre class="bash"><code>whereis gitbook</code></pre>
+<pre><code>## gitbook: /opt/node-v12.10.0-linux-x64/bin/gitbook</code></pre>
+<p>查看具体的版本号</p>
+<pre class="bash"><code>/opt/node-v12.10.0-linux-x64/bin/gitbook -V</code></pre>
+<pre><code>## CLI version: 2.3.2
+## GitBook version: 3.2.3</code></pre>
+</div>
+<div class="section level3">
+<h3>基本命令</h3>
+<ul>
+<li><p>初始化，会自动生成 README.md 以及 SUMMARY.md</p>
+<pre class="bash"><code>gitbook init</code></pre></li>
+<li><p>生成静态网页，会得到 <code>_book</code> 的目录</p>
+<pre class="bash"><code>gitbook build</code></pre></li>
+<li><p>本地预览</p>
+<pre class="bash"><code>gitbook serve</code></pre></li>
+</ul>
+</div>
+<div class="section level3">
+<h3>安装插件</h3>
+<p>由于使用的插件需要嵌入到静态网站，通常的做法是直接配置一个 <code>book.json</code> 的文件，里面会填入托管网站相关的信息，以及需要使用的配置参数。比如</p>
+<pre class="json"><code>{
+    &quot;author&quot;: &quot;方莲&quot;,
+    &quot;description&quot;: &quot;To be betteR.&quot;,
+    &quot;title&quot;: &quot;betteR&quot;,
+    &quot;variables&quot;: {},
+    &quot;extension&quot;: null,
+    &quot;generator&quot;: &quot;site&quot;,
+    &quot;isbn&quot;: &quot;&quot;,
+    &quot;links&quot;: {
+        &quot;sharing&quot;: {
+            &quot;all&quot;: null,
+            &quot;facebook&quot;: null,
+            &quot;google&quot;: null,
+            &quot;twitter&quot;: null,
+            &quot;weibo&quot;: null
+        },
+        &quot;sidebar&quot;: {
+            &quot;William&#39;s Blog&quot;: &quot;https://williamlfang.github.io/&quot;
+        }
+    },
+    &quot;output&quot;: null,
+    &quot;pdf&quot;: {
+        &quot;fontSize&quot;: 12,
+        &quot;footerTemplate&quot;: null,
+        &quot;headerTemplate&quot;: null,
+        &quot;margin&quot;: {
+            &quot;bottom&quot;: 36,
+            &quot;left&quot;: 62,
+            &quot;right&quot;: 62,
+            &quot;top&quot;: 36
+        },
+        &quot;pageNumbers&quot;: false,
+        &quot;paperSize&quot;: &quot;a4&quot;
+    },
+    &quot;plugins&quot;: [&quot;chapter-fold&quot;,
+                &quot;expandable-chapters-small&quot;,
+                &quot;expandable-chapters&quot;,
+                &quot;advanced-emoji&quot;,
+                &quot;github&quot;,
+                &quot;splitter&quot;,
+                &quot;-sharing&quot;, &quot;sharing-plus&quot;,
+                &quot;simple-page-toc&quot;,
+                &quot;copy-code-button&quot;,
+                &quot;page-toc-button&quot;,
+                &quot;klipse&quot;,
+                &quot;pageview-count&quot;,
+                &quot;popup&quot;,
+                &quot;tbfed-pagefooter&quot;,
+                &quot;todo&quot;,
+                &quot;prism&quot;, &quot;-highlight&quot;
+                ],
+    &quot;pluginsConfig&quot;: {
+        &quot;github&quot;: {&quot;url&quot;: &quot;https://github.com/williamlfang&quot;},
+        &quot;sharing&quot;: {
+                   &quot;douban&quot;: true,
+                   &quot;google&quot;: true,
+                   &quot;twitter&quot;: true,
+                   &quot;weibo&quot;: true,
+                   &quot;all&quot;: [
+                       &quot;google&quot;, &quot;twitter&quot;, &quot;weibo&quot;
+                   ]
+               },
+        &quot;simple-page-toc&quot;: {
+                &quot;maxDepth&quot;: 3,
+                &quot;skipFirstH1&quot;: true
+                },
+        &quot;page-toc-button&quot;: {
+            &quot;maxTocDepth&quot;: 3,
+            &quot;minTocSize&quot;: 3
+           },
+        &quot;tbfed-pagefooter&quot;: {
+                    &quot;copyright&quot;:&quot;&quot;,
+                    &quot;modify_label&quot;: &quot;该文件最后修改时间：&quot;,
+                    &quot;modify_format&quot;: &quot;YYYY-MM-DD HH:mm:ss&quot;
+                },
+        &quot;prism&quot;: {
+          &quot;css&quot;: [
+            &quot;prismjs/themes/prism-dracula.css&quot;
+          ]
+        }
+    }
+}</code></pre>
+<p>在这个配置文件，我使用了一些外部插件。对于这些插件，我们可以在项目的<code>根目录</code>下执行命令进行安装</p>
+<pre class="bash"><code>gitbook install ./</code></pre>
+</div>
+</div>
+<div id="-github-" class="section level2">
+<h2>搭建 github 网页</h2>
+<p><code>github</code> 提供 <code>gh-pages</code> 功能，可以生成静态网站托管。</p>
+<ul>
+<li>在<code>github</code>创建新仓库，默认为 <code>master</code> 主干枝</li>
+<li><p>在本地拷贝远程仓库</p>
+<pre class="bash"><code>git clone git@github.com:williamlfang/ProjectName.git</code></pre></li>
+<li><p>在本地仓库搭建 <code>gitbook</code></p>
+<pre class="bash"><code>cd ProjectName
+## 开始搭建静态网页
+gitbook build</code></pre></li>
+<li><p>建立分支 <code>gh-pages</code> 用于显示静态网页</p>
+<pre class="bash"><code>git checkout -b gh-pages</code></pre></li>
+<li><p>同步拷贝 <code>master</code> 目录得到的 <code>_book</code> 到 <code>gh-pages</code></p>
+<pre class="bash"><code>git checkout master -- _book
+cp -r _book/* ./</code></pre></li>
+<li><p>提交更新</p>
+<pre class="bash"><code>git add ./*
+git commit -m &#39;update gh-pages&#39;
+git push origin gh-pages</code></pre></li>
+<li><p>这样，我们便在 <code>gh-pages</code> 存放了生成的静态网页，通过浏览器访问可查看具体的<a href="https://williamlfang.github.io/betteR/">项目网页</a></p></li>
+</ul>
+</div>
+<div class="section level2">
+<h2>一键脚本</h2>
+<p>我写了一个简单的脚本 <code>deploy.sh</code>，实现一键执行相关的操作</p>
+<pre class="bash"><code>#!/usr/bin/env bash
+
+# Set the English locale for the `date` command.
+export LC_TIME=en_US.UTF-8
+
+# GitHub username.
+USERNAME=williamlfang
+# Name of the branch containing the Hugo source files.
+SOURCE=betteR
+# The commit message.
+MESSAGE=&quot;Gitbook rebuild $(date)&quot;
+
+## -------------------------------------------
+msg() {
+    printf &quot;\033[1;32m :: %s\n\033[0m&quot; &quot;$1&quot;
+}
+## -------------------------------------------
+
+
+## -------------------------------------------
+## 切换到 master
+git checkout master
+msg &quot;Pulling down from ${SOURCE}&lt;master&gt;&quot;
+#从github更新原文件并生成静态页面
+# git pull
+
+## 使用 R 制作 md
+Rscript -e &#39;blogdown::build_dir(dir = &quot;.&quot;, force = FALSE, ignore = &quot;[.]Rproj$&quot;)&#39;  2&gt;&amp;1 &gt;/dev/null
+
+msg &quot;Rebuild gitbook&quot;
+## 安装插件
+# /opt/node-v12.10.0-linux-x64/bin/gitbook install ./
+## 建立静态网页
+/opt/node-v12.10.0-linux-x64/bin/gitbook build
+
+git add -A 
+git commit -m &quot;update master&quot;
+git push origin master
+## -------------------------------------------
+
+
+## -------------------------------------------
+msg &quot;Pushing new info to gh-pages&quot;
+## 创建分支
+# git checkout -b gh-pages
+git checkout gh-pages
+## 同步 master 的 _book 到 gh-pages
+git checkout master -- _book
+
+cp -r _book/* . 
+echo &quot;node_modules
+_book&quot;&gt;.gitignore
+
+git add -A 
+git commit -m &quot;update gh-pages&quot;
+git push origin gh-pages
+
+git checkout master
+msg &quot;We&#39;ve happily done.&quot;</code></pre>
+</div>

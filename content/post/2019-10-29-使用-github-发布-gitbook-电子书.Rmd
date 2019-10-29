@@ -33,15 +33,14 @@ whereis gitbook
 查看具体的版本号
 
 ```{bash}
-alias gitbook='/opt/node-v12.10.0-linux-x64/bin/gitbook'
-gitbook -V
+/opt/node-v12.10.0-linux-x64/bin/gitbook -V
 ```
 
 ### 基本命令
 
 - 初始化，会自动生成 README.md 以及 SUMMARY.md
     ```bash
-    ## gitbook init
+    gitbook init
     ```
 - 生成静态网页，会得到 `_book` 的目录
     ```bash
