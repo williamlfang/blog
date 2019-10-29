@@ -27,9 +27,7 @@ npm install gitbook -g
 安装完成后，可以使用命令查找具体的可执行文件所在目录
 
 ```{bash}
-$ whereis gitbook
-
-gitbook: /opt/node-v12.10.0-linux-x64/bin/gitbook
+whereis gitbook
 ```
 
 查看具体的版本号
