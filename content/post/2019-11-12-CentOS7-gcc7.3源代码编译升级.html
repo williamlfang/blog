@@ -1,0 +1,59 @@
+---
+title: "CentOS7:gcc7.3源代码编译升级"
+author: William
+date: 2019-11-12
+lastmod: 2019-11-12
+categories: [Programming]
+tags: [Linux,CentOS7,gcc,升级,编译器,源代码]
+description: 在没有网络连接与管理员权限的情况下，通过编译源代码进行升级 gcc。 
+draft: false
+ToC: true
+---
+
+
+
+<div class="section level1">
+<h1>准备</h1>
+<p>把需要下载和解压的文件都放在一个目录</p>
+<pre class="bash"><code>mkdir -p ~/gcc7
+cd gcc7
+
+## 下载 gcc7.3
+wget https://mirrors.ustc.edu.cn/gnu/gcc/gcc-7.3.0/gcc-7.3.0.tar.gz
+
+## 下载依赖包
+wget ftp://gcc.gnu.org/pub/gcc/infrastructure/gmp-6.1.0.tar.bz2
+wget https://ftp.gnu.org/gnu/mpc/mpc-1.0.3.tar.gz
+wget https://ftp.gnu.org/gnu/mpc/mpc-1.1.0.tar.gz</code></pre>
+</div>
+<div class="section level1">
+<h1>安装</h1>
+<pre class="bash"><code>tar -xvf gcc-7.3.0.tar.gz
+
+## 依赖包都放进去
+cp gmp-6.1.0.tar.bz2 ./gcc-7.3.0
+cp mpc-1.0.3.tar.gz ./gcc-7.3.0
+cp mpfr-3.1.4.tar.bz2 ./gcc-7.3.0
+
+## 进入 gcc编译目录，把需要的依赖包解压到这一层次
+tar jxvf gmp-6.1.0.tar.bz2
+tar zxvf mpc-1.0.3.tar.gz
+tar jxvf mpfr-3.1.4.tar.bz2
+
+## 建立链接
+ln -s gmp-6.1.0 gmp 
+ln -s mpfr-3.1.4 mpfr 
+ln -s mpc-1.0.3 mpc
+
+## 开始编译，由于不是 root, 需要通过 --prefix 指定路径
+./configure --disable-multilib --prefix=/home/trader/opt
+
+## 开始安装，不要用 -j，可能会导致错误
+make
+make install</code></pre>
+</div>
+<div class="section level1">
+<h1>添加环境变量</h1>
+<pre class="bash"><code>export PATH=/home/trader/opt/bin:$PATH
+export LD_LIBRARY_PATH=/home/trader/opt/lib:/usr/lib:$LD_LIBRARY_PATH</code></pre>
+</div>
