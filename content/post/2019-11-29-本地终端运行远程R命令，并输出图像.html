@@ -1,0 +1,174 @@
+---
+title: "本地终端运行远程R命令，并输出图像"
+author: William
+date: 2019-11-29
+lastmod: 2019-11-29
+categories: [Programming]
+tags: [R,rmote,Rstudio,Sublime,服务器,画图]
+description: 今天在网上看到一个 `R` 编程语言的扩展包，解决了长期以来困扰我的一个难题：如果在本地终端编辑运行位于远程服务器上的 `R` 命令脚本，并在需要的时候，能够把远程的画图同步输出到本地，使得在本地也可以浏览画图效果。
+draft: false
+ToC: true
+---
+
+
+
+<div class="section level1">
+<h1>痛点</h1>
+<p>今天在网上看到一个 <code>R</code> 编程语言的扩展包，解决了长期以来困扰我的一个难题：如果在本地终端编辑运行位于远程服务器上的 <code>R</code> 命令脚本，并在需要的时候，能够把远程的画图同步输出到本地，使得在本地也可以浏览画图效果。针对这个问题，其实我们可以有以下至少三种解决方案：</p>
+<ol style="list-style-type: decimal">
+<li>Install <a href="https://www.rstudio.com/products/rstudio-server-pro/">RStudio Server</a> on the remote server and use that from a web browser on your local machine. Graphics output is shown in the IDE.</li>
+<li>Use X11 forwarding (<code>ssh -X|Y</code>). Graphics output is sent back to your machine.</li>
+<li>Use VNC with a linux desktop environment like KDE or GNOME.</li>
+</ol>
+<p>当然，第一种使用 <code>Rstudio</code> 其实是非常好的方案，运行在网页打开，整个界面其实就是本地化的 <code>IDE</code>，这也是我们团队目前使用的方案。但是，对于我这样使用惯了终端命令行的开发人员，更倾向于在 <code>Sublime</code> 编辑脚本，然后通过 <code>SublimeREPL</code> 把命令发送到远程服务器的解释器进行运行。长期以来，我一直在苦苦寻找这样的方案。</p>
+<p>今天隆重介绍这个优秀的扩展包：<a href="https://github.com/cloudyr/rmote"><code>rmote</code></a></p>
+</div>
+<div class="section level1">
+<h1>解决</h1>
+<div id="ssh-" class="section level2">
+<h2>ssh 登录服务器</h2>
+<p><code>rmote</code> 默认开启 <strong>4321</strong> 的服务端口，可以通过 <code>rmote::start_rmote()</code> 进行设置。这个命令是把远程消息同步映射到本地浏览器端</p>
+<pre class="bash"><code>ssh -L 4321:localhost:4321 fl@192.168.1.166</code></pre>
+</div>
+<div id="-r-" class="section level2">
+<h2>启动 R 服务</h2>
+<p>通过以上命令我们就登录了远程服务器，接下来是启动 <code>R</code> 进程开始运行</p>
+<pre class="r"><code>R                                                                                                                                                                     [14:44:16]
+
+R version 3.5.1 (2018-07-02) -- &quot;Feather Spray&quot;
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-redhat-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type &#39;license()&#39; or &#39;licence()&#39; for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type &#39;contributors()&#39; for more information and
+&#39;citation()&#39; on how to cite R or R packages in publications.
+
+Type &#39;demo()&#39; for some demos, &#39;help()&#39; for on-line help, or
+&#39;help.start()&#39; for an HTML browser interface to help.
+Type &#39;q()&#39; to quit R.
+
+
+Attaching package: ‘emayili’
+
+The following object is masked from ‘package:base’:
+
+    body
+
+&gt; 
+
+## 可以设置不同的端口
+rmote::start_rmote()
+
+?start_rmote
+start_rmote               package:rmote                R Documentation
+
+Initialize a remote servr
+
+Description:
+
+     Initialize a remote servr
+
+Usage:
+
+     start_rmote(server_dir = file.path(tempdir(), &quot;rmote_server&quot;), port = 4321,
+       daemon = TRUE, help = TRUE, graphics = TRUE, basegraphics = TRUE,
+       htmlwidgets = TRUE, hostname = TRUE, history = TRUE)
+
+Arguments:
+
+server_dir: directory to launch servr from
+
+    port: port to run servr on
+
+  daemon: logical - should the server be started as a daemon?
+
+    help: (logical) send results of `?` to servr
+
+graphics: (logical) send traditional lattice / ggplot2 plots to servr
+
+basegraphics: (logical) send base graphics to servr
+
+htmlwidgets: (logical) send htmlwidgets to servr
+
+hostname: (logical) try to get hostname and use it in viewer page title
+
+ history: (logical) should history thumbnails be created and shown in
+          the viewer?
+</code></pre>
+</div>
+<div class="section level2">
+<h2>运行命令</h2>
+<p>输入命令运行</p>
+<pre class="r"><code>?plot
+
+library(ggplot2)
+qplot(mpg, wt, data=mtcars, colour=cyl)</code></pre>
+</div>
+<div class="section level2">
+<h2>本地浏览器查看</h2>
+<p>这样，我们可以在浏览器打开 <a href="http://localhost:4321/">http://localhost:4321</a> 即可查看图片。</p>
+</div>
+</div>
+<div id="sublime-" class="section level1">
+<h1>Sublime 集成快捷键</h1>
+<pre class="bash"><code>// 使用 Rmote 功能，实现远程服务器图片在本地浏览
+  { &quot;keys&quot;: [&quot;f8&quot;],
+    &quot;caption&quot;: &quot;SublimeREPL: Rmote166&quot;,
+    &quot;command&quot;:&quot;repl_open&quot;,&quot;args&quot;:
+    {
+        &quot;type&quot;: &quot;subprocess&quot;,
+        &quot;external_id&quot;: &quot;r&quot;,
+        &quot;additional_scopes&quot;: [&quot;tex.latex.knitr&quot;],
+        &quot;encoding&quot;: 
+        {
+            &quot;windows&quot;: &quot;$win_cmd_encoding&quot;,
+            &quot;linux&quot;: &quot;utf8&quot;,
+            &quot;osx&quot;: &quot;utf8&quot;
+        },
+        &quot;soft_quit&quot;: &quot;\nquit(save=\&quot;no\&quot;)\n&quot;,
+        &quot;cmd&quot;: {&quot;linux&quot;: 
+                    [
+                        &quot;ssh&quot;,
+                        &quot;-L&quot;, &quot;4321:localhost:4321&quot;, &quot;fl@192.168.1.166&quot;, &quot;-p22&quot;,
+                        &quot;R&quot;,&quot;--interactive&quot;, &quot;--no-readline&quot;
+                    ]
+                },
+        &quot;cwd&quot;: &quot;$file_path&quot;,
+        &quot;extend_env&quot;: 
+        {
+            &quot;osx&quot;: {&quot;PATH&quot;: &quot;{PATH}:/usr/local/bin&quot;},
+            &quot;linux&quot;: {&quot;PATH&quot;: &quot;{PATH}:/usr/local/bin&quot;},
+            &quot;windows&quot;: {}
+        },
+        &quot;cmd_postfix&quot;: &quot;\n&quot;,
+        &quot;suppress_echo&quot;: 
+        {
+            &quot;osx&quot;: true,
+            &quot;linux&quot;: true,
+            &quot;windows&quot;: false
+        },
+        &quot;syntax&quot;: &quot;Packages/R/R Console.tmLanguage&quot;
+    }
+  },</code></pre>
+<div class="figure">
+<img src="/images/rmote.png" alt="Rmote+Chrome" />
+<p class="caption">Rmote+Chrome</p>
+</div>
+</div>
+<div class="section level1">
+<h1>问题</h1>
+<div class="section level2">
+<h2>提示:</h2>
+<pre class="r"><code>- not sending to rmote because another graphics device has been opened...
+- sending to the open graphics device instead...
+- to send to rmote, close all active graphics devices using graphics.off()</code></pre>
+<p>说明已经有图片打开，需要关闭后即可</p>
+<pre class="r"><code>graphics.off()</code></pre>
+</div>
+</div>
