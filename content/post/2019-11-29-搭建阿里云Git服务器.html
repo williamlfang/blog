@@ -100,6 +100,7 @@ drwxr-x--- 7 git git 4096 Nov 30 13:06 test.git</code></pre>
 <p>接下来，修改 <code>git</code> 通过 <code>shell</code> 登录</p>
 <pre class="bash"><code>vim /etc/passwd
 
+## 修改成如下
 git:x:1000:1000::/home/git:/bin/sh</code></pre>
 </div>
 <div class="section level3">
@@ -113,7 +114,7 @@ sudo -H -u git gitosis-init &lt; /tmp/id_rsa.pub</code></pre>
 <pre class="bash"><code>sudo chmod 755 /home/git/gitosis-admin.git/hooks/post-update</code></pre>
 <p>试着登录服务器的<code>git</code></p>
 <pre class="bash"><code>ssh git@47.98.117.71
-                                                                                                                                 [15:27:50]
+
 PTY allocation request failed on channel 0
 ERROR:gitosis.serve.main:Need SSH_ORIGINAL_COMMAND in environment.
 Connection to 47.98.117.71 closed.</code></pre>
@@ -128,7 +129,7 @@ On branch master
 Your branch is up to date with &#39;origin/master&#39;.
 
 nothing to commit, working tree clean
-                                                                                                                                      [15:29:16]
+
 total 20K
 drwxrwxr-x  4 william william 4.0K Nov 30 13:22 ./
 drwxr-xr-x 50 william william 4.0K Nov 30 12:57 ../
@@ -136,14 +137,8 @@ drwxrwxr-x  8 william william 4.0K Nov 30 15:29 .git/
 -rw-rw-r--  1 william william  399 Nov 30 13:22 gitosis.conf
 drwxrwxr-x  2 william william 4.0K Nov 30 13:10 keydir/</code></pre>
 <p>其中 1. <code>gitosis.conf</code>是配置文件 2. <code>keydir</code>存放公钥<code>.pub</code></p>
-<pre class="bash"><code>cat gitosis.conf                                                                                          master  
-gitosis.conf  keydir
+<pre class="bash"><code>cat gitosis.conf 
 
-On branch master
-Your branch is up to date with &#39;origin/master&#39;.
-
-nothing to commit, working tree clean
-gitosis.conf                                                                                                                          [15:30:25]
 [gitosis]
 
 [group gitosis-admin]
@@ -167,17 +162,23 @@ members = fl166
 readonly = test2</code></pre>
 <pre class="bash"><code>cd keydir
 ll 
-                                                                                                                            [15:30:44]
+
 total 16K
 drwxrwxr-x 2 william william 4.0K Nov 30 13:10  ./
 drwxrwxr-x 4 william william 4.0K Nov 30 13:22  ../
 -rw-rw-r-- 1 william william 1.2K Nov 30 13:10  fl166.pub
 -rw-rw-r-- 1 william william  409 Nov 30 12:42 &#39;william.lian.fang@gmail.com.pub&#39;</code></pre>
 <p>看到上面的文件，如 <code>fl166.pub</code>，存放的便是公钥，这个文件名需要对应以上的 <code>members</code> 才能够被识别。</p>
-<p>我们可以看出 1. 对于 <code>test.git</code>, <code>william.lian.fang@gmail.com</code>和<code>fl166</code> 拥有 <code>writable</code> 的可读可写权限。 2. 而对于 <code>test2.git</code>, <code>william.lian.fang@gmail.com</code> 拥有 <code>writable</code> 的可读可写权限, 而 <code>fl166</code> 只有读的权限，即不可参与项目代码修改，如果推送修改会报错 ```bash ERROR:gitosis.serve.main:Repository write access denied fatal: Could not read from remote repository.</p>
-<pre><code>Please make sure you have the correct access rights 
-and the repository exists.
-```</code></pre>
+<p>我们可以看出</p>
+<ol style="list-style-type: decimal">
+<li>对于 <code>test.git</code>, <code>william.lian.fang@gmail.com</code>和<code>fl166</code> 拥有 <code>writable</code> 的可读可写权限。</li>
+<li><p>而对于 <code>test2.git</code>, <code>william.lian.fang@gmail.com</code> 拥有 <code>writable</code> 的可读可写权限, 而 <code>fl166</code> 只有读的权限，即不可参与项目代码修改，如果推送修改会报错</p>
+<pre class="bash"><code>ERROR:gitosis.serve.main:Repository write access denied 
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights 
+and the repository exists.</code></pre></li>
+</ol>
 </div>
 </div>
 <div class="section level2">

@@ -155,6 +155,7 @@ mv /home/git/.ssh/authorized_keys /home/git/.ssh/authorized_keys_bk
 ```bash
 vim /etc/passwd
 
+## 修改成如下
 git:x:1000:1000::/home/git:/bin/sh
 ```
 
@@ -179,7 +180,7 @@ sudo chmod 755 /home/git/gitosis-admin.git/hooks/post-update
 
 ```bash
 ssh git@47.98.117.71
-                                                                                                                                 [15:27:50]
+
 PTY allocation request failed on channel 0
 ERROR:gitosis.serve.main:Need SSH_ORIGINAL_COMMAND in environment.
 Connection to 47.98.117.71 closed.
@@ -197,7 +198,7 @@ On branch master
 Your branch is up to date with 'origin/master'.
 
 nothing to commit, working tree clean
-                                                                                                                                      [15:29:16]
+
 total 20K
 drwxrwxr-x  4 william william 4.0K Nov 30 13:22 ./
 drwxr-xr-x 50 william william 4.0K Nov 30 12:57 ../
@@ -210,14 +211,8 @@ drwxrwxr-x  2 william william 4.0K Nov 30 13:10 keydir/
 2. `keydir`存放公钥`.pub`
 
 ```bash
-cat gitosis.conf                                                                                          master  
-gitosis.conf  keydir
+cat gitosis.conf 
 
-On branch master
-Your branch is up to date with 'origin/master'.
-
-nothing to commit, working tree clean
-gitosis.conf                                                                                                                          [15:30:25]
 [gitosis]
 
 [group gitosis-admin]
@@ -244,7 +239,7 @@ readonly = test2
 ```bash
 cd keydir
 ll 
-                                                                                                                            [15:30:44]
+
 total 16K
 drwxrwxr-x 2 william william 4.0K Nov 30 13:10  ./
 drwxrwxr-x 4 william william 4.0K Nov 30 13:22  ../
@@ -255,6 +250,7 @@ drwxrwxr-x 4 william william 4.0K Nov 30 13:22  ../
 看到上面的文件，如 `fl166.pub`，存放的便是公钥，这个文件名需要对应以上的 `members` 才能够被识别。
 
 我们可以看出
+
 1. 对于 `test.git`, `william.lian.fang@gmail.com`和`fl166` 拥有 `writable` 的可读可写权限。
 2. 而对于 `test2.git`, `william.lian.fang@gmail.com` 拥有 `writable` 的可读可写权限, 而 `fl166` 只有读的权限，即不可参与项目代码修改，如果推送修改会报错
     ```bash
