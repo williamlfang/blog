@@ -1,0 +1,266 @@
+---
+title: "搭建阿里云Git服务器"
+author: William
+date: 2019-11-29
+lastmod: 2019-11-29
+categories: [Programming]
+tags: [Git,Ali,Cloud,Server,version,Coding]
+description: 通过在私有服务器搭建 git 服务，实现团队之间的代码贡献与版本控制。
+draft: false
+ToC: true
+---
+
+![git](/images/git.jpeg)
+
+# 搭建 Git 服务器
+
+第一步，安装git：
+
+```bash
+$ sudo apt-get install git
+```
+
+第二步，创建一个git用户，用来运行git服务：
+
+```bash
+$ sudo adduser git
+```
+
+第三步，创建证书登录：
+
+收集所有需要登录的用户的公钥，就是他们自己的id_rsa.pub文件，把所有公钥导入到/home/git/.ssh/authorized_keys文件里，一行一个。
+
+```bash
+cat ~/.ssh/id_rsa.pub
+
+## 复制公钥到 /home/git/.ssh/authorized_keys
+```
+
+第四步，初始化Git仓库：
+
+先选定一个目录作为Git仓库，假定是/srv/test.git，在/srv目录下输入命令：
+
+```bash
+sudo git init --bare test.git
+```
+
+Git就会创建一个裸仓库，裸仓库没有工作区，因为服务器上的Git仓库纯粹是为了共享，所以不让用户直接登录到服务器上去改工作区，并且服务器上的Git仓库通常都以.git结尾。然后，把owner改为git：
+
+```
+sudo chown -R git:git test.git
+```
+
+第五步，禁用shell登录：
+
+出于安全考虑，第二步创建的git用户不允许登录shell，这可以通过编辑/etc/passwd文件完成。找到类似下面的一行：
+
+```bash
+git:x:1001:1001:,,,:/home/git:/bin/bash
+```
+
+改为：
+```bash
+git:x:1001:1001:,,,:/home/git:/usr/bin/git-shell
+```
+
+这样，git用户可以正常通过ssh使用git，但无法登录shell，因为我们为git用户指定的git-shell每次一登录就自动退出。
+
+第六步，克隆远程仓库：
+
+现在，可以通过git clone命令克隆远程仓库了，在各自的电脑上运行：
+
+```bash
+$ git clone git@server:/srv/sample.git
+Cloning into 'sample'...
+warning: You appear to have cloned an empty repository.
+```
+
+剩下的推送就简单了。
+
+
+# 版本控制
+
+```bash
+git clone git@47.98.117.71:/home/git/codebase/test.git
+
+git checkout master
+git pull
+
+git branch dev
+git checkout dev
+git add ./*
+git commit -m "modify dev"
+git push origin dev
+
+git checkout master
+git merge dev
+git add ./*
+git commit -m "modify master"
+git push origin master
+```
+
+# 团队管理
+
+## 使用 gitosis 管理权限
+
+把团队成员的公钥保存到 `/home/git/.ssh/authorized_keys` 文件的做法，对于小规模的队伍是可行的。但是，这样的弊端也是十分明显：
+
+1. 随着团队规模的扩大、成员的离开，需要重复的增加/删除成员的公钥，这样比较繁琐，而且存在安全隐患
+2. `git`默认的权限是对于所有成员开放的，即所有成员都拥有对项目的读写权限，如果是非管理员用户，不小心在分支修改了代码，但是提交到了`master`上面，有可能导致整个项目崩盘
+3. 此外，我们还希望给部分成员拥有管理权限，部分成员拥有可读可写权限，而剩下的[实习]成员则只有可读权限，这个需要通过项目的权限管理机制实现。
+
+### 安装 gitosis
+
+`gitosis` 是 `python` 项目，需要安装 `python-setuptools` 模块
+
+```bash
+apt-get install python-setuptools
+```
+
+然后安装 `gitosis`
+```bash
+cd ~
+git clone https://github.com/tv42/gitosis.git
+cd gitosis
+sudo python setup.py install
+```
+
+默认情况下，`gitosis` 会把项目放在 `/home/git/repositories`
+
+```bash
+total 16                                                                                                       
+drwxr-x--- 8 git git 4096 Nov 30 13:22 gitosis-admin.git                                                    
+drwxr-x--- 7 git git 4096 Nov 30 13:05 solarflare.git                                                       
+drwxr-x--- 7 git git 4096 Nov 30 13:22 test2.git
+drwxr-x--- 7 git git 4096 Nov 30 13:06 test.git
+```
+
+如果原来代码已经放在别的文件夹，可以使用 `ln`
+
+```bash
+ln -s /opt/git /home/git/repositories
+```
+
+Gitosis 将会帮我们管理用户公钥，所以先把当前控制文件改名备份，以便稍后重新添加，准备好让 Gitosis 自动管理 `authorized_keys` 文件：
+
+```bash
+mv /home/git/.ssh/authorized_keys /home/git/.ssh/authorized_keys_bk
+```
+
+接下来，修改 `git` 通过 `shell` 登录
+```bash
+vim /etc/passwd
+
+git:x:1000:1000::/home/git:/bin/sh
+```
+
+### 增加管理员
+`gitosis` 默认会搭建一个 `gitosis-admin.git` 的仓库用来管理所有的用户权限。因此，我们需要增加一个**代码管理员**来管理这个`repo`，即只有这个用户才有权限修改项目的权限归属。
+比如，我(`william`)的本地机器作为 `gitosis-admin.git` 的所有者，需要把本地的 `id_rsa.pub` 加入到 `gitosis-admin.git`，然后开始初始化仓库
+
+```bash
+scp ~/.ssh/id_rsa.pub root@47.98.117.71:/tmp 
+
+sudo -H -u git gitosis-init < /tmp/id_rsa.pub
+```
+这样，我(`william`)的本地机器变成了 `gitosis-admin.git` 的所有者，管理所有仓库的权限。
+
+接下来，需要手工对该仓库中的 post-update 脚本加上可执行权限：
+
+```bash
+sudo chmod 755 /home/git/gitosis-admin.git/hooks/post-update
+```
+
+试着登录服务器的`git`
+
+```bash
+ssh git@47.98.117.71
+                                                                                                                                 [15:27:50]
+PTY allocation request failed on channel 0
+ERROR:gitosis.serve.main:Need SSH_ORIGINAL_COMMAND in environment.
+Connection to 47.98.117.71 closed.
+```
+
+说明 Gitosis 认出了该用户的身份，但由于没有运行任何 Git 命令，所以它切断了连接。那么，现在运行一个实际的 Git 命令 — 克隆 Gitosis 的控制仓库
+```bash
+cd ~/Documents
+git clone git@47.98.117.71:gitosis-admin.git
+cd gitosis-admin
+
+gitosis.conf  keydir
+
+On branch master
+Your branch is up to date with 'origin/master'.
+
+nothing to commit, working tree clean
+                                                                                                                                      [15:29:16]
+total 20K
+drwxrwxr-x  4 william william 4.0K Nov 30 13:22 ./
+drwxr-xr-x 50 william william 4.0K Nov 30 12:57 ../
+drwxrwxr-x  8 william william 4.0K Nov 30 15:29 .git/
+-rw-rw-r--  1 william william  399 Nov 30 13:22 gitosis.conf
+drwxrwxr-x  2 william william 4.0K Nov 30 13:10 keydir/
+```
+其中
+1. `gitosis.conf`是配置文件
+2. `keydir`存放公钥`.pub`
+
+```bash
+cat gitosis.conf                                                                                          master  
+gitosis.conf  keydir
+
+On branch master
+Your branch is up to date with 'origin/master'.
+
+nothing to commit, working tree clean
+gitosis.conf                                                                                                                          [15:30:25]
+[gitosis]
+
+[group gitosis-admin]
+members = william.lian.fang@gmail.com
+writable = gitosis-admin
+
+[group hicloud-hft]
+members = william.lian.fang@gmail.com
+writable = solarflare
+
+[group hicloud-hft]
+members = william.lian.fang@gmail.com fl166
+writable = test
+
+[group hicloud-test]
+members = william.lian.fang@gmail.com
+writable = test2
+
+[group hicloud-test-readonly]
+members = fl166
+readonly = test2
+```
+
+```bash
+cd keydir
+ll 
+                                                                                                                            [15:30:44]
+total 16K
+drwxrwxr-x 2 william william 4.0K Nov 30 13:10  ./
+drwxrwxr-x 4 william william 4.0K Nov 30 13:22  ../
+-rw-rw-r-- 1 william william 1.2K Nov 30 13:10  fl166.pub
+-rw-rw-r-- 1 william william  409 Nov 30 12:42 'william.lian.fang@gmail.com.pub'
+```
+
+看到上面的文件，如 `fl166.pub`，存放的便是公钥，这个文件名需要对应以上的 `members` 才能够被识别。
+
+我们可以看出
+1. 对于 `test.git`, `william.lian.fang@gmail.com`和`fl166` 拥有 `writable` 的可读可写权限。
+2. 而对于 `test2.git`, `william.lian.fang@gmail.com` 拥有 `writable` 的可读可写权限, 而 `fl166` 只有读的权限，即不可参与项目代码修改，如果推送修改会报错
+    ```bash
+    ERROR:gitosis.serve.main:Repository write access denied 
+    fatal: Could not read from remote repository.
+
+    Please make sure you have the correct access rights 
+    and the repository exists.
+    ```
+
+## 开发项目结构
+
+
