@@ -10,6 +10,12 @@ draft: false
 ToC: true
 ---
 
+```{r echo=FALSE}
+knitr::opts_chunk$set(comment = '',
+                      fig.align = 'center',
+                      eval = FALSE)
+```
+
 ![Git:版本控制系统](/images/git.jpeg)
 
 # 搭建 Git 服务器
