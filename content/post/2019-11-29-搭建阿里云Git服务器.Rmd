@@ -270,3 +270,6 @@ drwxrwxr-x 4 william william 4.0K Nov 30 13:22  ../
 ## 开发项目结构
 
 
+# 参考链接
+1. [gitosis 安装使用及错误整理](https://blog.csdn.net/Suo_ivy/article/details/79941323)：步骤讲解比较详细
+2. [git 团队协作](https://www.liaoxuefeng.com/wiki/896043488029600/900375748016320)：快速入门必备
