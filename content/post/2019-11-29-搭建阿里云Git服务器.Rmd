@@ -10,7 +10,7 @@ draft: false
 ToC: true
 ---
 
-![git](/images/git.jpeg)
+![Git:版本控制系统](/images/git.jpeg)
 
 # 搭建 Git 服务器
 
@@ -81,7 +81,11 @@ warning: You appear to have cloned an empty repository.
 # 版本控制
 
 ```bash
-git clone git@47.98.117.71:/home/git/codebase/test.git
+## 如果没有使用 gitosis
+## git clone git@47.98.117.71:/home/git/codebase/test.git
+
+## 如果使用 gitosis, 默认存放在 /home/git/repositories
+git clone git@47.98.117.71:test.git
 
 git checkout master
 git pull

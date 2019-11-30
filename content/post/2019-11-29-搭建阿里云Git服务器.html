@@ -13,8 +13,8 @@ ToC: true
 
 
 <div class="figure">
-<img src="/images/git.jpeg" alt="git" />
-<p class="caption">git</p>
+<img src="/images/git.jpeg" alt="Git:版本控制系统" />
+<p class="caption"><a href="Git:版本控制系统" class="uri">Git:版本控制系统</a></p>
 </div>
 <div id="-git-" class="section level1">
 <h1>搭建 Git 服务器</h1>
@@ -47,7 +47,11 @@ warning: You appear to have cloned an empty repository.</code></pre>
 </div>
 <div class="section level1">
 <h1>版本控制</h1>
-<pre class="bash"><code>git clone git@47.98.117.71:/home/git/codebase/test.git
+<pre class="bash"><code>## 如果没有使用 gitosis
+## git clone git@47.98.117.71:/home/git/codebase/test.git
+
+## 如果使用 gitosis, 默认存放在 /home/git/repositories
+git clone git@47.98.117.71:test.git
 
 git checkout master
 git pull
