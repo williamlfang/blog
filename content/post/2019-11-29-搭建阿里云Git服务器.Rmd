@@ -370,43 +370,43 @@ drwxrwxr-x  2 william william 4.0K Dec  1 15:15 keydir/
 
 1. `keydir` 用来存放用户的 `id_rsa.pub` 公钥，文件名字对应用户名称，如 `fl166.pub` 则对应 `fl166` 这个用户，需要在 `gitolite.conf` 配置文件使用到。
 
-   ```bash
-   cd keydir
-   ll
-   total 16K
-   drwxrwxr-x 2 william william 4.0K Dec  1 15:15 ./
-   drwxrwxr-x 5 william william 4.0K Dec  1 14:24 ../
-   -rw-rw-r-- 1 william william  409 Dec  1 14:28 fl166.pub
-   -rw-rw-r-- 1 william william  409 Dec  1 14:24 git_admin_william.pub
-   ```
+    ```bash
+    cd keydir
+    ll
+    total 16K
+    drwxrwxr-x 2 william william 4.0K Dec  1 15:15 ./
+    drwxrwxr-x 5 william william 4.0K Dec  1 14:24 ../
+    -rw-rw-r-- 1 william william  409 Dec  1 14:28 fl166.pub
+    -rw-rw-r-- 1 william william  409 Dec  1 14:24 git_admin_william.pub
+    ```
 
 2. `conf` 是配置文件，修改用户所属项目的读写权限
 
-   ```bash
-   cd conf
-   ll
-   
-   total 12K
-   drwxrwxr-x 2 william william 4.0K Dec  1 15:07 ./
-   drwxrwxr-x 5 william william 4.0K Dec  1 14:24 ../
-   -rw-rw-r-- 1 william william  210 Dec  1 15:15 gitolite.conf
-   
-   cat gitolite.conf
-   
-   repo gitolite-admin
-   	RW+     =       git_admin_william
-   
-   repo testing
-   	RW+		=		@all
-   
-   repo test1
-   	RW+		=		@all
-   
-   repo test2
-   	RW+ 	     =	    git_admin_william
-   	R   master   = 	    fl166
-   	RW+ from166  =      fl166
-   ```
+    ```bash
+    cd conf
+    ll
+
+    total 12K
+    drwxrwxr-x 2 william william 4.0K Dec  1 15:07 ./
+    drwxrwxr-x 5 william william 4.0K Dec  1 14:24 ../
+    -rw-rw-r-- 1 william william  210 Dec  1 15:15 gitolite.conf
+
+    cat gitolite.conf
+
+    repo gitolite-admin
+    	RW+     =       git_admin_william
+
+    repo testing
+    	RW+		=		@all
+
+    repo test1
+    	RW+		=		@all
+
+    repo test2
+    	RW+ 	     =	    git_admin_william
+    	R   master   = 	    fl166
+    	RW+ from166  =      fl166
+    ```
 
    这里，以 `test2` 为例，说明各个用户的权限
 
