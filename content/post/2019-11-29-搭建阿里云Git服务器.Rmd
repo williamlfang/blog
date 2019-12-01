@@ -107,11 +107,25 @@ git merge dev
 git add ./*
 git commit -m "modify master"
 git push origin master
+
+## 本地获取其他分支
+## 将远程git仓库里的指定分支拉取到本地（本地不存在的分支）
+git checkout -b 本地分支名 origin/远程分支名
+
+## 如果出现提示：
+## fatal: Cannot update paths and switch to branch 'dev2' at the same time.
+## Did you intend to checkout 'origin/dev2' which can not be resolved as commit?
+## 表示拉取不成功。需要先执行
+git fetch
+## 然后再执行
+git checkout -b 本地分支名 origin/远程分支名
 ```
 
 # 团队管理
 
-## 使用 gitosis 管理权限
+## ~~使用 gitosis 管理权限~~
+
+> gitosis 现已经被改写升级成 gitolite, 更好得支持在 branch 级别的权限控制
 
 把团队成员的公钥保存到 `/home/git/.ssh/authorized_keys` 文件的做法，对于小规模的队伍是可行的。但是，这样的弊端也是十分明显：
 
@@ -267,9 +281,143 @@ drwxrwxr-x 4 william william 4.0K Nov 30 13:22  ../
     and the repository exists.
     ```
 
+## 使用 gitolite 管理权限
+
+### 安装 gitolite
+
+由于 `gitolite` 使用 `Perl` 编写，因此我们需要先安装
+
+```bash
+sudo yum install perl
+```
+
+同样，我们需要修改
+
+```bash
+vim /etc/passwd
+
+## 修改成如下
+git:x :1000:1000::/home/git:/bin/sh
+```
+
+然后切换到用户 `git` 安装
+
+```bash
+su git
+cd /home/git
+git clone git://github.com/sitaramc/gitolite
+
+## 安装到 /home/git/bin 目录下
+mkdir -p /home/git/bin
+./gitolite/install -to /home/git/bin/
+```
+
+### 添加管理员
+
+可以有两种方式添加管理员
+
+1. 服务器作为管理员
+2. 第三方用户作为管理员
+
+我更倾向第二种方法，因为这样可以避免频繁的登录服务器操作。
+
+```bash
+## !!! 在本地机器操作
+scp ~/.ssh/id_rsa.pub root@47.98.117.71:/home/git/git_admin_william.pub
+```
+
+然后在服务器终端操作
+
+```bash
+/home/git/bin/gitolite setup -pk /home/git/git_admin_william.pub
+
+Initialized empty Git repository in /home/git/repositories/gitolite-admin.git/
+Initialized empty Git repository in /home/git/repositories/testing.git/
+```
+
+出现以上消息说明操作成功，我们可以看到在 `/home/git/repositories` 初始化了两个repo
+
+```bash
+ll                                                                                     
+total 8
+drwx------ 8 git git 4096 Dec  1 15:15 gitolite-admin.git
+drwx------ 7 git git 4096 Dec  1 15:15 testing.git
+```
+
+如此一来，我们便可以在 `william` 的这台电脑上设置用户权限了。
+
+### 设置用户权限
+
+我们在本地机器（`william`）终端操作
+
+```bash
+## 本地机器 william
+
+cd ~/Documents
+git clone git@47.98.117.71:gitolite-admin.git
+
+cd gitolite-admin
+ll                                                                                           
+total 20K      
+drwxrwxr-x  5 william william 4.0K Dec  1 14:24 ./
+drwxr-xr-x 52 william william 4.0K Dec  1 14:34 ../
+drwxrwxr-x  2 william william 4.0K Dec  1 15:07 conf/
+drwxrwxr-x  8 william william 4.0K Dec  1 15:43 .git/
+drwxrwxr-x  2 william william 4.0K Dec  1 15:15 keydir/
+```
+
+其中：
+
+1. `keydir` 用来存放用户的 `id_rsa.pub` 公钥，文件名字对应用户名称，如 `fl166.pub` 则对应 `fl166` 这个用户，需要在 `gitolite.conf` 配置文件使用到。
+
+   ```bash
+   cd keydir
+   ll
+   total 16K
+   drwxrwxr-x 2 william william 4.0K Dec  1 15:15 ./
+   drwxrwxr-x 5 william william 4.0K Dec  1 14:24 ../
+   -rw-rw-r-- 1 william william  409 Dec  1 14:28 fl166.pub
+   -rw-rw-r-- 1 william william  409 Dec  1 14:24 git_admin_william.pub
+   ```
+
+2. `conf` 是配置文件，修改用户所属项目的读写权限
+
+   ```bash
+   cd conf
+   ll
+   
+   total 12K
+   drwxrwxr-x 2 william william 4.0K Dec  1 15:07 ./
+   drwxrwxr-x 5 william william 4.0K Dec  1 14:24 ../
+   -rw-rw-r-- 1 william william  210 Dec  1 15:15 gitolite.conf
+   
+   cat gitolite.conf
+   
+   repo gitolite-admin
+   	RW+     =       git_admin_william
+   
+   repo testing
+   	RW+		=		@all
+   
+   repo test1
+   	RW+		=		@all
+   
+   repo test2
+   	RW+ 	     =	    git_admin_william
+   	R   master   = 	    fl166
+   	RW+ from166  =      fl166
+   ```
+
+   这里，以 `test2` 为例，说明各个用户的权限
+
+   - `git_admin_william` 拥有顶级的可读（`R`）、可写（`W`）、以及强制更新（`+`）权限
+   - `fl166` 只拥有对 `master` 分支的读取权限，没有其他（写）权限
+   - `fl166` 还拥有对的分支 `from166` 的可读（`R`）、可写（`W`）、以及强制更新（`+`）权限
+
 ## 开发项目结构
 
-
 # 参考链接
+
 1. [gitosis 安装使用及错误整理](https://blog.csdn.net/Suo_ivy/article/details/79941323)：步骤讲解比较详细
-2. [git 团队协作](https://www.liaoxuefeng.com/wiki/896043488029600/900375748016320)：快速入门必备
+2. [Gitolite搭建git仓库实现权限控制]([http://www.xiaocai.name/2017/06/14/Gitolite%E6%90%AD%E5%BB%BAgit%E4%BB%93%E5%BA%93%E5%AE%9E%E7%8E%B0%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/](http://www.xiaocai.name/2017/06/14/Gitolite搭建git仓库实现权限控制/))：介绍使用 gitolite 替代 gitosis
+3. [git 团队协作](https://www.liaoxuefeng.com/wiki/896043488029600/900375748016320)：快速入门必备
