@@ -1,0 +1,33 @@
+---
+title: "解决ssh上传公钥到服务器仍需输入密码的问题"
+author: William
+date: 2019-12-02
+lastmod: 2019-12-02
+categories: [Programming]
+tags: [ssh,密码,git]
+description: 为了保证安装，我们通常使用公钥登录的方式，可以避免输入密码。但是如果权限管理不正确，即使上传了本地公钥后，ssh 登录连接仍然提示需要输入密码。
+draft: false
+ToC: false
+---
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(comment = '',
+                      fig.align = 'center',
+                      eval = FALSE)
+```
+
+为了保证安装，我们通常使用公钥登录的方式，可以避免输入密码。但是如果权限管理不正确，即使上传了本地公钥后，ssh 登录连接仍然提示需要输入密码。
+
+这主要是因为权限设置的问题。参考链接：[SSH 上传公钥到服务器后还需要密码](https://ruby-china.org/topics/14182)。
+
+> 貌似是.ssh目录和authorized的权限不对，ssh -vvT git@serverip时出现了：ignored authorized_keys bad ownership or modes for directory。然后google搜答案.将.ssh的权限改为700,authorized_keys权限改为600即可。
+
+```bash
+cd ~/
+chmod 700 -R .ssh
+chmod 600 authorized_keys  
+```
+
+
+
+
