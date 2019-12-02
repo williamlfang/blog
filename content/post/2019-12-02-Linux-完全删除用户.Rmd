@@ -1,0 +1,26 @@
+---
+title: "Linux 完全删除用户"
+author: William
+date: 2019-12-02
+lastmod: 2019-12-02
+categories: [Programming]
+tags: [Linux,userdel,groupdel]
+description: 完全删除用户。
+draft: false
+ToC: false
+---
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(comment = '',
+                      fig.align = 'center',
+                      eval = FALSE)
+```
+
+```bash
+userdel git
+## 提示错误
+## userdel: group git not removed because it is not the primary group of user git.
+usermod -g git git
+groupdel git   
+```
+
