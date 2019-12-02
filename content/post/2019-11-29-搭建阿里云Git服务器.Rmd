@@ -323,13 +323,20 @@ mkdir -p /home/git/bin
 
 ```bash
 ## !!! 在本地机器操作
-scp ~/.ssh/id_rsa.pub root@47.98.117.71:/home/git/git_admin_william.pub
+scp ~/.ssh/id_rsa.pub root@47.98.117.71:/home/git/.ssh/william.pub
 ```
+
+Gitolite 将会帮我们管理用户公钥，所以先把当前控制文件改名备份，以便稍后重新添加，准备好让 Gitosis 自动管理 `authorized_keys` 文件：
+
+```bash
+mv /home/git/.ssh/authorized_keys /home/git/.ssh/authorized_keys_bk
+```
+
 
 然后在服务器终端操作
 
 ```bash
-/home/git/bin/gitolite setup -pk /home/git/git_admin_william.pub
+/home/git/bin/gitolite setup -pk /home/git/.ssh/william.pub
 
 Initialized empty Git repository in /home/git/repositories/gitolite-admin.git/
 Initialized empty Git repository in /home/git/repositories/testing.git/
