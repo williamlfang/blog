@@ -7,7 +7,7 @@ categories: [Programming]
 tags: [centos7,samba,windows,权限,selinux]
 description: samba 提供了从 Windows 操作系统访问 Linux 文件的服务。
 draft: false
-ToC: false
+ToC: true
 ---
 
 ```{r echo=FALSE}
