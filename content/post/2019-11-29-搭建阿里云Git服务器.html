@@ -227,7 +227,10 @@ mkdir -p /home/git/bin
 <pre class="bash"><code>## !!! 在本地机器操作
 scp ~/.ssh/id_rsa.pub root@47.98.117.71:/home/git/.ssh/william.pub</code></pre>
 <p>Gitolite 将会帮我们管理用户公钥，所以先把当前控制文件改名备份，以便稍后重新添加，准备好让 Gitosis 自动管理 <code>authorized_keys</code> 文件：</p>
-<pre class="bash"><code>mv /home/git/.ssh/authorized_keys /home/git/.ssh/authorized_keys_bk</code></pre>
+<pre class="bash"><code>cd ~/
+chmod 700 -R .ssh
+chmod 600 authorized_keys  
+mv /home/git/.ssh/authorized_keys /home/git/.ssh/authorized_keys_bk</code></pre>
 <p>然后在服务器终端操作</p>
 <pre class="bash"><code>/home/git/bin/gitolite setup -pk /home/git/.ssh/william.pub
 

@@ -329,6 +329,9 @@ scp ~/.ssh/id_rsa.pub root@47.98.117.71:/home/git/.ssh/william.pub
 Gitolite 将会帮我们管理用户公钥，所以先把当前控制文件改名备份，以便稍后重新添加，准备好让 Gitosis 自动管理 `authorized_keys` 文件：
 
 ```bash
+cd ~/
+chmod 700 -R .ssh
+chmod 600 authorized_keys  
 mv /home/git/.ssh/authorized_keys /home/git/.ssh/authorized_keys_bk
 ```
 
