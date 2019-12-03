@@ -5,7 +5,7 @@ date: 2019-12-03
 lastmod: 2019-12-03
 categories: [Programming]
 tags: [centos7,samba,windows,权限,selinux]
-description: 
+description: samba 提供了从 Windows 操作系统访问 Linux 文件的服务。
 draft: false
 ToC: false
 ---
