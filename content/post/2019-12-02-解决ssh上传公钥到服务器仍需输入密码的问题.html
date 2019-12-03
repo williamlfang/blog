@@ -18,5 +18,8 @@ ToC: false
 <p>貌似是.ssh目录和authorized的权限不对，ssh -vvT <a href="mailto:git@serverip时出现了">git@serverip时出现了</a>：ignored authorized_keys bad ownership or modes for directory。然后google搜答案.将.ssh的权限改为700,authorized_keys权限改为600即可。</p>
 </blockquote>
 <pre class="bash"><code>cd ~/
-chmod 700 -R .ssh
-chmod 600 authorized_keys  </code></pre>
+mkdir .ssh
+chmod 700 .ssh
+
+## touch .ssh/authorized_keys
+chmod 600 .ssh/authorized_keys </code></pre>

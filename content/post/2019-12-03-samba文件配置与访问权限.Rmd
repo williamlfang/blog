@@ -1,0 +1,239 @@
+---
+title: "samba文件配置与访问权限"
+author: William
+date: 2019-12-03
+lastmod: 2019-12-03
+categories: [Programming]
+tags: [centos7,samba,windows,权限,selinux]
+description: 
+draft: false
+ToC: false
+---
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(comment = '',
+                      fig.align = 'center',
+                      eval = FALSE)
+```
+
+# 安装
+
+## 安装软件
+
+```bash
+yum install samba
+```
+
+## 查看状态
+
+```bash
+rpm -qa |grep samba
+samba-client-libs-4.8.3-4.el7.x86_64
+samba-4.8.3-4.el7.x86_64
+samba-common-libs-4.8.3-4.el7.x86_64
+samba-common-tools-4.8.3-4.el7.x86_64
+samba-common-4.8.3-4.el7.noarch
+samba-libs-4.8.3-4.el7.x86_64
+```
+
+## 查看服务进程
+
+```bash
+service smb status
+Redirecting to /bin/systemctl status smb.service
+● smb.service - Samba SMB Daemon
+   Loaded: loaded (/usr/lib/systemd/system/smb.service; enabled; vendor preset: disabled)
+   Active: active (running) since Tue 2019-12-03 10:34:47 CST; 17min ago
+     Docs: man:smbd(8)
+           man:samba(7)
+           man:smb.conf(5)
+ Main PID: 36896 (smbd)
+   Status: "smbd: ready to serve connections..."
+    Tasks: 5
+   CGroup: /system.slice/smb.service
+           ├─36896 /usr/sbin/smbd --foreground --no-process-group
+           ├─36901 /usr/sbin/smbd --foreground --no-process-group
+           ├─36902 /usr/sbin/smbd --foreground --no-process-group
+           ├─36903 /usr/sbin/smbd --foreground --no-process-group
+           └─37042 /usr/sbin/smbd --foreground --no-process-group
+
+Dec 03 10:34:47 hicloud systemd[1]: Starting Samba SMB Daemon...
+Dec 03 10:34:47 hicloud smbd[36896]: [2019/12/03 10:34:47.207282,  0] ../lib/util/become_daemon.c:1...ady)
+Dec 03 10:34:47 hicloud smbd[36896]:   daemon_ready: STATUS=daemon 'smbd' finished starting up and ...ions
+Dec 03 10:34:47 hicloud systemd[1]: Started Samba SMB Daemon.
+Hint: Some lines were ellipsized, use -l to show in full.
+```
+
+## 启动服务
+
+```bash
+systemctl restart smb
+```
+
+## 设置开机启动
+
+```bash
+systemctl enable smb
+```
+
+## 临时关闭 SeLinux
+
+需要关闭 `SeLinux` 才可以让 Windows 用户访问 `samba`
+
+```bash
+setenforce 0
+```
+
+查看 `SeLinux` 状态
+
+```bash
+sestatus            
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   permissive
+Mode from config file:          enforcing
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Max kernel policy version:      31
+```
+
+## 永久关闭 SeLinux
+
+修改配置文件/etc/selinux/config，将SELINU置为disabled
+
+```bash
+cat /etc/selinux/config
+
+# This file controls the state of SELinux on the system.
+# SELINUX= can take one of these three values:
+#     enforcing - SELinux security policy is enforced.
+#     permissive - SELinux prints warnings instead of enforcing.
+#     disabled - No SELinux policy is loaded.
+## SELINUX=enforcing
+SELINUX=disabled
+# SELINUXTYPE= can take one of three values:
+#     targeted - Targeted processes are protected,
+#     minimum - Modification of targeted policy. Only selected processes are protected. 
+#     mls - Multi Level Security protection.
+SELINUXTYPE=targeted 
+```
+
+重启后可以查看`SeLinux`状态
+
+```bash
+sestatus
+SELinux status:                 disabled
+```
+
+# 用户设置
+
+## 添加用户
+
+```bash
+ useradd fl
+```
+
+## 设置密码
+
+```bash
+smbpasswd -a fl
+```
+
+然后重启 `samba`
+
+```bash
+systemctl restart samba
+```
+
+
+
+# 设置访问
+
+有关访问权限配置参数在
+
+```bash
+vim /etc/samba/smb.conf
+
+# See smb.conf.example for a more detailed config file or
+# read the smb.conf manpage.
+# Run 'testparm' to verify the config is correct after
+# you modified it.
+
+[global]
+	workgroup = SAMBA
+	security = user
+
+	passdb backend = tdbsam
+
+	printing = cups
+	printcap name = cups
+	load printers = yes
+	cups options = raw
+
+[homes]
+	comment = Home Directories
+	valid users = %S, %D%w%S
+	browseable = No
+	read only = No
+	inherit acls = Yes
+
+[printers]
+	comment = All Printers
+	path = /var/tmp
+	printable = Yes
+	create mask = 0600
+	browseable = No
+
+[fl]
+	comment= fl files
+	path = /home/fl/
+	browseable = yes
+	writable = yes
+	available = yes
+	valid users = fl,root
+	
+[pc]
+    comment= pc files
+    path = /home/pc/
+    browseable = yes
+    writable = yes
+    available = yes
+    valid users = pc,root
+
+[shared]
+    comment = share files
+    path = /shared/
+    browseable = yes 
+    writable = yes 
+    available = yes 
+    valid users = root,fl,pc
+```
+
+一般而言，我们对某个用户进行设置
+
+```bash
+[fl]
+	comment= fl files
+	path = /home/fl/
+	browseable = yes
+	writable = yes
+	available = yes
+	valid users = fl,root
+```
+
+# Windows 连接
+
+1. `网络连接` 
+2. 填写 `\\192.168.1.199\fl` （对应于以上的用户，直接访问 `/home/fl`），注意 Windows 使用 `\\`
+3. 然后使用账户、密码即可登录
+
+# Windows 没有权限访问的解决方法
+
+有可能是 `Centos` 打开了 `selinux`， 需要关闭即可
+
+```bash
+setenforce 0
+```
+
