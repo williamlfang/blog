@@ -1,0 +1,79 @@
+---
+title: "Clion 远程调试"
+author: William
+date: 2019-12-04
+lastmod: 2019-12-04
+categories: [Programming]
+tags: [c++,clion,服务器,远程,gdb]
+description: 
+draft: false
+ToC: true
+---
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(comment = '',
+                      fig.align = 'center',
+                      eval = FALSE)
+```
+
+
+
+# 项目配置
+
+## 同步本地代码
+
+1. 打开 `File` -> `Setting` -> `Build,Execution,Deployment` -> `Deployment`
+
+2. 在右边点击 `+` 进行添加远程服务
+
+   ![](/images/2019-12-04-Clion-远程调试/setting.gif)
+
+3. 根据 `Connections` 添加远程服务器账户信息
+
+4. 切换到 `Mappings`
+
+   - 设置本地的代码根目录Local path
+
+   - 设置远程的代码根目录 Deployment path
+
+5. 同步本地代码到远程服务器。由于我们的代码是放在本地机器，而需要在远程服务器进行编译、调试，因此需要把本地代码上传到服务器。点击 `Tools` -> `Deployment` 进行配置。当然，最好设置成自动同步，这样一旦本地代码发生变动，就会自动同步到服务器。
+
+   > 由于自动同步只能根据单文件，因此我们需要事先把这个文件夹上传到服务器，然后才能实现自动同步功能。
+
+   ![](/images/2019-12-04-Clion-远程调试/auto-update.gif)
+
+## 远程调试
+
+1. 现在已经把本地代码同步到服务器了，我们就可以在服务器进行编译。记得 `cmake` 指定需要 `-DCMAKE_BUILD_TYPE=Debug`来请获取调试
+
+    ```bash
+    ## 服务器端
+    cd cmake-build-debug
+    cmake .. -DCMAKE_BUILD_TYPE=Debug
+    make
+    ```
+
+    ![](/images/2019-12-04-Clion-远程调试/build.gif)
+
+2. 启动 `gdbserver`
+
+    ```bash
+    ## 服务器端
+    ## 指定监听端口 1234
+    gdbserver :1234 hello
+    ```
+
+    ![](/images/2019-12-04-Clion-远程调试/gdbserver.gif)
+
+3. 在 `Clion` 进行调试
+
+    - 添加 `gdbserver` 调试器
+    - 启动对服务器指定端口的调试
+
+    ![](/images/2019-12-04-Clion-远程调试/debug.gif)
+
+# 参考链接
+
+1. [使用Clion优雅的完全远程自动同步和远程调试c++](https://cloud.tencent.com/developer/article/1406250)
+2. [CLion 实现远程调试](https://blog.csdn.net/lihao21/article/details/87425187)
+
