@@ -5,7 +5,7 @@ date: 2019-12-04
 lastmod: 2019-12-04
 categories: [Programming]
 tags: [c++,clion,服务器,远程,gdb]
-description: 
+description: 使用 Clion 在远程服务器进行项目开发。
 draft: false
 ToC: true
 ---
