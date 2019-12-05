@@ -20,7 +20,7 @@ ToC: true
 
 ## 安装
 
-![tmux](/images/tmux.png)
+![tmux](/images/2019-12-04-tmux-终端神器/tmux.png)
 
 ```bash
 # Install tmux 2.8 on Centos
@@ -196,6 +196,8 @@ setw -g monitor-activity on
 ## 鼠标设置，不要打开，不然用鼠标选择不了内容
 set-option -g mouse on
 ```
+
+![tmux](/images/2019-12-04-tmux-终端神器/panel.png)
 
 接着，我们需要安装底部状态栏支持插件 `tmux-powerline`
 
