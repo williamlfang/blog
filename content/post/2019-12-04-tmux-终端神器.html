@@ -193,10 +193,29 @@ setw -g monitor-activity on
 #set -g visual-activity on
 
 ## 鼠标设置，不要打开，不然用鼠标选择不了内容
-set-option -g mouse on
+set-option -g mouse on</code></pre>
+<p>接着，我们需要安装底部状态栏支持插件 <code>tmux-powerline</code></p>
+<pre class="bash"><code>mkidr -p $HOME/opt
+cd $HOME/opt
+mkdir -p .tmux
+cd .tmux
+git clone https://github.com/erikw/tmux-powerline.git 
 
-
+echo &#39;
 ## =============================================================================
+## https://github.com/erikw/tmux-powerline
+set-option -g status on
+set-option -g status-interval 2
+set-option -g status-justify &quot;centre&quot;
+set-option -g status-left-length 60
+set-option -g status-right-length 150
+set-option -g status-left &quot;#(~/opt/.tmux/tmux-powerline/powerline.sh left)&quot;
+set-option -g status-right &quot;#(~/opt/.tmux/tmux-powerline/powerline.sh right)&quot;
+set-window-option -g window-status-current-format &quot;#[fg=colour235, bg=colour27]⮀#[fg=colour255, bg=colour27] #I ⮁ #W #[fg=colour27, bg=colour235]⮀&quot;
+## =============================================================================
+&#39; &gt;&gt; $HOME/.tmux.conf</code></pre>
+<p>然后在 <code>~/.tmux.conf</code> 添加如下</p>
+<pre class="bash"><code>## =============================================================================
 ## https://github.com/erikw/tmux-powerline
 set-option -g status on
 set-option -g status-interval 2
