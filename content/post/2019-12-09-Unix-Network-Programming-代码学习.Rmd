@@ -4,10 +4,10 @@ author: William
 date: 2019-12-09
 lastmod: 2019-12-09
 categories: [Programming]
-tags: []
-description: 
+tags: [unix,network,c,网络编程]
+description: 最近在学习网络编程，准备仔细研究 Unix Network Programming 的源代码。
 draft: false
-ToC: false
+ToC: true
 ---
 
 # Chap.0 安装源代码
@@ -40,4 +40,6 @@ sudo ./daytimetcpsrv
 ./daytimetcpcli
 Mon Dec  9 11:45:25 2019
 ```
+
+# Chap.1 Intro
 
