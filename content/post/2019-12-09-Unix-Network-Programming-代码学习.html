@@ -1,0 +1,42 @@
+---
+title: "Unix Network Programming 代码学习"
+author: William
+date: 2019-12-09
+lastmod: 2019-12-09
+categories: [Programming]
+tags: []
+description: 
+draft: false
+ToC: false
+---
+
+
+
+<div id="chap.0-" class="section level1">
+<h1>Chap.0 安装源代码</h1>
+<div class="section level2">
+<h2>安装步骤</h2>
+<pre><code>## git clone git@github.com:williamlfang/unix-network-programming-v3.git
+cd unix-network-programming-v3-master
+./configure
+
+cd lib         # build the basic library that all programs need
+make           # use &quot;gmake&quot; everywhere on BSD/OS systems
+
+cd ../libfree  # continue building the basic library
+make</code></pre>
+</div>
+<div class="section level2">
+<h2>测试</h2>
+<pre class="bash"><code>## 编译
+cd intro
+make
+
+## 启动服务器
+sudo ./daytimetcpsrv
+
+## 运行客户端
+./daytimetcpcli
+Mon Dec  9 11:45:25 2019</code></pre>
+</div>
+</div>
