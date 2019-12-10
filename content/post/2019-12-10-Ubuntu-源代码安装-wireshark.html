@@ -1,0 +1,85 @@
+---
+title: "Ubuntu 源代码安装 wireshark"
+author: William
+date: 2019-12-10
+lastmod: 2019-12-10
+categories: [Programming]
+tags: [ubuntu,networking,tcp,wireshark,网络,数据]
+description: 为了获取最新版本的 wireshark 软件，需要从源代码进行安装。
+draft: false
+ToC: true
+---
+
+
+
+<p><code>wireshark</code> 与 <code>tcpdump</code> 是网络抓包的两大神器。其中，前者提供了更加便捷的界面操作，后者则比较适合在命令行进行操作。</p>
+<div class="section level1">
+<h1>安装</h1>
+<p><code>Ubuntu</code> 可以直接从默认仓库安装，但是提供的是稳(too)定(old)的版本。为了使用新功能，我决定从源代码安装 <code>wireshark</code>。</p>
+<div class="section level2">
+<h2>下载代码</h2>
+<p>我们可以直接从官网下载<a href="https://www.wireshark.org/#download">最新版本的源代码</a>，或者找到<a href="https://www.wireshark.org/download/src/">历史版本</a>。最好开启 Chrome 的翻墙功能，下载速度会快一些。</p>
+<pre class="bash"><code>wget https://1.as.dl.wireshark.org/src/wireshark-3.0.7.tar.xz</code></pre>
+</div>
+<div class="section level2">
+<h2>安装依赖</h2>
+<p>有可能提示找不到 <code>libgcrypt</code></p>
+<pre class="bash"><code>apt install qttools5-dev qttools5-dev-tools libqt5svg5-dev qtmultimedia5-dev build-essential automake autoconf libgtk2.0-dev libglib2.0-dev flex bison libpcap-dev libgcrypt20-dev cmake -y
+sudo apt-get install libgcrypt20-dev
+sudo apt-get install keepassx
+sudo apt-get install build-essential libgl1-mesa-dev</code></pre>
+</div>
+<div id="-wireshark" class="section level2">
+<h2>安装 wireshark</h2>
+<pre class="bash"><code>tar -xf wireshark-3.0.7.tar.xz
+cd wireshark-3.0.7
+mkdir build
+cd build
+
+cmake ..
+make  -j
+make install</code></pre>
+<p>然后查看版本信息</p>
+<pre class="bash"><code>wireshark -v
+
+Wireshark 3.0.7 (Git commit 9435717b91f5)
+
+Copyright 1998-2019 Gerald Combs &lt;gerald@wireshark.org&gt; and contributors.
+License GPLv2+: GNU GPL version 2 or later &lt;http://www.gnu.org/licenses/old-licenses/gpl-2.0.html&gt;
+This is free software; see the source for copying conditions. There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Compiled (64-bit) with Qt 5.9.7, with libpcap, without POSIX capabilities,
+without libnl, with GLib 2.56.4, with zlib 1.2.11, without SMI, without c-ares,
+without Lua, without GnuTLS, with Gcrypt 1.8.1, without Kerberos, without
+MaxMind DB resolver, without nghttp2, without LZ4, without Snappy, with libxml2
+2.9.4, with QtMultimedia, without SBC, without SpanDSP, without bcg729.
+
+Running on Linux 4.15.0-20-generic, with Intel(R) Core(TM) i5-6500 CPU @ 3.20GHz
+(with SSE4.2), with 40091 MB of physical memory, with locale en_US.UTF-8, with
+libpcap version 1.8.1, with Gcrypt 1.8.1, with zlib 1.2.11, binary plugins
+supported (0 loaded).
+
+Built using gcc 7.4.0.</code></pre>
+<div class="figure">
+<img src="/images/2019-12-10-Ubuntu-源代码安装-wireshark/wireshark.png" />
+
+</div>
+</div>
+<div class="section level2">
+<h2>问题解决</h2>
+<ol style="list-style-type: decimal">
+<li>出现错误：file not recognized: File truncated</li>
+</ol>
+<p><code>bash    ui/qt/CMakeFiles/qtui.dir/widgets/clickable_label.cpp.o: file not recognized: File truncated     collect2: error: ld returned 1 exit status    CMakeFiles/wireshark.dir/build.make:557: recipe for target 'run/wireshark' failed      make[2]: *** [run/wireshark] Error 1      CMakeFiles/Makefile2:661: recipe for target 'CMakeFiles/wireshark.dir/all' failed      make[1]: *** [CMakeFiles/wireshark.dir/all] Error 2    Makefile:140: recipe for target 'all' failed    make: *** [all] Error 2</code></p>
+<p>没有明白具体的错误原因，不过在 SO上面找到了这个提示：<a href="https://stackoverflow.com/questions/5713894/file-not-recognized-file-truncated-gcc-error">File not recognized: File truncated GCC error</a>。提供的思路是原来编译的目标文件有问题，直接删掉就好了</p>
+<blockquote>
+<p>Just remove the object file.</p>
+<p>This error most likely appeared after the previous build was interrupted and object file was not generated completely.</p>
+</blockquote>
+<p><code>bash    rm ui/qt/CMakeFiles/qtui.dir/widgets/clickable_label.cpp.o</code></p>
+</div>
+</div>
+<div class="section level1">
+<h1>测试</h1>
+</div>
