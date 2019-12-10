@@ -78,7 +78,7 @@ supported (0 loaded).
 Built using gcc 7.4.0.
 ```
 
-![](/images/2019-12-10-Ubuntu-源代码安装-wireshark/wireshark.png)
+![成功启动](/images/2019-12-10-Ubuntu-源代码安装-wireshark/wireshark.png)
 
 ## 问题解决
 
@@ -107,7 +107,10 @@ Built using gcc 7.4.0.
     rm ui/qt/CMakeFiles/qtui.dir/widgets/clickable_label.cpp.o
     ```
 
-   
+# 抓包
+
+![抓包现场发来图片](/images/2019-12-10-Ubuntu-源代码安装-wireshark/capture.png)
+
 
 # 参考链接
 1. [Install Latest Wireshark on Ubuntu 18.04](https://kifarunix.com/install-latest-wireshark-on-ubuntu-18-04/)
