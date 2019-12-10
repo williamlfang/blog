@@ -69,17 +69,27 @@ Built using gcc 7.4.0.</code></pre>
 <div class="section level2">
 <h2>问题解决</h2>
 <ol style="list-style-type: decimal">
-<li>出现错误：file not recognized: File truncated</li>
-</ol>
-<p><code>bash    ui/qt/CMakeFiles/qtui.dir/widgets/clickable_label.cpp.o: file not recognized: File truncated     collect2: error: ld returned 1 exit status    CMakeFiles/wireshark.dir/build.make:557: recipe for target 'run/wireshark' failed      make[2]: *** [run/wireshark] Error 1      CMakeFiles/Makefile2:661: recipe for target 'CMakeFiles/wireshark.dir/all' failed      make[1]: *** [CMakeFiles/wireshark.dir/all] Error 2    Makefile:140: recipe for target 'all' failed    make: *** [all] Error 2</code></p>
+<li><p>出现错误：file not recognized: File truncated</p>
+<pre class="bash"><code>ui/qt/CMakeFiles/qtui.dir/widgets/clickable_label.cpp.o: file not recognized: File truncated 
+collect2: error: ld returned 1 exit status
+CMakeFiles/wireshark.dir/build.make:557: recipe for target &#39;run/wireshark&#39; failed  
+make[2]: *** [run/wireshark] Error 1  
+CMakeFiles/Makefile2:661: recipe for target &#39;CMakeFiles/wireshark.dir/all&#39; failed  
+make[1]: *** [CMakeFiles/wireshark.dir/all] Error 2
+Makefile:140: recipe for target &#39;all&#39; failed
+make: *** [all] Error 2      </code></pre>
 <p>没有明白具体的错误原因，不过在 SO上面找到了这个提示：<a href="https://stackoverflow.com/questions/5713894/file-not-recognized-file-truncated-gcc-error">File not recognized: File truncated GCC error</a>。提供的思路是原来编译的目标文件有问题，直接删掉就好了</p>
 <blockquote>
 <p>Just remove the object file.</p>
 <p>This error most likely appeared after the previous build was interrupted and object file was not generated completely.</p>
 </blockquote>
-<p><code>bash    rm ui/qt/CMakeFiles/qtui.dir/widgets/clickable_label.cpp.o</code></p>
+<pre class="bash"><code>rm ui/qt/CMakeFiles/qtui.dir/widgets/clickable_label.cpp.o</code></pre></li>
+</ol>
 </div>
 </div>
 <div class="section level1">
-<h1>测试</h1>
+<h1>参考链接</h1>
+<ol style="list-style-type: decimal">
+<li><a href="https://kifarunix.com/install-latest-wireshark-on-ubuntu-18-04/">Install Latest Wireshark on Ubuntu 18.04</a></li>
+</ol>
 </div>

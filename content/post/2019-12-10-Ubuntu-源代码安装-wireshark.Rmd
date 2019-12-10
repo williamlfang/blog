@@ -84,29 +84,30 @@ Built using gcc 7.4.0.
 
 1. 出现错误：file not recognized: File truncated 
 
-   ```bash
-   ui/qt/CMakeFiles/qtui.dir/widgets/clickable_label.cpp.o: file not recognized: File truncated 
-   collect2: error: ld returned 1 exit status
-   CMakeFiles/wireshark.dir/build.make:557: recipe for target 'run/wireshark' failed  
-   make[2]: *** [run/wireshark] Error 1  
-   CMakeFiles/Makefile2:661: recipe for target 'CMakeFiles/wireshark.dir/all' failed  
-   make[1]: *** [CMakeFiles/wireshark.dir/all] Error 2
-   Makefile:140: recipe for target 'all' failed
-   make: *** [all] Error 2      
-   ```
+    ```bash
+    ui/qt/CMakeFiles/qtui.dir/widgets/clickable_label.cpp.o: file not recognized: File truncated 
+    collect2: error: ld returned 1 exit status
+    CMakeFiles/wireshark.dir/build.make:557: recipe for target 'run/wireshark' failed  
+    make[2]: *** [run/wireshark] Error 1  
+    CMakeFiles/Makefile2:661: recipe for target 'CMakeFiles/wireshark.dir/all' failed  
+    make[1]: *** [CMakeFiles/wireshark.dir/all] Error 2
+    Makefile:140: recipe for target 'all' failed
+    make: *** [all] Error 2      
+    ```
 
-   没有明白具体的错误原因，不过在 SO上面找到了这个提示：[File not recognized: File truncated GCC error](https://stackoverflow.com/questions/5713894/file-not-recognized-file-truncated-gcc-error)。提供的思路是原来编译的目标文件有问题，直接删掉就好了
+    没有明白具体的错误原因，不过在 SO上面找到了这个提示：[File not recognized: File truncated GCC error](https://stackoverflow.com/questions/5713894/file-not-recognized-file-truncated-gcc-error)。提供的思路是原来编译的目标文件有问题，直接删掉就好了
 
-   > Just remove the object file.
-   >
-   > This error most likely appeared after the previous build was interrupted and object file was not generated completely.
+    > Just remove the object file.
+    >
+    > This error most likely appeared after the previous build was interrupted and object file was not generated completely.
+
+
+
+    ```bash
+    rm ui/qt/CMakeFiles/qtui.dir/widgets/clickable_label.cpp.o
+    ```
 
    
 
-   ```bash
-   rm ui/qt/CMakeFiles/qtui.dir/widgets/clickable_label.cpp.o
-   ```
-
-   
-
-# 测试
+# 参考链接
+1. [Install Latest Wireshark on Ubuntu 18.04](https://kifarunix.com/install-latest-wireshark-on-ubuntu-18-04/)
