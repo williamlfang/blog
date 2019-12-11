@@ -412,11 +412,12 @@ total 5304
 #### sfnettest 延时测试
 
 - 参数说明
-  - `--profile=latency`：测试延时模式
-  - `taskset -c 1`：绑定 cpu core 的号码 1
-  - `--maxms=10000` 指发送的最大数据包大小
-  - `--affinity "1;1"` 指使用 `core 1` 发送，使用 `core 1` 接收（可以选不同的core）
-  
+
+    - `--profile=latency`：测试延时模式
+    - `taskset -c 1`：绑定 cpu core 的号码 1
+    - `--maxms=10000` 指发送的最大数据包大小
+    - `--affinity "1;1"` 指使用 `core 1` 发送，使用 `core 1` 接收（可以选不同的core）
+
 - 首先，在服务器开启
 
     ```bash

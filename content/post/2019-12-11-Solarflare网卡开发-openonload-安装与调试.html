@@ -383,11 +383,13 @@ tuned-adm profile network-latency
 <div id="sfnettest-" class="section level4">
 <h4>sfnettest 延时测试</h4>
 <ul>
-<li>参数说明</li>
+<li><p>参数说明</p>
+<ul>
 <li><code>--profile=latency</code>：测试延时模式</li>
 <li><code>taskset -c 1</code>：绑定 cpu core 的号码 1</li>
 <li><code>--maxms=10000</code> 指发送的最大数据包大小</li>
-<li><p><code>--affinity &quot;1;1&quot;</code> 指使用 <code>core 1</code> 发送，使用 <code>core 1</code> 接收（可以选不同的core）</p></li>
+<li><code>--affinity &quot;1;1&quot;</code> 指使用 <code>core 1</code> 发送，使用 <code>core 1</code> 接收（可以选不同的core）</li>
+</ul></li>
 <li><p>首先，在服务器开启</p>
 <pre class="bash"><code>onload --profile=latency taskset -c 1 ./sfnt-pingpong --maxms=10000 --affinity 1,1</code></pre>
 <p>运行成功后等待客户端接入</p>
