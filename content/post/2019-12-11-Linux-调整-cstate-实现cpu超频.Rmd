@@ -69,10 +69,30 @@ GRUB_CMDLINE_LINUX_DEFAULT="quiet splash  processor.max_cstate=0 intel_idle.max_
 
 ```bash
 sudo update-grub
-sudo reboot -r now
 ```
 
+另外可以设置CPU的scale-governor
+
+```bash
+cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+
+
+## 设置CPU模式, 分别根据CPU 0-n 的编号进行设置
+echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+echo performance > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
+echo performance > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
+echo performance > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
+
+systemctl disable ondemand
+/etc/rc.local
+```
+
+
 重启后即可实现超频。
+
+```bash
+sudo reboot -r now
+```
 
 使用命令
 
