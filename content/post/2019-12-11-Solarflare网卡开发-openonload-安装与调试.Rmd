@@ -354,60 +354,60 @@ total 5304
 
 #### 软件安装
 
-- 安装 openonload
+##### 安装 openonload
 
-    ```bash
-    ## 进入相应的文件夹
-    cd openonload-201811/
+```bash
+## 进入相应的文件夹
+cd openonload-201811/
 
-    ## 源代码存放
-    cd scripts/
+## 源代码存放
+cd scripts/
 
-    ## 搭建环境
-    ./onload_build
-    ## 执行安装
-    ./onload_install
-    #加载 onload
-    onload_tool reload
-    ```
+## 搭建环境
+./onload_build
+## 执行安装
+./onload_install
+#加载 onload
+onload_tool reload
+```
 
-- 安装 Netperf
+##### 安装 Netperf
 
-    ```bash
-    wget http://repo.iotti.biz/CentOS/7/x86_64/netperf-2.7.0-1.el7.lux.x86_64.rpm
-    rpm -i netperf-2.7.0-1.el7.lux.x86_64.rpm
-    ```
+```bash
+wget http://repo.iotti.biz/CentOS/7/x86_64/netperf-2.7.0-1.el7.lux.x86_64.rpm
+rpm -i netperf-2.7.0-1.el7.lux.x86_64.rpm
+```
 
-- 安装 sfnettest
+##### 安装 sfnettest
 
-    ```bash
-    wget https://www.openonload.org/download/sfnettest/sfnettest-1.5.0.tgz
-    tar xvf sfnettest-1.5.0.tgz
-    cd sfnettest-1.5.0/src
-    make
-    ```
+```bash
+wget https://www.openonload.org/download/sfnettest/sfnettest-1.5.0.tgz
+tar xvf sfnettest-1.5.0.tgz
+cd sfnettest-1.5.0/src
+make
+```
 
-- 调优设置
+##### 调优设置
 
-    ```bash
-    ## 停止 cpuspeed 服务以避免进入省电模式，降低CPU时钟速度
-    systemctl stop cpuspeed
-    
-    ## 停止 irqbalance 服务器以防止 OS 在可用的CPU内核之间重新平衡中断
-    systemctl stop irqbalance
-    
-    ## 停止防火墙辐射器以消除简介消耗
-    systemctl stop firewalld
-    
-    ## 禁用 interrupt moderation
-    ethtool -C enp1s0f1 rx-usecs-irq 0 adaptive-rx off
-    
-    ## 启动低延时配置：tuned-adm
-    tuned-adm list
-    tuned-adm profile network-latency
-    
-    ## 防止系统进入 CPU 低功耗模式　cstates
-    ```
+```bash
+## 停止 cpuspeed 服务以避免进入省电模式，降低CPU时钟速度
+systemctl stop cpuspeed
+
+## 停止 irqbalance 服务器以防止 OS 在可用的CPU内核之间重新平衡中断
+systemctl stop irqbalance
+
+## 停止防火墙辐射器以消除简介消耗
+systemctl stop firewalld
+
+## 禁用 interrupt moderation
+ethtool -C enp1s0f1 rx-usecs-irq 0 adaptive-rx off
+
+## 启动低延时配置：tuned-adm
+tuned-adm list
+tuned-adm profile network-latency
+
+## 防止系统进入 CPU 低功耗模式　cstates
+```
 
 #### sfnettest 延时测试
 

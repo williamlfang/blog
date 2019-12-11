@@ -338,8 +338,8 @@ total 5304
 </div>
 <div class="section level4">
 <h4>软件安装</h4>
-<ul>
-<li><p>安装 openonload</p>
+<div id="-openonload" class="section level5">
+<h5>安装 openonload</h5>
 <pre class="bash"><code>## 进入相应的文件夹
 cd openonload-201811/
 
@@ -351,16 +351,22 @@ cd scripts/
 ## 执行安装
 ./onload_install
 #加载 onload
-onload_tool reload</code></pre></li>
-<li><p>安装 Netperf</p>
+onload_tool reload</code></pre>
+</div>
+<div id="-netperf" class="section level5">
+<h5>安装 Netperf</h5>
 <pre class="bash"><code>wget http://repo.iotti.biz/CentOS/7/x86_64/netperf-2.7.0-1.el7.lux.x86_64.rpm
-rpm -i netperf-2.7.0-1.el7.lux.x86_64.rpm</code></pre></li>
-<li><p>安装 sfnettest</p>
+rpm -i netperf-2.7.0-1.el7.lux.x86_64.rpm</code></pre>
+</div>
+<div id="-sfnettest" class="section level5">
+<h5>安装 sfnettest</h5>
 <pre class="bash"><code>wget https://www.openonload.org/download/sfnettest/sfnettest-1.5.0.tgz
 tar xvf sfnettest-1.5.0.tgz
 cd sfnettest-1.5.0/src
-make</code></pre></li>
-<li><p>调优设置</p>
+make</code></pre>
+</div>
+<div class="section level5">
+<h5>调优设置</h5>
 <pre class="bash"><code>## 停止 cpuspeed 服务以避免进入省电模式，降低CPU时钟速度
 systemctl stop cpuspeed
 
@@ -377,8 +383,8 @@ ethtool -C enp1s0f1 rx-usecs-irq 0 adaptive-rx off
 tuned-adm list
 tuned-adm profile network-latency
 
-## 防止系统进入 CPU 低功耗模式　cstates</code></pre></li>
-</ul>
+## 防止系统进入 CPU 低功耗模式　cstates</code></pre>
+</div>
 </div>
 <div id="sfnettest-" class="section level4">
 <h4>sfnettest 延时测试</h4>
