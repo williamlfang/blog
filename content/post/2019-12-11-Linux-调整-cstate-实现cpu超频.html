@@ -159,7 +159,19 @@ analyzing CPU 0:
  current CPU frequency: 3.54 GHz (asserted by call to hardware)
  boost state support:
    Supported: yes
-   Active: yes</code></pre>
+   Active: yes
+
+## 查看当前cpu模式
+cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+performance
+performance
+performance
+performance
+performance
+performance
+
+## 设置CPU模式, 分别根据CPU 0-n 的编号进行设置
+echo performance &gt; /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor</code></pre>
 </div>
 <div id="c-state-" class="section level1">
 <h1>c-state 各种状态表</h1>
