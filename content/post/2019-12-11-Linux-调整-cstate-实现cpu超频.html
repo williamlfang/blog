@@ -134,6 +134,32 @@ sudo grub2-mkconfig –o /boot/grub2/grub.cfg
 
 ## 重启即可，有可能会报警 CPU 温度过热，在启动项里忽略即可运行
 sudo reboot now</code></pre>
+<p>查看当前运行情况</p>
+<pre class="bash"><code>sudo cpupower monitor -m Idle_Stats
+    |Idle_Stats                                                    
+CPU | POLL | C1-S | C1E- | C3-S | C6-S | C7s- | C8-S | C9-S | C10- 
+   0|  0.00| 99.39|  0.00|  0.00|  0.00|  0.00|  0.00|  0.00|  0.00
+   1|  0.00| 98.98|  0.00|  0.00|  0.00|  0.00|  0.00|  0.00|  0.00
+   2|  0.00| 95.21|  0.00|  0.00|  0.00|  0.00|  0.00|  0.00|  0.00
+   3|  0.00| 97.58|  0.00|  0.00|  0.00|  0.00|  0.00|  0.00|  0.00
+   4|  0.00| 99.88|  0.00|  0.00|  0.00|  0.00|  0.00|  0.00|  0.00
+   5|  0.00| 99.38|  0.00|  0.00|  0.00|  0.00|  0.00|  0.00|  0.00
+
+sudo cpupower frequency-info       
+analyzing CPU 0:
+ driver: intel_pstate
+ CPUs which run at the same hardware frequency: 0
+ CPUs which need to have their frequency coordinated by software: 0
+ maximum transition latency:  Cannot determine or is not supported.
+ hardware limits: 800 MHz - 4.10 GHz
+ available cpufreq governors: performance powersave
+ current policy: frequency should be within 800 MHz and 4.10 GHz.
+                 The governor &quot;performance&quot; may decide which speed to use
+                 within this range.
+ current CPU frequency: 3.54 GHz (asserted by call to hardware)
+ boost state support:
+   Supported: yes
+   Active: yes</code></pre>
 </div>
 <div id="c-state-" class="section level1">
 <h1>c-state 各种状态表</h1>
@@ -146,90 +172,90 @@ sudo reboot now</code></pre>
 </colgroup>
 <thead>
 <tr class="header">
-<th>mode</th>
-<th>Name</th>
-<th>What id does</th>
-<th>CPUs</th>
+<th align="left">mode</th>
+<th align="left">Name</th>
+<th align="left">What id does</th>
+<th align="left">CPUs</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>C1</td>
-<td>Operating State</td>
-<td>CPU fully turned on</td>
-<td>All CPUs</td>
+<td align="left">C1</td>
+<td align="left">Operating State</td>
+<td align="left">CPU fully turned on</td>
+<td align="left">All CPUs</td>
 </tr>
 <tr class="even">
-<td>C1E</td>
-<td>Halt</td>
-<td>Stops CPU main internal clocks via software; bus interface unit and APIC are kept running at full speed</td>
-<td>486DX4 and above</td>
+<td align="left">C1E</td>
+<td align="left">Halt</td>
+<td align="left">Stops CPU main internal clocks via software; bus interface unit and APIC are kept running at full speed</td>
+<td align="left">486DX4 and above</td>
 </tr>
 <tr class="odd">
-<td>C1E</td>
-<td>Enhanced Halt</td>
-<td>Stops CPU main internal clocks via software and reduces CPU voltage; bus interface unit and APIC are kept running at full speed</td>
-<td>All socket 775 CPUs</td>
+<td align="left">C1E</td>
+<td align="left">Enhanced Halt</td>
+<td align="left">Stops CPU main internal clocks via software and reduces CPU voltage; bus interface unit and APIC are kept running at full speed</td>
+<td align="left">All socket 775 CPUs</td>
 </tr>
 <tr class="even">
-<td>C1E</td>
-<td>–</td>
-<td>Stops all CPU internal clocks</td>
-<td>Turion 64, 65-nm Athlon X2 and Phenom CPUs</td>
+<td align="left">C1E</td>
+<td align="left">–</td>
+<td align="left">Stops all CPU internal clocks</td>
+<td align="left">Turion 64, 65-nm Athlon X2 and Phenom CPUs</td>
 </tr>
 <tr class="odd">
-<td>C2</td>
-<td>Stop Grant</td>
-<td>Stops CPU main internal clocks via hardware; bus interface unit and APIC are kept running at full speed</td>
-<td>486DX4 and above</td>
+<td align="left">C2</td>
+<td align="left">Stop Grant</td>
+<td align="left">Stops CPU main internal clocks via hardware; bus interface unit and APIC are kept running at full speed</td>
+<td align="left">486DX4 and above</td>
 </tr>
 <tr class="even">
-<td>C2</td>
-<td>Stop Clock</td>
-<td>Stops CPU internal and external clocks via hardware</td>
-<td>Only 486DX4, Pentium, Pentium MMX, K5, K6, K6-2, K6-III</td>
+<td align="left">C2</td>
+<td align="left">Stop Clock</td>
+<td align="left">Stops CPU internal and external clocks via hardware</td>
+<td align="left">Only 486DX4, Pentium, Pentium MMX, K5, K6, K6-2, K6-III</td>
 </tr>
 <tr class="odd">
-<td>C2E</td>
-<td>Extended Stop Grant</td>
-<td>Stops CPU main internal clocks via hardware and reduces CPU voltage; bus interface unit and APIC are kept running at full speed</td>
-<td>Core 2 Duo and above (Intel only)</td>
+<td align="left">C2E</td>
+<td align="left">Extended Stop Grant</td>
+<td align="left">Stops CPU main internal clocks via hardware and reduces CPU voltage; bus interface unit and APIC are kept running at full speed</td>
+<td align="left">Core 2 Duo and above (Intel only)</td>
 </tr>
 <tr class="even">
-<td>C3</td>
-<td>Sleep</td>
-<td>Stops all CPU internal clocks</td>
-<td>Pentium II, Athlon and above, but not on Core 2 Duo E4000 and E6000</td>
+<td align="left">C3</td>
+<td align="left">Sleep</td>
+<td align="left">Stops all CPU internal clocks</td>
+<td align="left">Pentium II, Athlon and above, but not on Core 2 Duo E4000 and E6000</td>
 </tr>
 <tr class="odd">
-<td>C3</td>
-<td>Deep Sleep</td>
-<td>Stops all CPU internal and external clocks</td>
-<td>Pentium II and above, but not on Core 2 Duo E4000 and E6000; Turion 64</td>
+<td align="left">C3</td>
+<td align="left">Deep Sleep</td>
+<td align="left">Stops all CPU internal and external clocks</td>
+<td align="left">Pentium II and above, but not on Core 2 Duo E4000 and E6000; Turion 64</td>
 </tr>
 <tr class="even">
-<td>C3</td>
-<td>AltVID</td>
-<td>Stops all CPU internal clocks and reduces CPU voltage</td>
-<td>AMD Turion 64</td>
+<td align="left">C3</td>
+<td align="left">AltVID</td>
+<td align="left">Stops all CPU internal clocks and reduces CPU voltage</td>
+<td align="left">AMD Turion 64</td>
 </tr>
 <tr class="odd">
-<td>C4</td>
-<td>Deeper Sleep</td>
-<td>Reduces CPU voltage</td>
-<td>Pentium M and above, but not on Core 2 Duo E4000 and E6000 series; AMD Turion 64</td>
+<td align="left">C4</td>
+<td align="left">Deeper Sleep</td>
+<td align="left">Reduces CPU voltage</td>
+<td align="left">Pentium M and above, but not on Core 2 Duo E4000 and E6000 series; AMD Turion 64</td>
 </tr>
 <tr class="even">
-<td>C4E/C5</td>
-<td>Enhanced Deeper Sleep</td>
-<td>Reduces CPU voltage even more and turns off the memory cache</td>
-<td>Core Solo, Core Duo and 45-nm mobile Core 2 Duo only</td>
+<td align="left">C4E/C5</td>
+<td align="left">Enhanced Deeper Sleep</td>
+<td align="left">Reduces CPU voltage even more and turns off the memory cache</td>
+<td align="left">Core Solo, Core Duo and 45-nm mobile Core 2 Duo only</td>
 </tr>
 <tr class="odd">
-<td>C6</td>
-<td>Deep Power Down</td>
-<td>Reduces the CPU internal voltage to any value, including 0 V</td>
-<td></td>
+<td align="left">C6</td>
+<td align="left">Deep Power Down</td>
+<td align="left">Reduces the CPU internal voltage to any value, including 0 V</td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>

@@ -184,8 +184,9 @@ analyzing CPU 0:
 
 # c-state 各种状态表
 
+
 | mode   | Name                  | What id does                                                 | CPUs                                                         |
-| ------ | --------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| :----- | :-------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
 | C1     | Operating State       | CPU fully turned on                                          | All CPUs                                                     |
 | C1E    | Halt                  | Stops CPU main internal clocks via software; bus interface unit and APIC are kept running at full speed | 486DX4 and above                                             |
 | C1E    | Enhanced Halt         | Stops CPU main internal clocks via software and reduces CPU voltage; bus interface unit and APIC are kept running at full speed | All socket 775 CPUs                                          |
