@@ -85,6 +85,8 @@ echo performance > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
 
 systemctl disable ondemand
 /etc/rc.local
+
+cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq
 ```
 
 

@@ -72,7 +72,9 @@ echo performance &gt; /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
 echo performance &gt; /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
 
 systemctl disable ondemand
-/etc/rc.local</code></pre>
+/etc/rc.local
+
+cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq</code></pre>
 <p>重启后即可实现超频。</p>
 <pre class="bash"><code>sudo reboot -r now</code></pre>
 <p>使用命令</p>
