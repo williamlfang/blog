@@ -1,0 +1,63 @@
+---
+title: "tuned/tuned adm 系统调优工具"
+author: William
+date: 2019-12-11
+lastmod: 2019-12-11
+categories: [Programming]
+tags: [Linux,tuned,性能,调优]
+description: 在 Linux 下可以使用性能调优工具 tuned/tuned-adm 提升操作系统的工作性能。
+draft: false
+ToC: true
+---
+
+
+
+<p><code>tuned</code> 是服务，需要使用 <code>tuned-adm</code> 打开工具进行操作。</p>
+<div class="section level1">
+<h1>安装</h1>
+<div id="centos" class="section level2">
+<h2>CentOs</h2>
+<pre class="bash"><code>sudo yum install tuned</code></pre>
+</div>
+<div id="ubuntu" class="section level2">
+<h2>Ubuntu</h2>
+<pre class="bash"><code>sudo apt install tuned</code></pre>
+</div>
+</div>
+<div class="section level1">
+<h1>调优</h1>
+<p>显示当前可用的调优方案</p>
+<pre class="bash"><code>tuned-adm list
+Available profiles:
+- atomic-guest                - Optimize virtual guests based on the Atomic variant
+- atomic-host                 - Optimize bare metal systems running the Atomic variant
+- balanced                    - General non-specialized tuned profile
+- cpu-partitioning            - Optimize for CPU partitioning
+- default                     - Legacy default tuned profile
+- desktop                     - Optimize for the desktop use-case
+- desktop-powersave           - Optmize for the desktop use-case with power saving
+- enterprise-storage          - Legacy profile for RHEL6, for RHEL7, please use throughput-performance profile
+- laptop-ac-powersave         - Optimize for laptop with power savings
+- laptop-battery-powersave    - Optimize laptop profile with more aggressive power saving
+- latency-performance         - Optimize for deterministic performance at the cost of increased power consumption
+- network-latency             - Optimize for deterministic performance at the cost of increased power consumption, focused on low latency network performance
+- network-throughput          - Optimize for streaming network throughput, generally only necessary on older CPUs or 40G+ networks
+- oracle                      - Optimize for Oracle RDBMS
+- powersave                   - Optimize for low power consumption
+- realtime                    - Optimize for realtime workloads
+- realtime-virtual-guest      - Optimize for realtime workloads running within a KVM guest
+- realtime-virtual-host       - Optimize for KVM guests running realtime workloads
+- sap-hana                    - Optimize for SAP HANA
+- sap-hana-vmware             - Optimize for SAP HANA running inside a VMware guest
+- sap-netweaver               - Optimize for SAP NetWeaver
+- server-powersave            - Optimize for server power savings
+- spindown-disk               - Optimize for power saving by spinning-down rotational disks
+- throughput-performance      - Broadly applicable tuning that provides excellent performance across a variety of common server workloads
+- virtual-guest               - Optimize for running inside a virtual guest
+- virtual-host                - Optimize for running KVM guests
+Current active profile: network-latency</code></pre>
+<p>查看当前配置</p>
+<pre class="bash"><code>tuned-adm active</code></pre>
+<p>调整方案</p>
+<pre class="bash"><code>tuned-adm profile network-latency</code></pre>
+</div>
