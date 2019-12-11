@@ -1,0 +1,236 @@
+---
+title: "Linux 调整 cstate 实现cpu超频"
+author: William
+date: 2019-12-11
+lastmod: 2019-12-11
+categories: [Programming]
+tags: [Linux,cpu,cstate,超频,高频交易,HFT]
+description: 为了实现高频交易对性能的要求，我们往往会“榨干”CPU。
+draft: false
+ToC: true
+---
+
+
+
+<p>随着技术的发展，现在主流的 Intel CPU 的主频都能达到 3GHz 以上，而且还支持超频技术。为了最大的获取 CPU 的性能，我们可以对 <code>cstate</code> 进行调整。</p>
+<div id="ubuntu-" class="section level1">
+<h1>Ubuntu 设置</h1>
+<p>与开机项有关的参数设置在 <code>/etc/default/grub</code>，可以对其进行调整</p>
+<pre class="bash"><code>cat /etc/default/grub
+
+# If you change this file, run &#39;update-grub&#39; afterwards to update
+# /boot/grub/grub.cfg.
+# For full documentation of the options in this file, see:
+#   info -f grub -n &#39;Simple configuration&#39;
+
+GRUB_DEFAULT=0
+GRUB_TIMEOUT_STYLE=hidden
+GRUB_TIMEOUT=10
+GRUB_DISTRIBUTOR=`lsb_release -i -s 2&gt; /dev/null || echo Debian`
+GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet splash&quot;
+GRUB_CMDLINE_LINUX=&quot;&quot;
+
+# Uncomment to enable BadRAM filtering, modify to suit your needs
+# This works with Linux (no patch required) and with any kernel that obtains
+# the memory map information from GRUB (GNU Mach, kernel of FreeBSD ...)
+#GRUB_BADRAM=&quot;0x01234567,0xfefefefe,0x89abcdef,0xefefefef&quot;
+
+# Uncomment to disable graphical terminal (grub-pc only)
+#GRUB_TERMINAL=console
+
+# The resolution used on graphical terminal
+# note that you can use only modes which your graphic card supports via VBE
+# you can see them in real GRUB with the command `vbeinfo&#39;
+#GRUB_GFXMODE=640x480
+
+# Uncomment if you don&#39;t want GRUB to pass &quot;root=UUID=xxx&quot; parameter to Linux
+#GRUB_DISABLE_LINUX_UUID=true
+
+# Uncomment to disable generation of recovery mode menu entries
+#GRUB_DISABLE_RECOVERY=&quot;true&quot;
+
+# Uncomment to get a beep at grub start
+#GRUB_INIT_TUNE=&quot;480 440 1&quot;</code></pre>
+<p>然后找到 <code>GRUB_CMDLINE_LINUX_DEFAULT</code> 所在的那行，增加配置</p>
+<ul>
+<li>processor.max_cstate=0</li>
+<li>intel_idle.max_cstate=0</li>
+</ul>
+<pre class="bash"><code>sudo vim /etc/default/grub
+
+GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet splash  processor.max_cstate=0 intel_idle.max_cstate=0&quot;</code></pre>
+<p>然后更新 <code>grub</code></p>
+<pre class="bash"><code>sudo update-grub
+sudo reboot -r now</code></pre>
+<p>重启后即可实现超频。</p>
+<p>使用命令</p>
+<ul>
+<li><code>cpufreq-info</code> 查看当前 CPU 运行</li>
+<li><code>cpufreq-set</code> 也可以进行单独设置</li>
+<li><code>cpufreq-aperf</code> 用于计算一段时间内的平均频率</li>
+</ul>
+<pre class="bash"><code>sudo apt install cpufrequtils
+
+## 查看当前运行
+cpufreq-info
+
+cpufrequtils 008: cpufreq-info (C) Dominik Brodowski 2004-2009
+Report errors and bugs to cpufreq@vger.kernel.org, please.
+analyzing CPU 0:
+  driver: intel_pstate
+  CPUs which run at the same hardware frequency: 0
+  CPUs which need to have their frequency coordinated by software: 0
+  maximum transition latency: 4294.55 ms.
+  hardware limits: 800 MHz - 3.60 GHz
+  available cpufreq governors: performance, powersave
+  current policy: frequency should be within 800 MHz and 3.60 GHz.
+                  The governor &quot;powersave&quot; may decide which speed to use
+                  within this range.
+  current CPU frequency is 3.07 GHz.
+analyzing CPU 1:
+  driver: intel_pstate
+  CPUs which run at the same hardware frequency: 1
+  CPUs which need to have their frequency coordinated by software: 1
+  maximum transition latency: 4294.55 ms.
+  hardware limits: 800 MHz - 3.60 GHz
+  available cpufreq governors: performance, powersave
+  current policy: frequency should be within 800 MHz and 3.60 GHz.
+                  The governor &quot;powersave&quot; may decide which speed to use
+                  within this range.
+  current CPU frequency is 2.45 GHz.
+analyzing CPU 2:
+  driver: intel_pstate
+  CPUs which run at the same hardware frequency: 2
+  CPUs which need to have their frequency coordinated by software: 2
+  maximum transition latency: 4294.55 ms.
+  hardware limits: 800 MHz - 3.60 GHz
+  available cpufreq governors: performance, powersave
+  current policy: frequency should be within 800 MHz and 3.60 GHz.
+                  The governor &quot;powersave&quot; may decide which speed to use
+                  within this range.
+  current CPU frequency is 3.01 GHz.
+analyzing CPU 3:
+  driver: intel_pstate
+  CPUs which run at the same hardware frequency: 3
+  CPUs which need to have their frequency coordinated by software: 3
+  maximum transition latency: 4294.55 ms.
+  hardware limits: 800 MHz - 3.60 GHz
+  available cpufreq governors: performance, powersave
+  current policy: frequency should be within 800 MHz and 3.60 GHz.
+                  The governor &quot;powersave&quot; may decide which speed to use
+                  within this range.
+  current CPU frequency is 3.30 GHz.</code></pre>
+</div>
+<div id="centos-" class="section level1">
+<h1>CentOS 设置</h1>
+<pre class="bash"><code>sudo vim /etc/default/grub
+
+## 找到 GRUB_CMDLINE_LINUX_DEFAULT 
+## 然后增加 processor.max_cstate=1 intel_idle.max_cstate=0
+GRUB_CMDLINE_LINUX_DEFAULT=&quot;${GRUB_CMDLINE_LINUX_DEFAULT:+$GRUB_CMDLINE_LINUX_DEFAULT }\$tuned_params processor.max_cstate=1 intel_idle.max_cstate=0&quot;
+
+## 更新配置
+sudo grub2-mkconfig –o /boot/grub2/grub.cfg
+
+## 重启即可，有可能会报警 CPU 温度过热，在启动项里忽略即可运行
+sudo reboot now</code></pre>
+</div>
+<div id="c-state-" class="section level1">
+<h1>c-state 各种状态表</h1>
+<table style="width:100%;">
+<colgroup>
+<col width="4%" />
+<col width="14%" />
+<col width="40%" />
+<col width="40%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>mode</th>
+<th>Name</th>
+<th>What id does</th>
+<th>CPUs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>C1</td>
+<td>Operating State</td>
+<td>CPU fully turned on</td>
+<td>All CPUs</td>
+</tr>
+<tr class="even">
+<td>C1E</td>
+<td>Halt</td>
+<td>Stops CPU main internal clocks via software; bus interface unit and APIC are kept running at full speed</td>
+<td>486DX4 and above</td>
+</tr>
+<tr class="odd">
+<td>C1E</td>
+<td>Enhanced Halt</td>
+<td>Stops CPU main internal clocks via software and reduces CPU voltage; bus interface unit and APIC are kept running at full speed</td>
+<td>All socket 775 CPUs</td>
+</tr>
+<tr class="even">
+<td>C1E</td>
+<td>–</td>
+<td>Stops all CPU internal clocks</td>
+<td>Turion 64, 65-nm Athlon X2 and Phenom CPUs</td>
+</tr>
+<tr class="odd">
+<td>C2</td>
+<td>Stop Grant</td>
+<td>Stops CPU main internal clocks via hardware; bus interface unit and APIC are kept running at full speed</td>
+<td>486DX4 and above</td>
+</tr>
+<tr class="even">
+<td>C2</td>
+<td>Stop Clock</td>
+<td>Stops CPU internal and external clocks via hardware</td>
+<td>Only 486DX4, Pentium, Pentium MMX, K5, K6, K6-2, K6-III</td>
+</tr>
+<tr class="odd">
+<td>C2E</td>
+<td>Extended Stop Grant</td>
+<td>Stops CPU main internal clocks via hardware and reduces CPU voltage; bus interface unit and APIC are kept running at full speed</td>
+<td>Core 2 Duo and above (Intel only)</td>
+</tr>
+<tr class="even">
+<td>C3</td>
+<td>Sleep</td>
+<td>Stops all CPU internal clocks</td>
+<td>Pentium II, Athlon and above, but not on Core 2 Duo E4000 and E6000</td>
+</tr>
+<tr class="odd">
+<td>C3</td>
+<td>Deep Sleep</td>
+<td>Stops all CPU internal and external clocks</td>
+<td>Pentium II and above, but not on Core 2 Duo E4000 and E6000; Turion 64</td>
+</tr>
+<tr class="even">
+<td>C3</td>
+<td>AltVID</td>
+<td>Stops all CPU internal clocks and reduces CPU voltage</td>
+<td>AMD Turion 64</td>
+</tr>
+<tr class="odd">
+<td>C4</td>
+<td>Deeper Sleep</td>
+<td>Reduces CPU voltage</td>
+<td>Pentium M and above, but not on Core 2 Duo E4000 and E6000 series; AMD Turion 64</td>
+</tr>
+<tr class="even">
+<td>C4E/C5</td>
+<td>Enhanced Deeper Sleep</td>
+<td>Reduces CPU voltage even more and turns off the memory cache</td>
+<td>Core Solo, Core Duo and 45-nm mobile Core 2 Duo only</td>
+</tr>
+<tr class="odd">
+<td>C6</td>
+<td>Deep Power Down</td>
+<td>Reduces the CPU internal voltage to any value, including 0 V</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
