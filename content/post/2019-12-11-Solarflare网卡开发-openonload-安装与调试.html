@@ -382,25 +382,28 @@ tuned-adm profile network-latency
 </div>
 <div id="sfnettest-" class="section level4">
 <h4>sfnettest 延时测试</h4>
-<ul>
-<li><p>参数说明</p>
+<div class="section level5">
+<h5>参数说明</h5>
 <ul>
 <li><code>--profile=latency</code>：测试延时模式</li>
 <li><code>taskset -c 1</code>：绑定 cpu core 的号码 1</li>
 <li><code>--maxms=10000</code> 指发送的最大数据包大小</li>
 <li><code>--affinity &quot;1;1&quot;</code> 指使用 <code>core 1</code> 发送，使用 <code>core 1</code> 接收（可以选不同的core）</li>
-</ul></li>
-<li><p>首先，在服务器开启</p>
+</ul>
+</div>
+<div class="section level5">
+<h5>服务器</h5>
+<p>首先，在服务器开启</p>
 <pre class="bash"><code>onload --profile=latency taskset -c 1 ./sfnt-pingpong --maxms=10000 --affinity 1,1</code></pre>
 <p>运行成功后等待客户端接入</p>
 <pre class="bash"><code>oo:sfnt-pingpong[17337]: Using OpenOnload 201811 Copyright 2006-2018 Solarflare Communications, 2002-2005 Level 5 Networks [2]
-sfnt-pingpong: server: waiting for client to connect...</code></pre></li>
-<li><p>TCP 测试</p>
-<pre class="bash"><code>onload --profile=latency taskset -c 1 ./sfnt-pingpong --maxms=10000 --affinity 1,1 tcp 127.0.0.1</code></pre></li>
-</ul>
+sfnt-pingpong: server: waiting for client to connect...</code></pre>
+</div>
+<div id="tcp-" class="section level5">
+<h5>TCP 测试</h5>
+<pre class="bash"><code>onload --profile=latency taskset -c 1 ./sfnt-pingpong --maxms=10000 --affinity 1,1 tcp 127.0.0.1</code></pre>
 <p>运行结果如下</p>
-<pre><code>```bash
-oo:sfnt-pingpong[17093]: Using OpenOnload 201811 Copyright 2006-2018 Solarflare Communications, 2002-2005 Level 5 Networks [4]
+<pre class="bash"><code>oo:sfnt-pingpong[17093]: Using OpenOnload 201811 Copyright 2006-2018 Solarflare Communications, 2002-2005 Level 5 Networks [4]
 # cmdline: ./sfnt-pingpong --maxms=10000 --affinity 1,1 tcp 127.0.0.1
 # version: 1.5.0
 # src: 8dc3b027d85b28bedf9fd731362e4968
@@ -452,27 +455,23 @@ oo:sfnt-pingpong[17093]: Using OpenOnload 201811 Copyright 2006-2018 Solarflare 
     8192    7675    6839    7612    19902   8757    432 649000
     16384   8481    7628    8417    17966   9577    412 588000
     32768   10136   9162    10063   19106   11376   477 492000
-    65536   20403   18129   20392   41106   22849   1070    245000
-```</code></pre>
+    65536   20403   18129   20392   41106   22849   1070    245000</code></pre>
 <p>测试结果按照发送数据包大小进行排列，输出结果为 RTT(round-trip-time)/2的平均延时时间，单位(ns)，并且列出了最小值、中位数、最大值、百分位以及标准差。比如一个 <code>32</code> 字节的数据包</p>
-<pre><code>```bash
-#   size    mean    min median  max %ile    stddev  iter
-    32  6888    6118    6827    15773   7875    384 723000
-```</code></pre>
+<pre class="bash"><code>#   size    mean    min median  max %ile    stddev  iter
+    32  6888    6118    6827    15773   7875    384 723000</code></pre>
 <ul>
 <li>平均延时为 6.888us</li>
 <li>最快延时 6.118us</li>
 <li>最长延时 7.875us</li>
-<li><p>标准差为 0.364us</p></li>
-<li><p>UDP 测试</p></li>
+<li>标准差为 0.364us</li>
 </ul>
+</div>
+<div id="udp-" class="section level5">
+<h5>UDP 测试</h5>
 <p>执行命令</p>
-<pre><code>```bash
-onload --profile=latency taskset -c 1 ./sfnt-pingpong --maxms=10000 --affinity 1,1 udp 127.0.0.1
-```</code></pre>
+<pre class="bash"><code>onload --profile=latency taskset -c 1 ./sfnt-pingpong --maxms=10000 --affinity 1,1 udp 127.0.0.1</code></pre>
 <p>得到结果：<strong>果然 UDP 大法好</strong>。</p>
-<pre><code>```bash
-oo:sfnt-pingpong[17576]: Using OpenOnload 201811 Copyright 2006-2018 Solarflare Communications, 2002-2005 Level 5 Networks [6]
+<pre class="bash"><code>oo:sfnt-pingpong[17576]: Using OpenOnload 201811 Copyright 2006-2018 Solarflare Communications, 2002-2005 Level 5 Networks [6]
 # cmdline: ./sfnt-pingpong --maxms=10000 --affinity 1,1 udp 127.0.0.1
 # version: 1.5.0
 # src: 8dc3b027d85b28bedf9fd731362e4968
@@ -526,8 +525,8 @@ oo:sfnt-pingpong[17576]: Using OpenOnload 201811 Copyright 2006-2018 Solarflare 
   4096    6091    5566    6055    17905   6951    377 817000
   8192    6737    6056    6719    27552   7744    422 739000
   16384   7414    6852    7359    250894  8421    506 672000
-  32768   8869    8177    8785    22277   10025   440 562000
-```</code></pre>
+  32768   8869    8177    8785    22277   10025   440 562000</code></pre>
+</div>
 </div>
 </div>
 </div>
