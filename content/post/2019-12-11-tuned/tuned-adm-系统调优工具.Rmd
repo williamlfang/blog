@@ -20,6 +20,16 @@ ToC: true
 sudo yum install tuned
 ```
 
+启动
+
+```bash
+--------------- On RHEL/CentOS 7 --------------- 
+# systemctl start tuned	        
+# systemctl enable tuned	
+# systemctl status tuned	
+# systemctl stop tuned	
+```
+
 ## Ubuntu
 
 ```bash
