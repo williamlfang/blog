@@ -93,7 +93,7 @@ cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq
 重启后即可实现超频。
 
 ```bash
-sudo reboot -r now
+sudo reboot now
 ```
 
 使用命令
