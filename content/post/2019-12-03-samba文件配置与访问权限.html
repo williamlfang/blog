@@ -12,14 +12,66 @@ ToC: true
 
 
 
+<p>注意，<code>samba</code> 在不同的操作系统下的服务名称是不一样的：</p>
+<ul>
+<li><code>Ubuntu</code>: <code>smbd</code></li>
+<li><code>CentOS</code>: <code>smb</code></li>
+</ul>
 <div class="section level1">
 <h1>安装</h1>
 <div class="section level2">
 <h2>安装软件</h2>
-<pre class="bash"><code>yum install samba</code></pre>
+<pre class="bash"><code>## Ubuntu
+sudo apt update
+sudo apt-get install samba
+
+## CentOS
+yum install samba</code></pre>
 </div>
 <div class="section level2">
 <h2>查看状态</h2>
+<div id="ubuntu" class="section level3">
+<h3>Ubuntu</h3>
+<pre class="bash"><code>apt show samba
+Package: samba
+Version: 2:4.7.6+dfsg~ubuntu-0ubuntu2.14
+Priority: optional
+Section: net
+Origin: Ubuntu
+Maintainer: Ubuntu Developers &lt;ubuntu-devel-discuss@lists.ubuntu.com&gt;
+Original-Maintainer: Debian Samba Maintainers &lt;pkg-samba-maint@lists.alioth.debian.org&gt;
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 11.3 MB
+Pre-Depends: dpkg (&gt;= 1.15.6~)
+Depends: adduser, libpam-modules, libpam-runtime (&gt;= 1.0.1-11), lsb-base (&gt;= 4.1+Debian), procps, python (&lt;&lt; 2.8), python-dnspython, python-samba, samba-common (= 2:4.7.6+dfsg~ubuntu-0ubuntu2.14), samba-common-bin (= 2:4.7.6+dfsg~ubuntu-0ubuntu2.14), tdb-tools, python (&gt;= 2.7~), python2.7:any, python:any (&lt;&lt; 2.8), python:any (&gt;= 2.7~), libattr1 (&gt;= 1:2.4.46-8), libbsd0 (&gt;= 0.0), libc6 (&gt;= 2.14), libldb1 (&gt;= 0.9.21), libpopt0 (&gt;= 1.14), libpython2.7 (&gt;= 2.7), libtalloc2 (&gt;= 2.0.4~git20101213), libtdb1 (&gt;= 1.2.7+git20101214), libtevent0 (&gt;= 0.9.16), samba-libs (= 2:4.7.6+dfsg~ubuntu-0ubuntu2.14)
+Recommends: attr, logrotate, samba-dsdb-modules, samba-vfs-modules
+Suggests: bind9 (&gt;= 1:9.5.1), bind9utils, ctdb, ldb-tools, ntp | chrony (&gt;= 3.0-1), smbldap-tools, ufw, winbind
+Enhances: bind9, ntp
+Homepage: http://www.samba.org
+Task: samba-server, ubuntu-budgie-desktop
+Supported: 5y
+Download-Size: 854 kB
+APT-Manual-Installed: yes
+APT-Sources: http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 Packages
+Description: SMB/CIFS file, print, and login server for Unix
+ Samba is an implementation of the SMB/CIFS protocol for Unix systems,
+ providing support for cross-platform file and printer sharing with
+ Microsoft Windows, OS X, and other Unix systems.  Samba can also function
+ as an NT4-style domain controller, and can integrate with both NT4 domains
+ and Active Directory realms as a member server.
+ .
+ This package provides the components necessary to use Samba as a stand-alone
+ file and print server or as an NT4 or Active Directory domain controller.
+ For use in an NT4 domain or Active Directory realm, you will also need the
+ winbind package.
+ .
+ This package is not required for connecting to existing SMB/CIFS servers
+ (see smbclient) or for mounting remote filesystems (see cifs-utils).
+
+N: There is 1 additional record. Please use the &#39;-a&#39; switch to see it</code></pre>
+</div>
+<div id="centos" class="section level3">
+<h3>Centos</h3>
 <pre class="bash"><code>rpm -qa |grep samba
 samba-client-libs-4.8.3-4.el7.x86_64
 samba-4.8.3-4.el7.x86_64
@@ -28,8 +80,48 @@ samba-common-tools-4.8.3-4.el7.x86_64
 samba-common-4.8.3-4.el7.noarch
 samba-libs-4.8.3-4.el7.x86_64</code></pre>
 </div>
+</div>
+<div class="section level2">
+<h2>启动服务</h2>
+<div id="ubuntu-1" class="section level3">
+<h3>Ubuntu</h3>
+<pre class="bash"><code>sudo systemctl start smbd
+sudo systemctl status smbd
+
+## 允许防火墙通过
+sudo ufw allow &#39;Samba&#39;</code></pre>
+</div>
+<div id="centos-1" class="section level3">
+<h3>CentOS</h3>
+<pre class="bash"><code>## start/ stop/ restart
+systemctl start smb</code></pre>
+</div>
+</div>
 <div class="section level2">
 <h2>查看服务进程</h2>
+<div id="ubuntu-2" class="section level3">
+<h3>Ubuntu</h3>
+<pre class="bash"><code>sudo systemctl status smbd
+● smbd.service - Samba SMB Daemon
+   Loaded: loaded (/lib/systemd/system/smbd.service; enabled; vendor preset: enabled)
+   Active: active (running) since Sat 2019-12-14 15:19:43 CST; 6min ago
+     Docs: man:smbd(8)
+           man:samba(7)
+           man:smb.conf(5)
+ Main PID: 4232 (smbd)
+   Status: &quot;smbd: ready to serve connections...&quot;
+    Tasks: 4 (limit: 4915)
+   CGroup: /system.slice/smbd.service
+           ├─4232 /usr/sbin/smbd --foreground --no-process-group
+           ├─4236 /usr/sbin/smbd --foreground --no-process-group
+           ├─4237 /usr/sbin/smbd --foreground --no-process-group
+           └─4238 /usr/sbin/smbd --foreground --no-process-group
+
+Dec 14 15:19:43 william-pc systemd[1]: Starting Samba SMB Daemon...
+Dec 14 15:19:43 william-pc systemd[1]: Started Samba SMB Daemon.</code></pre>
+</div>
+<div id="centos-2" class="section level3">
+<h3>CentOS</h3>
 <pre class="bash"><code>service smb status
 Redirecting to /bin/systemctl status smb.service
 ● smb.service - Samba SMB Daemon
@@ -54,9 +146,6 @@ Dec 03 10:34:47 hicloud smbd[36896]:   daemon_ready: STATUS=daemon &#39;smbd&#39
 Dec 03 10:34:47 hicloud systemd[1]: Started Samba SMB Daemon.
 Hint: Some lines were ellipsized, use -l to show in full.</code></pre>
 </div>
-<div class="section level2">
-<h2>启动服务</h2>
-<pre class="bash"><code>systemctl restart smb</code></pre>
 </div>
 <div class="section level2">
 <h2>设置开机启动</h2>
@@ -104,7 +193,7 @@ SELinux status:                 disabled</code></pre>
 <h1>用户设置</h1>
 <div class="section level2">
 <h2>添加用户</h2>
-<pre class="bash"><code> useradd fl</code></pre>
+<pre class="bash"><code>useradd fl</code></pre>
 </div>
 <div class="section level2">
 <h2>设置密码</h2>

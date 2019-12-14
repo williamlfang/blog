@@ -16,15 +16,69 @@ knitr::opts_chunk$set(comment = '',
                       eval = FALSE)
 ```
 
+注意，`samba` 在不同的操作系统下的服务名称是不一样的：
+
+- `Ubuntu`: `smbd`
+- `CentOS`: `smb`
+
 # 安装
 
 ## 安装软件
 
 ```bash
+## Ubuntu
+sudo apt update
+sudo apt-get install samba
+
+## CentOS
 yum install samba
 ```
 
 ## 查看状态
+
+### Ubuntu
+
+```bash
+apt show samba
+Package: samba
+Version: 2:4.7.6+dfsg~ubuntu-0ubuntu2.14
+Priority: optional
+Section: net
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian Samba Maintainers <pkg-samba-maint@lists.alioth.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 11.3 MB
+Pre-Depends: dpkg (>= 1.15.6~)
+Depends: adduser, libpam-modules, libpam-runtime (>= 1.0.1-11), lsb-base (>= 4.1+Debian), procps, python (<< 2.8), python-dnspython, python-samba, samba-common (= 2:4.7.6+dfsg~ubuntu-0ubuntu2.14), samba-common-bin (= 2:4.7.6+dfsg~ubuntu-0ubuntu2.14), tdb-tools, python (>= 2.7~), python2.7:any, python:any (<< 2.8), python:any (>= 2.7~), libattr1 (>= 1:2.4.46-8), libbsd0 (>= 0.0), libc6 (>= 2.14), libldb1 (>= 0.9.21), libpopt0 (>= 1.14), libpython2.7 (>= 2.7), libtalloc2 (>= 2.0.4~git20101213), libtdb1 (>= 1.2.7+git20101214), libtevent0 (>= 0.9.16), samba-libs (= 2:4.7.6+dfsg~ubuntu-0ubuntu2.14)
+Recommends: attr, logrotate, samba-dsdb-modules, samba-vfs-modules
+Suggests: bind9 (>= 1:9.5.1), bind9utils, ctdb, ldb-tools, ntp | chrony (>= 3.0-1), smbldap-tools, ufw, winbind
+Enhances: bind9, ntp
+Homepage: http://www.samba.org
+Task: samba-server, ubuntu-budgie-desktop
+Supported: 5y
+Download-Size: 854 kB
+APT-Manual-Installed: yes
+APT-Sources: http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 Packages
+Description: SMB/CIFS file, print, and login server for Unix
+ Samba is an implementation of the SMB/CIFS protocol for Unix systems,
+ providing support for cross-platform file and printer sharing with
+ Microsoft Windows, OS X, and other Unix systems.  Samba can also function
+ as an NT4-style domain controller, and can integrate with both NT4 domains
+ and Active Directory realms as a member server.
+ .
+ This package provides the components necessary to use Samba as a stand-alone
+ file and print server or as an NT4 or Active Directory domain controller.
+ For use in an NT4 domain or Active Directory realm, you will also need the
+ winbind package.
+ .
+ This package is not required for connecting to existing SMB/CIFS servers
+ (see smbclient) or for mounting remote filesystems (see cifs-utils).
+
+N: There is 1 additional record. Please use the '-a' switch to see it
+```
+
+### Centos
 
 ```bash
 rpm -qa |grep samba
@@ -36,7 +90,53 @@ samba-common-4.8.3-4.el7.noarch
 samba-libs-4.8.3-4.el7.x86_64
 ```
 
+## 启动服务
+
+### Ubuntu
+
+```bash
+sudo systemctl start smbd
+sudo systemctl status smbd
+
+## 允许防火墙通过
+sudo ufw allow 'Samba'
+```
+
+### CentOS
+
+```bash
+## start/ stop/ restart
+systemctl start smb
+```
+
+
 ## 查看服务进程
+
+### Ubuntu
+
+```bash
+sudo systemctl status smbd
+● smbd.service - Samba SMB Daemon
+   Loaded: loaded (/lib/systemd/system/smbd.service; enabled; vendor preset: enabled)
+   Active: active (running) since Sat 2019-12-14 15:19:43 CST; 6min ago
+     Docs: man:smbd(8)
+           man:samba(7)
+           man:smb.conf(5)
+ Main PID: 4232 (smbd)
+   Status: "smbd: ready to serve connections..."
+    Tasks: 4 (limit: 4915)
+   CGroup: /system.slice/smbd.service
+           ├─4232 /usr/sbin/smbd --foreground --no-process-group
+           ├─4236 /usr/sbin/smbd --foreground --no-process-group
+           ├─4237 /usr/sbin/smbd --foreground --no-process-group
+           └─4238 /usr/sbin/smbd --foreground --no-process-group
+
+Dec 14 15:19:43 william-pc systemd[1]: Starting Samba SMB Daemon...
+Dec 14 15:19:43 william-pc systemd[1]: Started Samba SMB Daemon.
+```
+
+
+### CentOS
 
 ```bash
 service smb status
@@ -64,11 +164,6 @@ Dec 03 10:34:47 hicloud systemd[1]: Started Samba SMB Daemon.
 Hint: Some lines were ellipsized, use -l to show in full.
 ```
 
-## 启动服务
-
-```bash
-systemctl restart smb
-```
 
 ## 设置开机启动
 
@@ -132,7 +227,7 @@ SELinux status:                 disabled
 ## 添加用户
 
 ```bash
- useradd fl
+useradd fl
 ```
 
 ## 设置密码
