@@ -58,3 +58,49 @@ endfunction()
 include_sub_directories_recursively(${PROJECT_SOURCE_DIR})
 ```
 
+# 动态链接库
+
+## LINK_DIRECTORIES
+
+## TARGET_LINK_DIRECTORIES
+
+
+
+# 常用变量
+
+## 变量引用
+
+使用 `${VAR_NAME}` 获取变量值，但是在　`IF` 的语句中，是*直接使用变量名而不用通过 `${}`*来识别的，原因是这些语句要求显示得到变量。
+
+## 宏变量
+
+- `PROJECT_SOURCE_DIR`：最顶层 `CMakeLists.txt`所在的目录
+- `PROJECT_BINARY_DIR`：
+- `PROJECT_NAME`：通过 `project(pro_name)`定义得到的 `pro_name`
+- `CMAKE_SOURCE_DIR`
+- `CMAKE_BINARY_DIR`：执行 `cmake`（通常实在 build）的当前目录
+- `CMAKE_CURRENT_SOURCE_DIR`: 当前 `CMakeLists.txt` 所在目录
+- `EXECUTABLE_OUTPUT_PATH`：设置最终编译得到的可执行目标文件的路径
+- `LIBRARY_OUTPUT_PATH`
+- `CMAKE_C_FLAGS`
+- `CMAKE_CXX_FLAGS`
+
+## 自定义变量
+
+### 使用 `set`
+
+后面可以直接引用变量
+
+```cmake
+set(SRCS main.cpp math.cpp)
+```
+
+### 模糊匹配变量
+
+把当前所有文件都命名为 `DIR_SRCS`
+
+```cmake
+aux_source_directory(. DIR_SRCS)
+```
+
+## 
