@@ -168,3 +168,10 @@ FIND_系列指令主要包含一下指令：
 ## IF
 
 **IF(expression_)** 和 **ENDIF(expression_)**需要成对出现，而且 `expression_` 内容要一样。
+
+# 参考链接
+
+1. [modern-cmake](https://cliutils.gitlab.io/modern-cmake/modern-cmake.pdf)
+2. [Cmake实践](http://file.ncnynl.com/ros/CMake%20Practice.pdf)
+3. [It's Time To Do CMake Right](https://pabloariasal.github.io/2018/02/19/its-time-to-do-cmake-right/)
+
