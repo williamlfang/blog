@@ -1,0 +1,60 @@
+---
+title: "cmake 要点总结"
+author: William
+date: 2019-12-17
+lastmod: 2019-12-17
+categories: [Programming]
+tags: [cmake,c++,c,make]
+description: 总结常用的 cmake 设置与命令。 
+draft: false
+ToC: true
+---
+
+
+
+# 头文件包含
+
+## include_directories(include_path)
+
+可以使用 `include_directories(include_path)`
+
+```cmake
+set(INCLUDE_PATH ./include)
+include_directories(${INCLUDE_PATH})
+
+## 也可以包含下一层的文件
+include_directories(${INCLUDE_PATH}/sub_directory)
+```
+
+
+
+
+
+## 递归包含
+
+当然，如果头文件的依赖关系比较复杂，上述方法则显得有点迂腐。我们可以写个简单的函数，通过递归寻找目标路径下的所有 `.h` 头文件
+
+```cmake
+#获取当前目录及子目录(递归获取),添加到头文件搜索路径
+function(include_sub_directories_recursively root_dir)
+
+    if (IS_DIRECTORY ${root_dir})                               # 当前路径是一个目录吗，是的话就加入到包含目录
+        message("include dir: " ${root_dir})
+        include_directories(${root_dir})
+    endif()
+
+    file(GLOB ALL_SUB RELATIVE ${root_dir} ${root_dir}/*)       # 获得当前目录下的所有文件，让如ALL_SUB列表中
+    
+    foreach(sub ${ALL_SUB})
+    if (IS_DIRECTORY ${root_dir}/${sub})
+        include_sub_directories_recursively(${root_dir}/${sub}) # 对子目录递归调用，包含
+    endif()
+    endforeach()
+
+endfunction()
+
+
+#项目的所有目录都为头文件搜索路径
+include_sub_directories_recursively(${PROJECT_SOURCE_DIR})
+```
+
