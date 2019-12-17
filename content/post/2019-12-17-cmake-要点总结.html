@@ -92,7 +92,69 @@ include_sub_directories_recursively(${PROJECT_SOURCE_DIR})</code></pre>
 <pre class="cmake"><code>aux_source_directory(. DIR_SRCS)</code></pre>
 </div>
 </div>
-<div id="section" class="section level2">
-<h2></h2>
+</div>
+<div class="section level1">
+<h1>常用命令</h1>
+<div id="cmake_minimum_required" class="section level2">
+<h2><code>CMAKE_MINIMUM_REQUIRED</code></h2>
+</div>
+<div id="projectpro_name" class="section level2">
+<h2><code>PROJECT(pro_name)</code></h2>
+</div>
+<div id="includefile.cmake" class="section level2">
+<h2><code>INCLUDE(file.cmake)</code></h2>
+<p>包含某个 <code>.cmake</code> 文件。</p>
+</div>
+<div id="include_directoriespath_name" class="section level2">
+<h2><code>INCLUDE_DIRECTORIES(path_name)</code></h2>
+<p>指定头文件路径，可以使用递归的方法包含文件夹下所有的头文件。</p>
+</div>
+<div id="link_directoriespath_name" class="section level2">
+<h2><code>LINK_DIRECTORIES(path_name)</code></h2>
+<p>指定动态链接库的文件路径。</p>
+</div>
+<div id="add_subdirectorypath_name" class="section level2">
+<h2><code>ADD_SUBDIRECTORY(path_name)</code></h2>
+<p>添加某个文件夹，实际上就是要求该文件夹下面存在 <code>CMakeLists.txt</code>，从而在执行 <code>cmake</code>的时候放入执行环境。</p>
+</div>
+<div id="aux_source_directorypath_name-dir_name" class="section level2">
+<h2><code>AUX_SOURCE_DIRECTORY(path_name DIR_NAME)</code></h2>
+<p>相当于把某个文件夹下面的所有文件合并存放为变量 <code>DIR_NAME</code>，从而方便后面引用。这个指令临时被用来自动构建源文件列表。因为目前cmake还不能自动发现新添加的源文件。</p>
+<pre class="cmake"><code>## 自动添加文件
+AUX_SOURCE_DIRECTORY(. SRC_LIST)
+## 变量引用
+ADD_EXECUTABLE(main ${SRC_LIST})</code></pre>
+</div>
+<div id="add_executablehello-main.cpp" class="section level2">
+<h2><code>ADD_EXECUTABLE(hello main.cpp)</code></h2>
+</div>
+<div id="target_link_library" class="section level2">
+<h2><code>TARGET_LINK_LIBRARY</code></h2>
+</div>
+<div id="find-" class="section level2">
+<h2><code>FIND</code> 系列</h2>
+<p>FIND_系列指令主要包含一下指令：</p>
+<ul>
+<li><code>FIND_FILE(&lt;VAR&gt; name1 path1 path2 ...)</code>：VAR变量代表找到的文件全路径，包含文件名</li>
+<li><p><code>FIND_LIBRARY(&lt;VAR&gt; name1 path1 path2 ...)</code>：VAR变量表示找到的库全路径，包含库文件名</p>
+<pre class="cmake"><code>## FIND_LIBRARY示例：
+FIND_LIBRARY(libX X11 /usr/lib)
+IF(NOT libX)
+MESSAGE(FATAL_ERROR “libX not found”)
+ENDIF(NOT libX)</code></pre></li>
+<li><code>FIND_PATH(&lt;VAR&gt; name1 path1 path2 ...)</code>：VAR变量代表包含这个文件的路径。</li>
+<li><code>FIND_PROGRAM(&lt;VAR&gt; name1 path1 path2 ...)</code>：VAR变量代表包含这个程序的全路径。</li>
+<li><p><code>FIND_PACKAGE(&lt;name&gt; [major.minor] [QUIET] [NO_MODULE][[REQUIRED|COMPONENTS] [componets...]])</code></p>
+<pre class="cmake"><code>FIND_PACKAGE(HELLO)
+IF(HELLO_FOUND)
+    ADD_EXECUTABLE(hello main.c)
+    INCLUDE_DIRECTORIES(${HELLO_INCLUDE_DIR})
+    TARGET_LINK_LIBRARIES(hello ${HELLO_LIBRARY})
+ENDIF(HELLO_FOUND)</code></pre></li>
+</ul>
+</div>
+<div id="if" class="section level2">
+<h2>IF</h2>
+<p><strong>IF(expression_)</strong> 和 <strong>ENDIF(expression_)</strong>需要成对出现，而且 <code>expression_</code> 内容要一样。</p>
 </div>
 </div>

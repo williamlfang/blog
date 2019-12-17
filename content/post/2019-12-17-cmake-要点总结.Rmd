@@ -103,4 +103,68 @@ set(SRCS main.cpp math.cpp)
 aux_source_directory(. DIR_SRCS)
 ```
 
-## 
+# 常用命令
+
+## `CMAKE_MINIMUM_REQUIRED`
+
+## `PROJECT(pro_name)`
+
+## `INCLUDE(file.cmake)`
+
+包含某个 `.cmake` 文件。
+
+## `INCLUDE_DIRECTORIES(path_name)`
+
+指定头文件路径，可以使用递归的方法包含文件夹下所有的头文件。
+
+## `LINK_DIRECTORIES(path_name)`
+
+指定动态链接库的文件路径。
+
+## `ADD_SUBDIRECTORY(path_name)`
+
+添加某个文件夹，实际上就是要求该文件夹下面存在 `CMakeLists.txt`，从而在执行 `cmake`的时候放入执行环境。
+
+## `AUX_SOURCE_DIRECTORY(path_name DIR_NAME)`
+
+相当于把某个文件夹下面的所有文件合并存放为变量 `DIR_NAME`，从而方便后面引用。这个指令临时被用来自动构建源文件列表。因为目前cmake还不能自动发现新添加的源文件。
+
+```cmake
+## 自动添加文件
+AUX_SOURCE_DIRECTORY(. SRC_LIST)
+## 变量引用
+ADD_EXECUTABLE(main ${SRC_LIST})
+```
+
+## `ADD_EXECUTABLE(hello main.cpp)`
+
+##  `TARGET_LINK_LIBRARY`
+
+## `FIND` 系列
+
+FIND_系列指令主要包含一下指令：
+
+- `FIND_FILE(<VAR> name1 path1 path2 ...)`：VAR变量代表找到的文件全路径，包含文件名
+- `FIND_LIBRARY(<VAR> name1 path1 path2 ...)`：VAR变量表示找到的库全路径，包含库文件名
+    ```cmake
+	## FIND_LIBRARY示例：
+	FIND_LIBRARY(libX X11 /usr/lib)
+	IF(NOT libX)
+	MESSAGE(FATAL_ERROR “libX not found”)
+	ENDIF(NOT libX)
+	```
+- `FIND_PATH(<VAR> name1 path1 path2 ...)`：VAR变量代表包含这个文件的路径。
+- `FIND_PROGRAM(<VAR> name1 path1 path2 ...)`：VAR变量代表包含这个程序的全路径。
+- `FIND_PACKAGE(<name> [major.minor] [QUIET] [NO_MODULE][[REQUIRED|COMPONENTS] [componets...]])`
+    ```cmake
+    FIND_PACKAGE(HELLO)
+    IF(HELLO_FOUND)
+    	ADD_EXECUTABLE(hello main.c)
+        INCLUDE_DIRECTORIES(${HELLO_INCLUDE_DIR})
+        TARGET_LINK_LIBRARIES(hello ${HELLO_LIBRARY})
+    ENDIF(HELLO_FOUND)
+    ```
+
+## IF
+
+**IF(expression_)** 和 **ENDIF(expression_)**需要成对出现，而且 `expression_` 内容要一样。
