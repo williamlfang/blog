@@ -24,3 +24,9 @@ ToC: true
 
     可以查看项目网站：链接为[pollnet](https://link.zhihu.com/?target=https%3A//github.com/MengRao/pollnet)。
 
+
+# 友商大战
+
+## Mellanox
+
+在低延时网卡业务领域，SolarFalre 虽然做的比较早，具有一定的先发优势，但是也一直收到新市场力量的挑战。今天我看到评论有人说，现在 [Mellanox](https://cn.mellanox.com/solutions/fsi/) 也逐渐在低延时网卡方向开始崭露头角，可以关注一下这一方面的进展情况。
