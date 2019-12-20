@@ -71,6 +71,15 @@ ToC: true
 
 > SDN （Software Defined Networking）作为当前最重要的热门技术之一，目前已经普遍得到大家的共识。有关SDN的资料和书籍非常丰富，但入门和学习SDN依然是非常困难。本书整理了SDN实践中的一些基本理论和实践案例心得。
 
+## [Why do we use the Linux kernel's TCP stack?](https://jvns.ca/blog/2016/06/30/why-do-we-use-the-linux-kernels-tcp-stack/)
+
+文章介绍为了实现更高网络性能，为何需要绕过 Linux kernel，编写定制化的 TCP Stack。其中，介绍了一些常用的开源项目：
+
+- `lwip`
+- `netmap`
+- `mtcp`
+- `uip`
+
 
 # 友商大战
 
