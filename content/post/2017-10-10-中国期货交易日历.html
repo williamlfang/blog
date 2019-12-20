@@ -12,10 +12,10 @@ ToC: true
 
 
 
-<div class="section level1">
+<div id="期货交易日" class="section level1">
 <h1>期货交易日</h1>
 <p>利用<code>R</code>语言对日期的处理功能，我们可以借此来编制中国期货市场的交易日历表，用于策略回测（Backtesting）、自动化执行行情订阅（mdApi）、进行程序化交易（tdAip）等。</p>
-<div class="section level2">
+<div id="要点" class="section level2">
 <h2>要点</h2>
 <p>在处理中国期货市场交易日期时，主要有以下几个要点需要特别注意：</p>
 <ul>
@@ -25,7 +25,7 @@ ToC: true
 <li><code>2015</code>年的中秋节放假比较特别，只有放假两天，当时交易所规定了<code>2015-09-25</code>当天的夜盘不交易，所以这个需要在<code>nights</code>里面排除。请注意，这是一个大坑。</li>
 </ul>
 </div>
-<div class="section level2">
+<div id="代码" class="section level2">
 <h2>代码</h2>
 <pre class="r"><code>## =============================================================================
 ## myChinaFuturesCalendar.R
@@ -292,7 +292,7 @@ dbWriteTable(mysql, &quot;ChinaFuturesCalendar&quot;,
 ## =============================================================================</code></pre>
 </div>
 </div>
-<div class="section level1">
+<div id="数据下载" class="section level1">
 <h1>数据下载</h1>
 <p>从<code>2010</code>年至<code>2017</code>年的交易日期已经存放在我的<code>github</code>网站，<a href="https://github.com/williamlfang/myData/blob/master/data/ChinaFuturesCalendar/ChinaFuturesCalendar.csv">点击查看</a>。</p>
 </div>
