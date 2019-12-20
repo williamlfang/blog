@@ -20,34 +20,34 @@ ToC: true
 ### 安装 gitbook
 需要使用 `npm` 执行命令
 
-```bash
+```{bash, eval=FALSE}
 npm install gitbook -g
 ```
 
 安装完成后，可以使用命令查找具体的可执行文件所在目录
 
-```{bash}
+```{bash, eval=FALSE}
 whereis gitbook
 ```
 
 查看具体的版本号
 
-```{bash}
+```{bash, eval=FALSE}
 /opt/node-v12.10.0-linux-x64/bin/gitbook -V
 ```
 
 ### 基本命令
 
 - 初始化，会自动生成 README.md 以及 SUMMARY.md
-    ```bash
+    ```{bash, eval=FALSE}
     gitbook init
     ```
 - 生成静态网页，会得到 `_book` 的目录
-    ```bash
+    ```{bash, eval=FALSE}
     gitbook build
     ```
 - 本地预览
-    ```bash
+    ```{bash, eval=FALSE}
     gitbook serve
     ```
 
@@ -141,7 +141,7 @@ whereis gitbook
 
 在这个配置文件，我使用了一些外部插件。对于这些插件，我们可以在项目的`根目录`下执行命令进行安装
 
-```bash
+```{bash, eval=FALSE}
 gitbook install ./
 ```
 
@@ -151,26 +151,26 @@ gitbook install ./
 
 - 在`github`创建新仓库，默认为 `master` 主干枝
 - 在本地拷贝远程仓库
-    ```bash
+    ```{bash, eval=FALSE}
     git clone git@github.com:williamlfang/ProjectName.git
     ```
 - 在本地仓库搭建 `gitbook`
-    ```bash
+    ```{bash, eval=FALSE}
     cd ProjectName
     ## 开始搭建静态网页
     gitbook build
     ```
 - 建立分支 `gh-pages` 用于显示静态网页
-    ```bash
+    ```{bash, eval=FALSE}
     git checkout -b gh-pages
     ```
 - 同步拷贝 `master` 目录得到的 `_book` 到 `gh-pages`
-    ```bash
+    ```{bash, eval=FALSE}
     git checkout master -- _book
     cp -r _book/* ./
     ```
 - 提交更新
-    ```bash
+    ```{bash, eval=FALSE}
     git add ./*
     git commit -m 'update gh-pages'
     git push origin gh-pages
@@ -181,7 +181,7 @@ gitbook install ./
 ## 一键脚本
 我写了一个简单的脚本 `deploy.sh`，实现一键执行相关的操作
 
-```bash
+```{bash, eval=FALSE}
 #!/usr/bin/env bash
 
 # Set the English locale for the `date` command.
