@@ -17,6 +17,7 @@ CONFIG = {
   'posts' => File.join(SOURCE, "content/post"),
   # 'post_ext' => "Rmd",
   'post_ext' => "md",
+  'shared' => File.join(SOURCE, "content/shared"),
   'theme_package_version' => "0.1.0"
 }
 
@@ -30,7 +31,8 @@ module JB
       :theme_assets => "assets/themes",
       :theme_packages => "_theme_packages",
       # :posts => "_posts"
-      :posts => "content/post"
+      :posts => "content/post",
+      :shared => "content/shared"
     }
     
     def self.base
@@ -164,6 +166,64 @@ task :post do
     post.puts "                      eval = FALSE)"
     post.puts "```"
     post.puts ""
+  end
+  ## ---------------------------------------------------------
+  ## Linux
+  # system("rstudio #{filename}") # 新建文章后在编辑器中打开
+  ## Mac
+  # system("open -a rstudio #{filename}") # 新建文章后在编辑器中打开
+  # system("subl #{filename}") # 新建文章后在编辑器中打开
+  ## ---------------------------------------------------------
+    OS.mac?
+        system("open -a rstudio #{filename}") # 新建文章后在编辑器中打开
+    OS.linux?
+        ## system("subl #{filename}") # 新建文章后在编辑器中打开
+        system("typora #{filename}") # 新建文章后在编辑器中打开
+end # task :post
+
+# Usage: rake shared title="A Title"  date=20120209 tags=[tag1,tag2]
+desc "Begin a new shared in #{CONFIG['shared']}"
+task :shared do
+  abort("rake aborted: '#{CONFIG['shared']}' directory not found.") unless FileTest.directory?(CONFIG['shared'])
+  title = ENV["title"] || "new-shared"
+  tags = ENV["tags"] || "[]"
+  category = ENV['category'] || "[shared]"
+  slug = Hz2py.do(title.encode('utf-8'), :join_with => '-', :to_simplified => true)
+  slug = slug.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+  begin
+    date = (ENV['date'] ? Time.parse(ENV['date']) : Time.now).strftime('%Y%m%d')
+    date = (DateTime.strptime(date,'%Y%m%d')).strftime('%Y-%m-%d')
+  rescue Exception => e
+    puts "Error - date format must be YYYY-MM-DD, please check you typed it correctly!"
+    exit -1
+  end
+
+  ## 想要中文换英文的名称，则使用一下命令:
+  # filename = File.join(CONFIG['shared'], "#{date}-#{slug}.#{CONFIG['shared_ext']}")
+
+  ## 这个可以直接显示中文名称:
+  # filename = File.join(CONFIG['shared'], "#{date}-#{title}.Rmd")
+  filename = File.join(CONFIG['shared'], "#{date}-#{title.gsub('：','-').gsub(' ','-').gsub(':','-')}.md")
+
+  if File.exist?(filename)
+    abort("rake aborted!") if ask("#{filename} already exists. Do you want to overwrite?", ['y', 'n']) == 'n'
+  end
+
+  mkdir_p File.dirname(filename)
+  puts "Creating new shared: #{filename}"
+  open(filename, 'w') do |shared|
+    shared.puts "---"
+    shared.puts "title: \"#{title.gsub(/-/,' ')}\""
+    shared.puts "author: William"
+    shared.puts "date: #{date}"  
+    shared.puts "lastmod: #{date}" 
+    shared.puts "categories: #{category}"
+    shared.puts "tags: #{tags}"
+    shared.puts 'description: '
+    shared.puts "draft: false"
+    shared.puts "ToC: true"
+    shared.puts "---"
+    shared.puts ""
   end
   ## ---------------------------------------------------------
   ## Linux
