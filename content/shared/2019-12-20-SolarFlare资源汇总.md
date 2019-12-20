@@ -34,19 +34,40 @@ ToC: true
 
 一位 CloudFlare 的工程师介绍了如何实现 kernel bypass 的技术
 
-- PACKET_MMAP
+- `PACKET_MMAP`/`PF_RING`
+    `Packet_mmap` 是  Linux API for fast packet sniffing，可以直接在 Linux 进行调用。严格来说，这并非一个 Kernel bypass 技术。正如本文作者所评论的：
 
-  Packet_mmap 是  Linux API for fast packet sniffing，可以直接在 Linux 进行调用。严格来说，这并非一个 Kernel bypass 技术。
-
-- PF_RING
+    > Since the goal of kernel bypass is to spare the kernel from processing packets, we can rule out `packet_mmap`. It doesn't take over the packets - it's just a fast interface for packet sniffing. Similarly, plain `PF_RING` without ZC modules is unattractive since its main goal is to speed up libpcap.
 
 - Snabbswitch
 
 - DPDK
+    Intel® DPDK全称Intel Data Plane Development Kit，是intel提供的数据平面开发工具集，为Intel architecture（IA）处理器架构下用户空间高效的数据包处理提供库函数和驱动的支持，它不同于Linux系统以通用性设计为目的，而是专注于网络应用中数据包的高性能处理。具体体现在DPDK应用程序是运行在用户空间上利用自身提供的数据平面库来收发数据包，绕过了Linux内核协议栈对数据包处理过程。
 
 - Netmap
 
-## [SDN](https://tonydeng.github.io/sdn-handbook/)
+对于 `Snabbswitch`、`DPDK`、`Netmap`，作者也不是十分看好：
+
+> Let me show why. In order to achieve a kernel bypass all of the remaining techniques: Snabbswitch, DPDK and netmap take over the whole network card(需要控制这个网络接口), not allowing any traffic on that NIC to reach the kernel. At CloudFlare, we simply can't afford to dedicate the whole NIC to a single offloaded application.
+
+基于以上几点，作者认为现在比较能够符合 `kernel bypass` 的主要技术有：
+
+- `Solarflare's EF_VI`
+    
+    ![](/images/2019-12-20-SolarFlare资源汇总/efvi-model.png)
+
+    `EF_VI`, being a proprietary library, can be only used on Solarflare NIC's, but you may wonder how it actually works behind the scenes. It turns out EF_VI reuses the usual NIC features in a very smart way.
+
+    Under the hood each `EF_VI` program is granted access to a dedicated RX queue, hidden from the kernel. By default the queue receives no packets, until you create an `EF_VI` "filter". This filter is nothing more than a hidden flow steering rule. You won't see it in ethtool -n, but the rule does in fact exist on the network card. Having allocated an RX queue and managed flow steering rules, the only remaining task for `EF_VI` is to provide a userspace API for accessing the queue.
+
+    作者认为， `EF_VI` 是当前最可行的一个 `kernel bypass` 技术。
+
+- Virtualization approach
+    
+    ![](/images/2019-12-20-SolarFlare资源汇总/virt-model.png)
+
+    While it sounds good on the paper, it's not all that simple. First, only DPDK supports "ixgbevf" interfaces, netmap, snabbswitch and PF_RING don't. Secondly, by default the VF interface won't receive any packets. To send some flows from PF to VF you need this obscure patch to ixgbe. With it you can address the VF by encoding it in the high bits of "action" queue number in ethtool.                                                                                                                                                                                          
+## [SDN: 软件定义网络](https://tonydeng.github.io/sdn-handbook/)
 
 > SDN （Software Defined Networking）作为当前最重要的热门技术之一，目前已经普遍得到大家的共识。有关SDN的资料和书籍非常丰富，但入门和学习SDN依然是非常困难。本书整理了SDN实践中的一些基本理论和实践案例心得。
 
