@@ -46,10 +46,10 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
   identifier = "categories"
   url = "/categories/"
 [[menu.main]]
-  name = "Share"
+  name = "Shared"
   weight = 50
-  identifier = "share"
-  url = "/share/"
+  identifier = "shared"
+  url = "/shared/"
 
 [params]
   version = "3.x"           # Used to give a friendly message when you have an incompatible update
