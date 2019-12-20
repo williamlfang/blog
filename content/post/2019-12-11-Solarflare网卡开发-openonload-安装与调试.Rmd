@@ -407,6 +407,7 @@ tuned-adm list
 tuned-adm profile network-latency
 
 ## 防止系统进入 CPU 低功耗模式　cstates
+## 参考博文: https://williamlfang.github.io/post/2019-12-11-linux-调整-cstate-实现cpu超频/
 ```
 
 #### sfnettest 延时测试
