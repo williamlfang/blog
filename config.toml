@@ -45,6 +45,11 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
   weight = 40
   identifier = "categories"
   url = "/categories/"
+[[menu.main]]
+  name = "Share"
+  weight = 50
+  identifier = "share"
+  url = "/share/"
 
 [params]
   version = "3.x"           # Used to give a friendly message when you have an incompatible update
@@ -136,7 +141,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
     options = ""            # default: "{theme: 'simple'}"
 
   [params.busuanzi]         # count web traffic by busuanzi                             # 是否使用不蒜子统计站点访问量
-    enable = false
+    enable = true
     siteUV = true
     sitePV = true
     pagePV = true
