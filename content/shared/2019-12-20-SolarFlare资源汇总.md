@@ -48,7 +48,7 @@ ToC: true
 
 对于 `Snabbswitch`、`DPDK`、`Netmap`，作者也不是十分看好：
 
-> Let me show why. In order to achieve a kernel bypass all of the remaining techniques: Snabbswitch, DPDK and netmap take over the whole network card(需要控制这个网络接口), not allowing any traffic on that NIC to reach the kernel. At CloudFlare, we simply can't afford to dedicate the whole NIC to a single offloaded application.
+> Let me show why. In order to achieve a kernel bypass all of the remaining techniques: Snabbswitch, DPDK and netmap take over the whole network card(需要控制这个网络接口，把所有网络packets都指向单一的应用程序), not allowing any traffic on that NIC to reach the kernel. At CloudFlare, we simply can't afford to dedicate the whole NIC to a single offloaded application.
 
 基于以上几点，作者认为现在比较能够符合 `kernel bypass` 的主要技术有：
 
