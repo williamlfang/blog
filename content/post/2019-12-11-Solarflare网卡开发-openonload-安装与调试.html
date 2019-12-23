@@ -253,7 +253,8 @@ onload --profile=latency taskset -c 2 ./[Application]</code></pre>
 <li>files under the <code>gnu_x86_64</code> directory are 64-bit.</li>
 </ul>
 <p>我们进入 <code>gnu_x86_64</code> 的文件夹即可。</p>
-<pre class="bash"><code>## 增加环境路径
+<pre class="bash"><code>cd scripts/
+## 增加环境路径
 export PATH=&quot;$PWD:$PATH&quot;
 ## 使用 64 位进行编译
 cd ../build/gnu_x86_64/tests/ef_vi/
