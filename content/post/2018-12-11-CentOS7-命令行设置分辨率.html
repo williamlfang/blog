@@ -79,7 +79,7 @@ usage: xrandr [options]
   --listactivemonitors
   --setmonitor &lt;name&gt; {auto|&lt;w&gt;/&lt;mmw&gt;x&lt;h&gt;/&lt;mmh&gt;+&lt;x&gt;+&lt;y&gt;} {none|&lt;output&gt;,&lt;output&gt;,...}
   --delmonitor &lt;name&gt;</code></pre>
-<div id="显示当前桌面的分辨率" class="section level2">
+<div class="section level2">
 <h2>显示当前桌面的分辨率</h2>
 <p>直接使用命令 <code>xrandr</code> 来查看当前的分辨率大小：</p>
 <pre class="bash"><code>VGA-1 connected primary 1920x1080+0+0 (normal left inverted right x axis y axis) 476mm x 267mm
@@ -92,12 +92,12 @@ usage: xrandr [options]
    1920x1080_60.00  59.96* </code></pre>
 <p>其中标记 <code>*</code> 的就是当前的参数设置。我们可以看到当前系统可以支持多个显示设置。</p>
 </div>
-<div id="选择某个设置" class="section level2">
+<div class="section level2">
 <h2>选择某个设置</h2>
 <p>使用选项 <code>-s</code> 来指定某个设置</p>
 <pre class="bash"><code>xrandr -s 0 // 1600x900</code></pre>
 </div>
-<div id="直接设置分辨率" class="section level2">
+<div class="section level2">
 <h2>直接设置分辨率</h2>
 <p>也可以在命令行直接指定设置：</p>
 <pre class="bash"><code>xrandr -s 1920x1080_60.00</code></pre>
@@ -111,7 +111,7 @@ usage: xrandr [options]
 </blockquote>
 <p>可以参考 <a href="https://stackoverflow.com/questions/851704/xrandr-errors-badname-named-color-or-font-does-not-exist">SO: Xrandr errors. BadName (named color or font does not exist) [closed]</a></p>
 </div>
-<div id="集成脚本display.sh" class="section level2">
+<div id="display.sh" class="section level2">
 <h2>集成脚本<code>display.sh</code></h2>
 <pre class="bash"><code>## 首次需要建立一个 --newmode
 ## 以后就不需要了，可以注释掉
@@ -122,7 +122,7 @@ xrandr --addmode VGA-1 &quot;1920x1080_20.00&quot;
 
 xrandr -s 1920x1080</code></pre>
 </div>
-<div id="开机自动调整分辨率" class="section level2">
+<div class="section level2">
 <h2>开机自动调整分辨率</h2>
 <p>把以上的 <code>display.sh</code> 添加到 <code>~/.bashrc</code> 配置文件(run configure)。这样，每次开机后，会优先读取 <code>.bashrc</code> 文件，然后启动 <code>display.sh</code>。</p>
 <pre class="bash"><code>echo &quot;bash ~/Desktop/display.sh&quot; &gt;&gt; ~/.bashrc</code></pre>
