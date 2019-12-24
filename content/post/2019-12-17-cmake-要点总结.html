@@ -12,6 +12,16 @@ ToC: true
 
 
 
+<div id="调试" class="section level1">
+<h1>调试</h1>
+<p>通过 <code>CMAKE_BUILD_TYPE</code> 可以设置条件编译，执行生成可供调试的程序，这个相当于在命令行使用</p>
+<pre class="bash"><code>cmake .. -DCMAKE_BUILD_TYPE=Debug</code></pre>
+<pre class="cmake"><code>## 调试状态
+set(CMAKE_BUILD_TYPE Debug)
+
+## 发布状态
+set(CMAKE_BUILD_TYPE Release)</code></pre>
+</div>
 <div id="头文件包含" class="section level1">
 <h1>头文件包含</h1>
 <div id="include_directoriesinclude_path" class="section level2">
