@@ -12,9 +12,9 @@ ToC: true
 
 
 
-<div id="openonload-" class="section level1">
+<div id="openonload-技术" class="section level1">
 <h1>OpenOnload 技术</h1>
-<div class="section level2">
+<div id="固件信息" class="section level2">
 <h2>固件信息</h2>
 <p>可以通过命令查看当前的网卡连接情况</p>
 <pre class="bash"><code>ip address
@@ -64,9 +64,7 @@ supports-test: yes
 supports-eeprom-access: no
 supports-register-dump: yes
 supports-priv-flags: yes</code></pre>
-</div>
-<div class="section level2">
-<h2>下载驱动</h2>
+<p>##下载驱动</p>
 <p><code>OpenOnload</code> 原先是作为一个独立的开发项目存在，在<a href="https://www.openonload.org/download.html">官网</a>可以获取相关的资讯，或者直接进入<a href="https://www.openonload.org/download/">下载网页</a>获取指定版本的驱动。</p>
 <pre class="bash"><code>https://www.openonload.org/download/
 
@@ -168,7 +166,7 @@ openonload-201811-u1.tgz.md5                       02-Jul-2019 10:53            
 openonload-201811.tgz                              03-Dec-2018 23:39             4951381
 openonload-201811.tgz.md5                          03-Dec-2018 23:39                  56</code></pre>
 </div>
-<div class="section level2">
+<div id="安装" class="section level2">
 <h2>安装</h2>
 <pre class="bash"><code>## 进入相应的文件夹
 cd openonload-201811/
@@ -213,7 +211,7 @@ drwxr-xr-x. 2 fl fl  108 Dec  3  2018 sh
 #加载 onload
 onload_tool reload</code></pre>
 </div>
-<div class="section level2">
+<div id="卸载" class="section level2">
 <h2>卸载</h2>
 <pre class="bash"><code>#unload onload
 onload_tool unload
@@ -225,14 +223,14 @@ rpm -e *sfc*.rpm
 #unintall onload
 onload_uninstall</code></pre>
 </div>
-<div class="section level2">
+<div id="使用" class="section level2">
 <h2>使用</h2>
 <p>OpenOnload有两种模式。</p>
 <ul>
 <li>Spinning模式（busy-wait）中，加速进程的每个线程会占用一整个CPU core，始终处于waiting状态。通过htop可以看到该CPU的使用率为100%。spinning模式速度更快，但是要注意CPU core的数量。</li>
 <li>Interrupt模式中，线程不会占用满一个CPU core，但可以将中断Interrupt放在一个CPU core。interrupt模式也有加速效果，理论上比spinning略差一些。当服务器上总线程数大于CPU core的数量时，interrupt可能优于spinning，需要测试来论证。</li>
 </ul>
-<div id="-spinning-" class="section level3">
+<div id="使用-spinning-模式加速应用" class="section level3">
 <h3>使用 spinning 模式加速应用</h3>
 <p>查看CPU core序号（注意，一般服务器是从0开始排序，也有不正常的版本，请查证。否则OpenOnload选择的CPU core可能不存在）</p>
 <pre class="bash"><code>egrep &quot;(id|processo).*:|^ *$&quot; /proc/cpuinfo</code></pre>
@@ -240,7 +238,7 @@ onload_uninstall</code></pre>
 onload --profile=latency taskset -c 2 ./[Application]</code></pre>
 <p>其中，<code>-c</code> 参数选择 CPU core 的号码，也可以选择多个core：<code>-c 2,3</code>。选择core的数量与进程的线程数有关。</p>
 </div>
-<div id="-internal-" class="section level3">
+<div id="使用-internal-模式加速应用" class="section level3">
 <h3>使用 internal 模式加速应用</h3>
 <pre class="bash"><code>onload ./[Application]</code></pre>
 </div>
@@ -309,25 +307,19 @@ total 5304
 -rw-r--r--. 1 root root   2623 Nov 25 04:24 utils.d
 -rw-r--r--. 1 root root  79648 Nov 25 04:24 utils.o</code></pre>
 </div>
-<div class="section level2">
+<div id="主要应用" class="section level2">
 <h2>主要应用</h2>
-<div class="figure">
-<img src="/images/2019-12-11-Solarflare网卡开发-openonload-安装与调试/ef_apps.png" />
-
+<p><img src="/images/2019-12-11-Solarflare网卡开发-openonload-安装与调试/ef_apps.png" /></p>
 </div>
-</div>
-<div class="section level2">
+<div id="测试" class="section level2">
 <h2>测试</h2>
-<div class="section level3">
+<div id="服务器与客户端" class="section level3">
 <h3>服务器与客户端</h3>
-<div class="figure">
-<img src="/images/2019-12-11-Solarflare网卡开发-openonload-安装与调试/ef_latency_eg.png" />
-
+<p><img src="/images/2019-12-11-Solarflare网卡开发-openonload-安装与调试/ef_latency_eg.png" /></p>
 </div>
-</div>
-<div class="section level3">
+<div id="延时测试" class="section level3">
 <h3>延时测试</h3>
-<div class="section level4">
+<div id="网络架构" class="section level4">
 <h4>网络架构</h4>
 <ul>
 <li>两台机器都配备 Solarflare 网络适配器</li>
@@ -337,9 +329,9 @@ total 5304
 <li>Solarflare 的 sfnettest 和 <strong>NetPerf</strong> 都分别安装到两台机器上</li>
 </ul>
 </div>
-<div class="section level4">
+<div id="软件安装" class="section level4">
 <h4>软件安装</h4>
-<div id="-openonload" class="section level5">
+<div id="安装-openonload" class="section level5">
 <h5>安装 openonload</h5>
 <pre class="bash"><code>## 进入相应的文件夹
 cd openonload-201811/
@@ -354,19 +346,19 @@ cd scripts/
 #加载 onload
 onload_tool reload</code></pre>
 </div>
-<div id="-netperf" class="section level5">
+<div id="安装-netperf" class="section level5">
 <h5>安装 Netperf</h5>
 <pre class="bash"><code>wget http://repo.iotti.biz/CentOS/7/x86_64/netperf-2.7.0-1.el7.lux.x86_64.rpm
 rpm -i netperf-2.7.0-1.el7.lux.x86_64.rpm</code></pre>
 </div>
-<div id="-sfnettest" class="section level5">
+<div id="安装-sfnettest" class="section level5">
 <h5>安装 sfnettest</h5>
 <pre class="bash"><code>wget https://www.openonload.org/download/sfnettest/sfnettest-1.5.0.tgz
 tar xvf sfnettest-1.5.0.tgz
 cd sfnettest-1.5.0/src
 make</code></pre>
 </div>
-<div class="section level5">
+<div id="调优设置" class="section level5">
 <h5>调优设置</h5>
 <pre class="bash"><code>## 停止 cpuspeed 服务以避免进入省电模式，降低CPU时钟速度
 systemctl stop cpuspeed
@@ -388,18 +380,18 @@ tuned-adm profile network-latency
 ## 参考博文: https://williamlfang.github.io/post/2019-12-11-linux-调整-cstate-实现cpu超频/</code></pre>
 </div>
 </div>
-<div id="sfnettest-" class="section level4">
+<div id="sfnettest-延时测试" class="section level4">
 <h4>sfnettest 延时测试</h4>
-<div class="section level5">
+<div id="参数说明" class="section level5">
 <h5>参数说明</h5>
 <ul>
 <li><code>--profile=latency</code>：测试延时模式</li>
 <li><code>taskset -c 1</code>：绑定 cpu core 的号码 1</li>
 <li><code>--maxms=10000</code> 指发送的最大数据包大小</li>
-<li><code>--affinity &quot;1;1&quot;</code> 指使用 <code>core 1</code> 发送，使用 <code>core 1</code> 接收（可以选不同的core）</li>
+<li><code>--affinity "1;1"</code> 指使用 <code>core 1</code> 发送，使用 <code>core 1</code> 接收（可以选不同的core）</li>
 </ul>
 </div>
-<div class="section level5">
+<div id="服务器" class="section level5">
 <h5>服务器</h5>
 <p>首先，在服务器开启</p>
 <pre class="bash"><code>onload --profile=latency taskset -c 1 ./sfnt-pingpong --maxms=10000 --affinity 1,1</code></pre>
@@ -407,7 +399,7 @@ tuned-adm profile network-latency
 <pre class="bash"><code>oo:sfnt-pingpong[17337]: Using OpenOnload 201811 Copyright 2006-2018 Solarflare Communications, 2002-2005 Level 5 Networks [2]
 sfnt-pingpong: server: waiting for client to connect...</code></pre>
 </div>
-<div id="tcp-" class="section level5">
+<div id="tcp-测试" class="section level5">
 <h5>TCP 测试</h5>
 <pre class="bash"><code>onload --profile=latency taskset -c 1 ./sfnt-pingpong --maxms=10000 --affinity 1,1 tcp 127.0.0.1</code></pre>
 <p>运行结果如下</p>
@@ -474,7 +466,7 @@ sfnt-pingpong: server: waiting for client to connect...</code></pre>
 <li>标准差为 0.364us</li>
 </ul>
 </div>
-<div id="udp-" class="section level5">
+<div id="udp-测试" class="section level5">
 <h5>UDP 测试</h5>
 <p>执行命令</p>
 <pre class="bash"><code>onload --profile=latency taskset -c 1 ./sfnt-pingpong --maxms=10000 --affinity 1,1 udp 127.0.0.1</code></pre>

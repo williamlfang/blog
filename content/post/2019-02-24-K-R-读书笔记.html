@@ -13,9 +13,9 @@ ToC: true
 
 
 <p>“The C Programming Language” 是计算机编程的经典之作，别名 <code>K&amp;R</code>。</p>
-<p>这是一本简短精悍的书籍，介绍了 <code>C</code> 语言的编程核心、ANSI 规范、编译原理等诸多方面的内容。现在很难想象这本不足 200 页的小书<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>尽然能够放得下这么多的内容，可以说是提纲挈领、言简意垓。尤其是附录A部分，只是简要介绍了 <code>C</code> 的编译原理，区区几页纸张就足以为后人编写各式不同的编译器提供指引<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>。</p>
+<p>这是一本简短精悍的书籍，介绍了 <code>C</code> 语言的编程核心、ANSI 规范、编译原理等诸多方面的内容。现在很难想象这本不足 200 页的小书<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>尽然能够放得下这么多的内容，可以说是提纲挈领、言简意垓。尤其是附录A部分，只是简要介绍了 <code>C</code> 的编译原理，区区几页纸张就足以为后人编写各式不同的编译器提供指引<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>。</p>
 <!--more-->
-<div class="section level1">
+<div id="概览" class="section level1">
 <h1>概览</h1>
 <div class="figure">
 <img src="/images/2019-02-24-K&amp;R-读书笔记/c.jpg" alt="K&amp;R: 经典之作" />
@@ -59,11 +59,11 @@ ToC: true
 </ul></li>
 </ul>
 </div>
-<div id="part-i" class="section level1">
+<div id="part-i入门准备" class="section level1">
 <h1>PART I：入门准备</h1>
 <div id="chap.-1-hello-world" class="section level2">
 <h2>Chap. 1: Hello, world!</h2>
-<div class="section level3">
+<div id="经典例子" class="section level3">
 <h3>经典例子</h3>
 <p>经典的 <code>Hello, world</code> 就是从这里诞生的。</p>
 <pre class="c"><code>// hello.c
@@ -96,7 +96,7 @@ int main()
 <p class="caption">Hello, world.</p>
 </div>
 </div>
-<div class="section level3">
+<div id="温度转换" class="section level3">
 <h3>温度转换</h3>
 <pre class="c"><code>// f-c.c
 // 摄氏温度、华氏温度之间的转换
@@ -117,7 +117,7 @@ int main()
 <p class="caption">f-c 温度转换</p>
 </div>
 </div>
-<div class="section level3">
+<div id="格式化输入输出" class="section level3">
 <h3>格式化输入、输出</h3>
 <p>这里补充一下关于 <code>printf</code> 与 <code>scanf</code> 格式化的知识点：</p>
 <ul>
@@ -170,7 +170,7 @@ int main() {
 <p class="caption">printf-scanf 格式化输入、输出</p>
 </div>
 </div>
-<div id="-for--while" class="section level3">
+<div id="关于-for-与-while" class="section level3">
 <h3>关于 <code>for</code> 与 <code>while</code></h3>
 <p>书中其实是分别用了 <code>for</code> 和 <code>while</code> 两种逻辑结构来対温度进制进行转换。这两类逻辑都是属于<strong>循环结构</strong>，一般来说，</p>
 <ul>
@@ -182,7 +182,7 @@ int main() {
 <p>The choice between while and for is arbitrary, based on which seems clearer. The for is usually appropriate for loops in which <strong>the initialization and increment are single statements and logically related</strong>, since it is more compact than while and it <strong>keeps the loop control statements together in one place</strong>.</p>
 </blockquote>
 </div>
-<div class="section level3">
+<div id="关于预处理" class="section level3">
 <h3>关于预处理</h3>
 <p><code>macro</code> 也称作<strong>预处理指令</strong>，是预处理器在编译前，执行的特殊命令，可以是插入头文件、定义全局常量、执行逻辑分支等。需要注意的是，预处理指令实际上不是一个 <code>C</code> 语句，因此<strong>不能在预处理命令后面添加分号 <code>;</code></strong>。</p>
 <ul>
@@ -210,7 +210,7 @@ int main() {
 <p class="caption">gechar 获取单个字符</p>
 </div>
 </div>
-<div class="section level3">
+<div id="函数封装" class="section level3">
 <h3>函数封装</h3>
 <blockquote>
 <p>[page.24]</p>
@@ -259,7 +259,7 @@ void myprintf(char msg[]) {
 <p class="caption">函数封装</p>
 </div>
 </div>
-<div id="scope" class="section level3">
+<div id="作用域scope" class="section level3">
 <h3>作用域(scope)</h3>
 <p><code>C</code> 使用一対大括号<code>{}</code>来聚合多个命令语句块，并形成一个变量的作用域(scope)。这类变量我们称之为 <code>automatic</code>。作用域遵从「可高不可低」的原则，即</p>
 <ul>
@@ -311,9 +311,9 @@ int main() {
 <img src="/images/2019-02-24-K&amp;R-读书笔记/chap.1/scope.png" alt="Build As Project" />
 <p class="caption">Build As Project</p>
 </div>
-<p>从函数调用的角度看这个问题，每次调用一个函数，<code>C</code> 是默认使用 <code>pass-by-value</code> 把常量复制后再传入到函数主体，因此，在函数里面対参数的修改，实际上不会影响原来传递的参数值。如果想要对其进行修改，则需要 <code>pass-by-reference</code> 或则 <code>pass-by-pointer</code>。<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a></p>
+<p>从函数调用的角度看这个问题，每次调用一个函数，<code>C</code> 是默认使用 <code>pass-by-value</code> 把常量复制后再传入到函数主体，因此，在函数里面対参数的修改，实际上不会影响原来传递的参数值。如果想要对其进行修改，则需要 <code>pass-by-reference</code> 或则 <code>pass-by-pointer</code>。<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></p>
 </div>
-<div id="c" class="section level3">
+<div id="c编程工程项目" class="section level3">
 <h3><code>C</code>编程工程项目</h3>
 <p>对于一个小型的工程项目，比如上面这个函数封装的例子，我们只需要把所有的函数原型和函数定义写在 <code>main</code> 同在的源文件，然后直接编译就可以运行了。但是对于一个大型的 <code>C</code> 程序开发项目，往往会涉及到非常多的文件关联，主函数起到的只是一个做为程序入口用于调用其他的功能模块，而这些功能模块，又都是根据各自的特征分布的各个源文件中。这在编译的时候，就需要告诉编译器各个模块之间的关联关系。这就是<strong>头文件</strong>的作用。</p>
 <ul>
@@ -341,11 +341,11 @@ int main() {
 </div>
 </div>
 </div>
-<div id="part-iic-" class="section level1">
+<div id="part-iic-语言核心概念" class="section level1">
 <h1>PART II：<code>C</code> 语言核心概念</h1>
 <div id="chap.-2-types-operators-and-expression" class="section level2">
 <h2>Chap. 2: Types, Operators, and Expression</h2>
-<div class="section level3">
+<div id="变量名" class="section level3">
 <h3>变量名</h3>
 <blockquote>
 <p>There are two hard things in computer science: cache invalidation and naming things.</p>
@@ -360,7 +360,7 @@ int main() {
 <li>变量名应<strong>以字见意</strong>，<strong>能够从字面意思推断出该变量代表的具体含义</strong>。虽然类似 <code>a</code>、<code>aa</code>、<code>b</code> 这些名称也是合法的，但无法看出来他们各自代表什么意思，因此不利于代码阅读。另外，现在很多的 <code>IDE</code> 都有提供变量的模糊匹配功能，比如 <code>Sublime</code> 中使用 <code>ctrl+d</code> 或则 <code>alt+f3</code> 是可以直接找到与该名称匹配的所有变量，而如果使用 <code>a</code> 、<code>aa</code> 这类名称，则会困难很多。</li>
 </ul>
 </div>
-<div class="section level3">
+<div id="基本数据类型" class="section level3">
 <h3>基本数据类型</h3>
 <p>一般来说，基本数据类型的具体位长，与本地机器有关。</p>
 <ul>
@@ -407,7 +407,7 @@ int main () {
 <p class="caption">sizeof</p>
 </div>
 </div>
-<div class="section level3">
+<div id="拓展数据类型" class="section level3">
 <h3>拓展数据类型</h3>
 <ul>
 <li><code>enum</code>：整型，并以 <code>1</code> 递增。如果没有指定初始，则以 <code>0</code> 开始计数。</li>
@@ -458,7 +458,7 @@ int main () {
 <p class="caption">扩展数据类型</p>
 </div>
 </div>
-<div class="section level3">
+<div id="常量" class="section level3">
 <h3>常量</h3>
 <p>常量，顾名思义，就是不可以更改的变量，本质上还是一个变量，只不过不能对其进行修改值，但可以在命令语句中调用。</p>
 <ul>
@@ -469,7 +469,7 @@ int main () {
 int j = (i+100)*i;</code></pre></li>
 </ul>
 </div>
-<div class="section level3">
+<div id="类型转换" class="section level3">
 <h3>类型转换</h3>
 <p>类型转换有两种实现方式：</p>
 <ul>
@@ -524,7 +524,7 @@ int main () {
 <p class="caption">page.44</p>
 </div>
 </div>
-<div class="section level3">
+<div id="运算" class="section level3">
 <h3>运算</h3>
 <ul>
 <li><p>函数运算优先级最高</p></li>
@@ -588,7 +588,7 @@ else
         break;
 }</code></pre>
 </div>
-<div id="for--while" class="section level3">
+<div id="for-与-while" class="section level3">
 <h3><code>for</code> 与 <code>while</code></h3>
 <p>其实两者是可以互相转换的</p>
 <div class="figure">
@@ -629,12 +629,12 @@ int main() {
 <p class="caption">do-while</p>
 </div>
 </div>
-<div id="breakcontinue" class="section level3">
+<div id="break与continue" class="section level3">
 <h3><code>break</code>与<code>continue</code></h3>
 <p>可以控制循环逻辑的执行：</p>
 <ul>
 <li><code>break</code> 提前退出整个循环</li>
-<li><code>continue</code> 不执行本次循环，但需要继续执行省下的循环<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a></li>
+<li><code>continue</code> 不执行本次循环，但需要继续执行省下的循环<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></li>
 </ul>
 </div>
 </div>
@@ -651,18 +651,18 @@ int main() {
 <h2>Chap. 6: Structures</h2>
 </div>
 </div>
-<div id="part-iii" class="section level1">
+<div id="part-iii使用标准库" class="section level1">
 <h1>PART III：使用标准库</h1>
 </div>
-<div id="part-iv" class="section level1">
+<div id="part-iv编译原理" class="section level1">
 <h1>PART IV：编译原理</h1>
 </div>
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>可以参考这个链接看看现在有哪些优秀的 C 编程数据：<a href="https://stackoverflow.com/questions/562303/the-definitive-c-book-guide-and-list">The Definitive C Book Guide and List - Stack Overflow</a><a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>关于 <code>C</code> 的历史，这里有一篇 Dennis Ritchie 写的文章可供参考：<a href="https://www.bell-labs.com/usr/dmr/www/chist.html">The Development of the C Language</a><a href="#fnref2">↩</a></p></li>
-<li id="fn3"><p>从内存地址的角度看，二者是同一个东西，都是变量的一种「映射」，只不过 <code>reference</code> 是别名，而 <code>pointer</code> 是内存实实在在的地址。<a href="#fnref3">↩</a></p></li>
-<li id="fn4"><p><code>R</code> 使用 <code>next</code>， <code>python</code> 使用 <code>continue</code><a href="#fnref4">↩</a></p></li>
+<li id="fn1"><p>可以参考这个链接看看现在有哪些优秀的 C 编程数据：<a href="https://stackoverflow.com/questions/562303/the-definitive-c-book-guide-and-list">The Definitive C Book Guide and List - Stack Overflow</a><a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>关于 <code>C</code> 的历史，这里有一篇 Dennis Ritchie 写的文章可供参考：<a href="https://www.bell-labs.com/usr/dmr/www/chist.html">The Development of the C Language</a><a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>从内存地址的角度看，二者是同一个东西，都是变量的一种「映射」，只不过 <code>reference</code> 是别名，而 <code>pointer</code> 是内存实实在在的地址。<a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p><code>R</code> 使用 <code>next</code>， <code>python</code> 使用 <code>continue</code><a href="#fnref4" class="footnote-back">↩</a></p></li>
 </ol>
 </div>

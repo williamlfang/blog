@@ -16,7 +16,7 @@ ToC: true
 <img src="/images/git.jpeg" alt="Git:版本控制系统" />
 <p class="caption"><a href="Git:版本控制系统" class="uri">Git:版本控制系统</a></p>
 </div>
-<div id="-git-" class="section level1">
+<div id="搭建-git-服务器" class="section level1">
 <h1>搭建 Git 服务器</h1>
 <p>第一步，安装git：</p>
 <pre class="bash"><code>$ sudo apt-get install git</code></pre>
@@ -45,7 +45,7 @@ Cloning into &#39;sample&#39;...
 warning: You appear to have cloned an empty repository.</code></pre>
 <p>剩下的推送就简单了。</p>
 </div>
-<div class="section level1">
+<div id="版本控制" class="section level1">
 <h1>版本控制</h1>
 <pre class="bash"><code>## 如果没有使用 gitosis
 ## git clone git@47.98.117.71:/home/git/codebase/test.git
@@ -80,9 +80,9 @@ git fetch
 ## 然后再执行
 git checkout -b 本地分支名 origin/远程分支名</code></pre>
 </div>
-<div class="section level1">
+<div id="团队管理" class="section level1">
 <h1>团队管理</h1>
-<div id="-gitosis-" class="section level2">
+<div id="使用-gitosis-管理权限" class="section level2">
 <h2><del>使用 gitosis 管理权限</del></h2>
 <blockquote>
 <p>gitosis 现已经被改写升级成 gitolite, 更好得支持在 branch 级别的权限控制</p>
@@ -93,7 +93,7 @@ git checkout -b 本地分支名 origin/远程分支名</code></pre>
 <li><code>git</code>默认的权限是对于所有成员开放的，即所有成员都拥有对项目的读写权限，如果是非管理员用户，不小心在分支修改了代码，但是提交到了<code>master</code>上面，有可能导致整个项目崩盘</li>
 <li>此外，我们还希望给部分成员拥有管理权限，部分成员拥有可读可写权限，而剩下的[实习]成员则只有可读权限，这个需要通过项目的权限管理机制实现。</li>
 </ol>
-<div id="-gitosis" class="section level3">
+<div id="安装-gitosis" class="section level3">
 <h3>安装 gitosis</h3>
 <p><code>gitosis</code> 是 <code>python</code> 项目，需要安装 <code>python-setuptools</code> 模块</p>
 <pre class="bash"><code>apt-get install python-setuptools</code></pre>
@@ -118,9 +118,10 @@ drwxr-x--- 7 git git 4096 Nov 30 13:06 test.git</code></pre>
 ## 修改成如下
 git:x:1000:1000::/home/git:/bin/sh</code></pre>
 </div>
-<div class="section level3">
+<div id="增加管理员" class="section level3">
 <h3>增加管理员</h3>
-<p><code>gitosis</code> 默认会搭建一个 <code>gitosis-admin.git</code> 的仓库用来管理所有的用户权限。因此，我们需要增加一个<strong>代码管理员</strong>来管理这个<code>repo</code>，即只有这个用户才有权限修改项目的权限归属。 比如，我(<code>william</code>)的本地机器作为 <code>gitosis-admin.git</code> 的所有者，需要把本地的 <code>id_rsa.pub</code> 加入到 <code>gitosis-admin.git</code>，然后开始初始化仓库</p>
+<p><code>gitosis</code> 默认会搭建一个 <code>gitosis-admin.git</code> 的仓库用来管理所有的用户权限。因此，我们需要增加一个<strong>代码管理员</strong>来管理这个<code>repo</code>，即只有这个用户才有权限修改项目的权限归属。
+比如，我(<code>william</code>)的本地机器作为 <code>gitosis-admin.git</code> 的所有者，需要把本地的 <code>id_rsa.pub</code> 加入到 <code>gitosis-admin.git</code>，然后开始初始化仓库</p>
 <pre class="bash"><code>scp ~/.ssh/id_rsa.pub root@47.98.117.71:/tmp 
 
 sudo -H -u git gitosis-init &lt; /tmp/id_rsa.pub</code></pre>
@@ -151,7 +152,9 @@ drwxr-xr-x 50 william william 4.0K Nov 30 12:57 ../
 drwxrwxr-x  8 william william 4.0K Nov 30 15:29 .git/
 -rw-rw-r--  1 william william  399 Nov 30 13:22 gitosis.conf
 drwxrwxr-x  2 william william 4.0K Nov 30 13:10 keydir/</code></pre>
-<p>其中 1. <code>gitosis.conf</code>是配置文件 2. <code>keydir</code>存放公钥<code>.pub</code></p>
+<p>其中
+1. <code>gitosis.conf</code>是配置文件
+2. <code>keydir</code>存放公钥<code>.pub</code></p>
 <pre class="bash"><code>cat gitosis.conf 
 
 [gitosis]
@@ -187,18 +190,19 @@ drwxrwxr-x 4 william william 4.0K Nov 30 13:22  ../
 <p>我们可以看出</p>
 <ol style="list-style-type: decimal">
 <li>对于 <code>test.git</code>, <code>william.lian.fang@gmail.com</code>和<code>fl166</code> 拥有 <code>writable</code> 的可读可写权限。</li>
-<li><p>而对于 <code>test2.git</code>, <code>william.lian.fang@gmail.com</code> 拥有 <code>writable</code> 的可读可写权限, 而 <code>fl166</code> 只有读的权限，即不可参与项目代码修改，如果推送修改会报错</p>
-<pre class="bash"><code>ERROR:gitosis.serve.main:Repository write access denied 
-fatal: Could not read from remote repository.
-
-Please make sure you have the correct access rights 
-and the repository exists.</code></pre></li>
+<li><p>而对于 <code>test2.git</code>, <code>william.lian.fang@gmail.com</code> 拥有 <code>writable</code> 的可读可写权限, 而 <code>fl166</code> 只有读的权限，即不可参与项目代码修改，如果推送修改会报错
+```bash
+ERROR:gitosis.serve.main:Repository write access denied
+fatal: Could not read from remote repository.</p>
+<p>Please make sure you have the correct access rights
+and the repository exists.
+```</p></li>
 </ol>
 </div>
 </div>
-<div id="-gitolite-" class="section level2">
+<div id="使用-gitolite-管理权限" class="section level2">
 <h2>使用 gitolite 管理权限</h2>
-<div id="-gitolite" class="section level3">
+<div id="安装-gitolite" class="section level3">
 <h3>安装 gitolite</h3>
 <p>由于 <code>gitolite</code> 使用 <code>Perl</code> 编写，因此我们需要先安装</p>
 <pre class="bash"><code>sudo yum install perl</code></pre>
@@ -216,7 +220,7 @@ git clone git://github.com/sitaramc/gitolite
 mkdir -p /home/git/bin
 ./gitolite/install -to /home/git/bin/</code></pre>
 </div>
-<div class="section level3">
+<div id="添加管理员" class="section level3">
 <h3>添加管理员</h3>
 <p>可以有两种方式添加管理员</p>
 <ol style="list-style-type: decimal">
@@ -243,7 +247,7 @@ drwx------ 8 git git 4096 Dec  1 15:15 gitolite-admin.git
 drwx------ 7 git git 4096 Dec  1 15:15 testing.git</code></pre>
 <p>如此一来，我们便可以在 <code>william</code> 的这台电脑上设置用户权限了。</p>
 </div>
-<div class="section level3">
+<div id="设置用户权限" class="section level3">
 <h3>设置用户权限</h3>
 <p>我们在本地机器（<code>william</code>）终端操作</p>
 <pre class="bash"><code>## 本地机器 william
@@ -292,21 +296,21 @@ repo test1
 repo test2
     RW+          =      git_admin_william
     R   master   =      fl166
-    RW+ from166  =      fl166</code></pre></li>
-</ol>
+    RW+ from166  =      fl166</code></pre>
 <p>这里，以 <code>test2</code> 为例，说明各个用户的权限</p>
 <ul>
 <li><code>git_admin_william</code> 拥有顶级的可读（<code>R</code>）、可写（<code>W</code>）、以及强制更新（<code>+</code>）权限</li>
 <li><code>fl166</code> 只拥有对 <code>master</code> 分支的读取权限，没有其他（写）权限</li>
 <li><code>fl166</code> 还拥有对的分支 <code>from166</code> 的可读（<code>R</code>）、可写（<code>W</code>）、以及强制更新（<code>+</code>）权限</li>
-</ul>
+</ul></li>
+</ol>
 </div>
 </div>
-<div class="section level2">
+<div id="开发项目结构" class="section level2">
 <h2>开发项目结构</h2>
 </div>
 </div>
-<div class="section level1">
+<div id="参考链接" class="section level1">
 <h1>参考链接</h1>
 <ol style="list-style-type: decimal">
 <li><a href="https://blog.csdn.net/Suo_ivy/article/details/79941323">gitosis 安装使用及错误整理</a>：步骤讲解比较详细</li>
