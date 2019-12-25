@@ -207,6 +207,10 @@ drwxr-xr-x. 2 fl fl  108 Dec  3  2018 sh
 -rwxr-xr-x. 1 fl fl 1.1K Apr 12  2018 zf_debug
 
 ## 搭建环境
+locate crti.o
+LIBRARY_PATH=/usr/lib64:$LIBRARY_PATH
+export LIBRARY_PATH
+
 ./onload_build
 ## 执行安装
 ./onload_install

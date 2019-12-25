@@ -22,6 +22,17 @@ include_directories(${INCLUDE_PATH})
 
 ## 也可以包含下一层的文件
 include_directories(${INCLUDE_PATH}/sub_directory)</code></pre>
+<p># 使用 <code>find_</code></p>
+<ul>
+<li><code>find_path</code>: 要求找到文件所在路径</li>
+<li><code>find_library</code>: 要求找到链接库</li>
+<li><code>find_package</code>: 找到安装的链接库，包含以上两个</li>
+</ul>
+<p>以上命令执行后，可以生成</p>
+<ul>
+<li><code>XXX_LIBRARY</code>: 链接库</li>
+<li><code>XXX_INCLUDE_DIR</code>: 相关的头文件</li>
+</ul>
 </div>
 <div class="section level2">
 <h2>递归包含</h2>

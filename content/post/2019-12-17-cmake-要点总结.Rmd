@@ -26,6 +26,16 @@ include_directories(${INCLUDE_PATH})
 include_directories(${INCLUDE_PATH}/sub_directory)
 ```
 
+ # 使用 `find_`
+
+ - `find_path`: 要求找到文件所在路径
+ - `find_library`: 要求找到链接库
+ - `find_package`: 找到安装的链接库，包含以上两个
+
+ 以上命令执行后，可以生成
+
+ - `XXX_LIBRARY`: 链接库
+ - `XXX_INCLUDE_DIR`: 相关的头文件
 
 
 
