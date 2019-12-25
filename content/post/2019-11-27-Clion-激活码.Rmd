@@ -5,14 +5,22 @@ date: 2019-11-27
 lastmod: 2019-11-27
 categories: [Programming]
 tags: [Clion,JetBrains,PyCharm]
-description: 当前激活码可以使用至2020年4月。
+description: 当前激活码可以使用至2089年7月。
 draft: false
 ToC: false
 ---
 
+# 更新
+
+> ✅[Jetbrains系列产品2019.3.1最新激活方法[持续更新]](https://zhile.io/)
+
+![CLion License Activation](/images/clion-2019.3.2.png)
+
+# 旧时代
+
 ![CLion License Activation](/images/CLion_License_Activation_113.png)
 
-> [2019 Clion PyCharm 激活码](https://blog.csdn.net/l297969586/article/details/78183671)
+> ❌[2019 Clion PyCharm 激活码](https://blog.csdn.net/l297969586/article/details/78183671)
 
 1. 在`/etc/hosts`文件末尾添加两行
 

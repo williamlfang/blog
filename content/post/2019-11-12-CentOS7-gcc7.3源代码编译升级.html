@@ -12,7 +12,7 @@ ToC: true
 
 
 
-<div class="section level1">
+<div id="准备" class="section level1">
 <h1>准备</h1>
 <p>把需要下载和解压的文件都放在一个目录</p>
 <pre class="bash"><code>mkdir -p ~/gcc7
@@ -26,7 +26,7 @@ wget ftp://gcc.gnu.org/pub/gcc/infrastructure/gmp-6.1.0.tar.bz2
 wget https://ftp.gnu.org/gnu/mpc/mpc-1.0.3.tar.gz
 wget https://ftp.gnu.org/gnu/mpc/mpc-1.1.0.tar.gz</code></pre>
 </div>
-<div class="section level1">
+<div id="安装" class="section level1">
 <h1>安装</h1>
 <pre class="bash"><code>tar -xvf gcc-7.3.0.tar.gz
 
@@ -52,7 +52,7 @@ ln -s mpc-1.0.3 mpc
 make
 make install</code></pre>
 </div>
-<div class="section level1">
+<div id="添加环境变量" class="section level1">
 <h1>添加环境变量</h1>
 <pre class="bash"><code>export PATH=/home/trader/opt/bin:$PATH
 export LD_LIBRARY_PATH=/home/trader/opt/lib:/usr/lib:$LD_LIBRARY_PATH</code></pre>

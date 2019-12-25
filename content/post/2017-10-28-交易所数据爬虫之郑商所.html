@@ -13,7 +13,7 @@ ToC: true
 
 
 <p>上回我介绍了如何<a href="https://williamlfang.github.io/post/2017-10-23-%E4%BA%A4%E6%98%93%E6%89%80%E6%95%B0%E6%8D%AE%E7%88%AC%E8%99%AB%E4%B9%8B%E4%B8%AD%E9%87%91%E6%89%80/">对中金所进行网络爬虫</a>，获得了股指期货相关的历史日行情数据和成交排名数据。同样的，我们也可以使用类似的爬虫技术，对郑商所进行网络爬虫。</p>
-<div class="section level1">
+<div id="诡异的郑商所" class="section level1">
 <h1>诡异的郑商所</h1>
 <p>不过与中金所网络爬虫不一样的一点是，中金所本身提供了数据文件的<strong>静态链接地址</strong>，我们只需要解析到不同交易日期所对应的链接，就能够把数据下载到本地。而郑商所虽然也同样提供了文件的静态链接，<strong>但是</strong>，我在爬虫的过程中发现了一个小小的问题：有部分的交易数据，郑商所不知道出于何种原因（有可能是原始的数据文件丢失，或者路径存储错误），竟然找不到当日对应的数据文件链接。也就是说，对于这些交易日，我们是无法直接下载文件的。因此，对于这些没有提供链接的数据，我们只能采用页面爬虫的技术，通过读取网页的数据，经过数据清理、规整等步骤，再保存到本地文件。</p>
 <p>针对网站页面的数据进行爬虫，会涉及到 <code>DOM</code> 构造、<code>HTML</code> 元素解析、文本识别、正则表达等诸多方面的技术。在接下来的内容里，我会重点介绍如何在网页中找到我们需要的数据。</p>
@@ -22,7 +22,7 @@ ToC: true
 <p class="caption">郑商所网站提供期货与期权相关的数据</p>
 </div>
 </div>
-<div class="section level1">
+<div id="工具箱" class="section level1">
 <h1>工具箱</h1>
 <p>对于网页内容进行爬虫、识别网页内容、获取目标数据或文本等，我们需要使用到 <code>HTML</code> 相关的技术手段。最原始的一种办法是通过 <code>wget</code> 把整个网页下载到本地，然后再进行内容解析；或者使用 <code>libcur</code> 来读取远程的内容并传递到系统的内存。这些技术难度较大，而且得到的数据并不是结构性的，使用正则获取目标数据比较坎坷。万幸的是，已经有人通过软件包的形式，为我们把这些基础的工作都处理完成了，我们只需要调用相关的函数，即可实现简单的网页爬虫。</p>
 <p>以下两个 <code>R</code> 的扩展包就是针对网络爬虫而开发的。</p>
@@ -36,12 +36,12 @@ ToC: true
 <p>这个是大神 <strong>Wickham Hadley</strong> 编写的一个针对网页爬虫的扩展包，封装了 <code>Linux</code> 下的 <code>libcur</code> 库，因此能够提供对网页页面的 <code>DOM</code> 解析。这个包返回一个结构化的对象，可以通过 <code>R</code> 的函数对其进行数据清理；同时它还针对不同的编码进行自动化的识别，这点对于中文网站尤其重要，否则，编码错误会导致我们爬虫的数据出现乱码的悲剧。</p>
 </div>
 </div>
-<div class="section level1">
+<div id="日行情数据" class="section level1">
 <h1>日行情数据</h1>
-<div class="section level2">
+<div id="静态链接" class="section level2">
 <h2>静态链接</h2>
 <p>我们在对中金所进行爬虫的那篇博客里面，已经讲到如何通过 <code>Chrome</code> 的 <code>Inspect</code> 功能来获取网页的元素。通过查找特定位置的 <code>HTML</code> 标签，我们可以得到该位置所对应的具体信息。</p>
-<div class="section level3">
+<div id="定位网页" class="section level3">
 <h3>定位网页</h3>
 <p>首先我们需要做的是先尝试定位某个交易日的日行情数据存放网页，通过输入交易日，然后点击查询，我们便可以看到需要查找的交易数据。</p>
 <div class="figure">
@@ -59,7 +59,7 @@ ToC: true
 <li><code>2017/20171026/FutureDataDaily.htm</code>：这个命名规则很明显，由 <code>YYYY/YYYYmm/FutureDataDaily.htm</code> 构成。我们可以根据交易日来提取日期组成。</li>
 </ul>
 </div>
-<div class="section level3">
+<div id="下载数据文件" class="section level3">
 <h3>下载数据文件</h3>
 <p>在数据文件对应的 <code>excel</code> / <code>txt</code> 点击右键，然后使用 <code>Ctrl + F</code> 查找 <code>excel</code>，我们便可以定位到数据文件了。</p>
 <div class="figure">
@@ -102,12 +102,12 @@ destFile &lt;-  paste0(dataPath, &#39;/&#39;, exchCalendar[i,calendarYear],
 <pre class="r"><code>try(download.file(tempURL, destFile, mode = &#39;wb&#39;))</code></pre>
 </div>
 </div>
-<div class="section level2">
+<div id="网页内容爬虫" class="section level2">
 <h2>网页内容爬虫</h2>
 <p>如果事情都是按照我们预期，作为强迫症的我，必然要求这个世界能够按照自然界最优雅的方式来运行。可以，世界太大，坏人太多，结局很不好。</p>
 <p>以上介绍了使用静态网页链接地址来下载文件，可惜对于部分的交易日期，郑商所似乎把原始的数据文件弄丢了。这个不得了，我们得程序现在罢工了，无法再继续下载数据了。</p>
 <p>不过所幸的是，我们还有另外一套网页爬虫的技术。</p>
-<div class="section level3">
+<div id="识别网页内容" class="section level3">
 <h3>识别网页内容</h3>
 <p>我们知道，任何的网页，后面其实都是一堆的 <code>HTML</code> 代码而已，无他。所以，即使我们无法找到（郑商所没有提供）数据文件的链接地址，我们还是可以通过爬虫抓取网页的数据。这个就需要用到 <code>Selenium</code>。</p>
 <p>首先需要做的是，开启 <code>selenium</code> 驱动，通过命令行来模拟网页访问，读取网页内容。</p>
@@ -299,9 +299,9 @@ sapply(1:nrow(ChinaFuturesCalendar), function(i){
 ## =============================================================================</code></pre>
 </div>
 </div>
-<div class="section level1">
+<div id="成交持仓排名" class="section level1">
 <h1>成交持仓排名</h1>
-<div class="section level2">
+<div id="持仓排名地址" class="section level2">
 <h2>持仓排名地址</h2>
 <p>与日行情数据爬虫相类似，我们也一样可以对期货公司层面的成交持仓排名数据进行网络爬虫。这里需要做的，其实就是把日行情数据的网页地址换成持仓排名的网页地址，即</p>
 <pre class="r"><code>## 直接下载文件的链接
