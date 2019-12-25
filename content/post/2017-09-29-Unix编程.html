@@ -12,18 +12,17 @@ ToC: true
 
 
 
-<p><code>Unix</code>/<code>Linux</code> 编程实践，主要为实际生产过程中经常使用的<strong>命令行以及简单的执行任务的程序脚本</strong>。
-<!--more--></p>
+<p><code>Unix</code>/<code>Linux</code> 编程实践，主要为实际生产过程中经常使用的<strong>命令行以及简单的执行任务的程序脚本</strong>。 <!--more--></p>
 <div class="figure">
 <img src="/images/UNIX%20HD%20Wallpaper.png" alt="Unix" />
 <p class="caption">Unix</p>
 </div>
-<div id="unix-常用命令行" class="section level1">
+<div id="unix-" class="section level1">
 <h1><code>Unix</code> 常用命令行</h1>
 <hr />
-<div id="用户管理" class="section level2">
+<div class="section level2">
 <h2>用户管理</h2>
-<div id="用户权限" class="section level3">
+<div class="section level3">
 <h3>用户权限</h3>
 <ul>
 <li><code>root</code>：超级权限，是系统的管理员</li>
@@ -31,7 +30,7 @@ ToC: true
 <li>增加用户：<code>sudo adduser</code></li>
 </ul>
 </div>
-<div id="修改文件权限" class="section level3">
+<div class="section level3">
 <h3>修改文件权限</h3>
 <ul>
 <li><code>chmod +x file.sh</code>：给予文件可执行权限</li>
@@ -39,7 +38,7 @@ ToC: true
 <hr />
 </div>
 </div>
-<div id="文件操作" class="section level2">
+<div class="section level2">
 <h2>文件操作</h2>
 <div id="cd" class="section level3">
 <h3><code>cd</code></h3>
@@ -250,20 +249,20 @@ Otherwise, units default to 1024 bytes (or 512 if POSIXLY_CORRECT is set).</code
 </div>
 </div>
 </div>
-<div id="shell-编程" class="section level1">
+<div id="shell-" class="section level1">
 <h1><code>shell</code> 编程</h1>
-<div id="文件表头" class="section level2">
+<div class="section level2">
 <h2>文件表头</h2>
 <p>最好在文件表头添加：</p>
 <pre class="bash"><code>#!/bin/bash</code></pre>
 </div>
-<div id="执行文件" class="section level2">
+<div class="section level2">
 <h2>执行文件</h2>
 <p>需要通过 <strong>增加执行权限</strong>：</p>
 <pre class="bash"><code>chmod +x file.sh
 ./file.sh</code></pre>
 </div>
-<div id="获取变量" class="section level2">
+<div class="section level2">
 <h2>获取变量</h2>
 <p>变量赋值使用 <code>=</code> 时，不能有空格！！！</p>
 <pre class="bash"><code>v=$(date +&quot;%Y-%m-%d %M:%H:%S&quot;)
@@ -275,17 +274,17 @@ echo ${v}
 ## 使用 `-e` 增加 `echo` 转义字符
 echo -e &quot;\n Hello, world! \n&quot;</code></pre>
 </div>
-<div id="日期格式命名的文件" class="section level2">
+<div class="section level2">
 <h2>日期格式命名的文件</h2>
 <ul>
 <li>使用 <code>+</code> 来拼接</li>
-<li>使用 <code>-d "1 days"</code> 来增加或者 <code>-d "-1 days"</code>减少日期</li>
+<li>使用 <code>-d &quot;1 days&quot;</code> 来增加或者 <code>-d &quot;-1 days&quot;</code>减少日期</li>
 </ul>
 <pre class="bash"><code>dataFile=$(date -d &quot;-$i days&quot; +&quot;%Y%m%d&quot;)
 
 echo $dataFile</code></pre>
 </div>
-<div id="for-循环" class="section level2">
+<div id="for-" class="section level2">
 <h2><code>for</code> 循环</h2>
 <pre class="bash"><code>for colo in XiFu YY1;
 do

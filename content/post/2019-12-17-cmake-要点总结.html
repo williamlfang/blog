@@ -12,7 +12,7 @@ ToC: true
 
 
 
-<div id="调试" class="section level1">
+<div class="section level1">
 <h1>调试</h1>
 <p>通过 <code>CMAKE_BUILD_TYPE</code> 可以设置条件编译，执行生成可供调试的程序，这个相当于在命令行使用</p>
 <pre class="bash"><code>cmake .. -DCMAKE_BUILD_TYPE=Debug</code></pre>
@@ -22,7 +22,7 @@ set(CMAKE_BUILD_TYPE Debug)
 ## 发布状态
 set(CMAKE_BUILD_TYPE Release)</code></pre>
 </div>
-<div id="头文件包含" class="section level1">
+<div class="section level1">
 <h1>头文件包含</h1>
 <div id="include_directoriesinclude_path" class="section level2">
 <h2>include_directories(include_path)</h2>
@@ -36,7 +36,7 @@ include_directories(${INCLUDE_PATH}/sub_directory)</code></pre>
 <ul>
 <li><code>find_path</code>: 要求找到文件所在路径</li>
 <li><code>find_library</code>: 要求找到链接库</li>
-<li><code>find_package</code>: 找到安装的链接库，包含以上两个</li>
+<li><code>find_package</code>: 找到安装的链接库，包含以上两个。如果依赖包是非标准安装的，则需要执行以上两个命令进行查找。</li>
 </ul>
 <p>以上命令执行后，可以生成</p>
 <ul>
@@ -44,7 +44,7 @@ include_directories(${INCLUDE_PATH}/sub_directory)</code></pre>
 <li><code>XXX_INCLUDE_DIR</code>: 相关的头文件</li>
 </ul>
 </div>
-<div id="递归包含" class="section level2">
+<div class="section level2">
 <h2>递归包含</h2>
 <p>当然，如果头文件的依赖关系比较复杂，上述方法则显得有点迂腐。我们可以写个简单的函数，通过递归寻找目标路径下的所有 <code>.h</code> 头文件</p>
 <pre class="cmake"><code>#获取当前目录及子目录(递归获取),添加到头文件搜索路径
@@ -70,7 +70,7 @@ endfunction()
 include_sub_directories_recursively(${PROJECT_SOURCE_DIR})</code></pre>
 </div>
 </div>
-<div id="动态链接库" class="section level1">
+<div class="section level1">
 <h1>动态链接库</h1>
 <div id="link_directories" class="section level2">
 <h2>LINK_DIRECTORIES</h2>
@@ -79,13 +79,13 @@ include_sub_directories_recursively(${PROJECT_SOURCE_DIR})</code></pre>
 <h2>TARGET_LINK_DIRECTORIES</h2>
 </div>
 </div>
-<div id="常用变量" class="section level1">
+<div class="section level1">
 <h1>常用变量</h1>
-<div id="变量引用" class="section level2">
+<div class="section level2">
 <h2>变量引用</h2>
 <p>使用 <code>${VAR_NAME}</code> 获取变量值，但是在　<code>IF</code> 的语句中，是<em>直接使用变量名而不用通过 <code>${}</code></em>来识别的，原因是这些语句要求显示得到变量。</p>
 </div>
-<div id="宏变量" class="section level2">
+<div class="section level2">
 <h2>宏变量</h2>
 <ul>
 <li><code>PROJECT_SOURCE_DIR</code>：最顶层 <code>CMakeLists.txt</code>所在的目录</li>
@@ -100,21 +100,21 @@ include_sub_directories_recursively(${PROJECT_SOURCE_DIR})</code></pre>
 <li><code>CMAKE_CXX_FLAGS</code></li>
 </ul>
 </div>
-<div id="自定义变量" class="section level2">
+<div class="section level2">
 <h2>自定义变量</h2>
-<div id="使用-set" class="section level3">
+<div id="-set" class="section level3">
 <h3>使用 <code>set</code></h3>
 <p>后面可以直接引用变量</p>
 <pre class="cmake"><code>set(SRCS main.cpp math.cpp)</code></pre>
 </div>
-<div id="模糊匹配变量" class="section level3">
+<div class="section level3">
 <h3>模糊匹配变量</h3>
 <p>把当前所有文件都命名为 <code>DIR_SRCS</code></p>
 <pre class="cmake"><code>aux_source_directory(. DIR_SRCS)</code></pre>
 </div>
 </div>
 </div>
-<div id="常用命令" class="section level1">
+<div class="section level1">
 <h1>常用命令</h1>
 <div id="cmake_minimum_required" class="section level2">
 <h2><code>CMAKE_MINIMUM_REQUIRED</code></h2>
@@ -152,17 +152,26 @@ ADD_EXECUTABLE(main ${SRC_LIST})</code></pre>
 <div id="target_link_library" class="section level2">
 <h2><code>TARGET_LINK_LIBRARY</code></h2>
 </div>
-<div id="find-系列" class="section level2">
+<div id="find-" class="section level2">
 <h2><code>FIND</code> 系列</h2>
 <p>FIND_系列指令主要包含一下指令：</p>
 <ul>
 <li><code>FIND_FILE(&lt;VAR&gt; name1 path1 path2 ...)</code>：VAR变量代表找到的文件全路径，包含文件名</li>
-<li><code>FIND_LIBRARY(&lt;VAR&gt; name1 path1 path2 ...)</code>：VAR变量表示找到的库全路径，包含库文件名
-<code>cmake   ## FIND_LIBRARY示例：   FIND_LIBRARY(libX X11 /usr/lib)   IF(NOT libX)   MESSAGE(FATAL_ERROR “libX not found”)   ENDIF(NOT libX)</code></li>
+<li><p><code>FIND_LIBRARY(&lt;VAR&gt; name1 path1 path2 ...)</code>：VAR变量表示找到的库全路径，包含库文件名</p>
+<pre class="cmake"><code>## FIND_LIBRARY示例：
+FIND_LIBRARY(libX X11 /usr/lib)
+IF(NOT libX)
+MESSAGE(FATAL_ERROR “libX not found”)
+ENDIF(NOT libX)</code></pre></li>
 <li><code>FIND_PATH(&lt;VAR&gt; name1 path1 path2 ...)</code>：VAR变量代表包含这个文件的路径。</li>
 <li><code>FIND_PROGRAM(&lt;VAR&gt; name1 path1 path2 ...)</code>：VAR变量代表包含这个程序的全路径。</li>
-<li><code>FIND_PACKAGE(&lt;name&gt; [major.minor] [QUIET] [NO_MODULE][[REQUIRED|COMPONENTS] [componets...]])</code>
-<code>cmake   FIND_PACKAGE(HELLO)   IF(HELLO_FOUND)       ADD_EXECUTABLE(hello main.c)       INCLUDE_DIRECTORIES(${HELLO_INCLUDE_DIR})       TARGET_LINK_LIBRARIES(hello ${HELLO_LIBRARY})   ENDIF(HELLO_FOUND)</code></li>
+<li><p><code>FIND_PACKAGE(&lt;name&gt; [major.minor] [QUIET] [NO_MODULE][[REQUIRED|COMPONENTS] [componets...]])</code></p>
+<pre class="cmake"><code>FIND_PACKAGE(HELLO)
+IF(HELLO_FOUND)
+    ADD_EXECUTABLE(hello main.c)
+    INCLUDE_DIRECTORIES(${HELLO_INCLUDE_DIR})
+    TARGET_LINK_LIBRARIES(hello ${HELLO_LIBRARY})
+ENDIF(HELLO_FOUND)</code></pre></li>
 </ul>
 </div>
 <div id="if" class="section level2">
@@ -170,7 +179,7 @@ ADD_EXECUTABLE(main ${SRC_LIST})</code></pre>
 <p><strong>IF(expression_)</strong> 和 <strong>ENDIF(expression_)</strong>需要成对出现，而且 <code>expression_</code> 内容要一样。</p>
 </div>
 </div>
-<div id="参考链接" class="section level1">
+<div class="section level1">
 <h1>参考链接</h1>
 <ol style="list-style-type: decimal">
 <li><a href="https://cliutils.gitlab.io/modern-cmake/modern-cmake.pdf">modern-cmake</a></li>
