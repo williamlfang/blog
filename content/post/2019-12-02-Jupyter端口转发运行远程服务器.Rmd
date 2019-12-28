@@ -38,7 +38,8 @@ drwxrwxr-x.  2 rss rss  4.0K Nov 29 20:05 .ipynb_checkpoints
 
 ```bash
 cd ~/python_hg/
-[rss@rss python_hg]$ jupyter notebook --no-browser
+jupyter notebook --generate-config
+[rss@rss python_hg]$ nohup jupyter notebook --no-browser &
 [rss@rss python_hg]$ jupyter-notebook password     ## 输入密码
 [rss@rss python_hg]$ jupyter notebook list
 ```

@@ -12,13 +12,13 @@ ToC: true
 
 
 
-<div class="section level1">
+<div id="连接远程服务器" class="section level1">
 <h1>连接远程服务器</h1>
 <p>我们通过 <code>TeamViewer</code> 连接服务器，可以很方便的监控到远程服务器的运行状况，比如交易系统的界面是否正常启动、相关的 <code>crontab</code> 操作是否及时开启等。</p>
 <p>可是，如果 <code>TeamVierer</code> 由于某种原因而终端了（比如不小心把进程停止掉、其他程序的干扰等），这时候我们便无法通过界面化的操作来连接。那么剩下的唯一方法连接远程服务器，即通过 <code>ssh</code> 通道来连接。而正是通过 <code>ssh</code> 我们可以使用命令行来控制远程服务器，进行相应的操作。</p>
 <p>那么问题来了，我们也可以通过命令行来控制开启 <code>TeamViewer</code> 么？如果是可以，可是我们无法看到界面，又怎么来获取相应的接入密码呢？</p>
 </div>
-<div id="-teamviewer" class="section level1">
+<div id="命令行控制-teamviewer" class="section level1">
 <h1>命令行控制 <code>TeamViewer</code></h1>
 <p>其实，<code>TeamViewer</code> 自带提供了一套命令行的操作。这里我们想要</p>
 <ul>
@@ -29,19 +29,19 @@ ToC: true
 </ul>
 <p>如此一来，我们便可以通过账户和接入密码再重新通过界面化登录远程服务器了。</p>
 <p>以下的命令我均假定使用 <code>root</code> 账户权限。</p>
-<div class="section level2">
+<div id="停止开启" class="section level2">
 <h2>停止/开启</h2>
 <pre class="bash"><code>## 启动或停止 daemon
 sudo teamviewer --daemon stop
 
 sudo teamviewer --daemon start</code></pre>
 </div>
-<div class="section level2">
+<div id="打印账号" class="section level2">
 <h2>打印账号</h2>
 <pre class="bash"><code>## 打印 id
 sudo teamviewer --info print id</code></pre>
 </div>
-<div class="section level2">
+<div id="设置密码" class="section level2">
 <h2>设置密码</h2>
 <pre class="bash"><code>## 设置密码
 sudo teamviewer --passwd &lt;password&gt;</code></pre>
