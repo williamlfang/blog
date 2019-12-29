@@ -6,4 +6,8 @@ menu: "main"
 weight: 100
 ---
 
-> A Programmer in Quant.
+<!-- > A Programmer in Quant. -->
+
+{{% admonition info info %}}
+A Programmer in Quant.
+{{% /admonition %}}
