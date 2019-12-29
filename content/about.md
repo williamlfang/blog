@@ -8,15 +8,21 @@ weight: 100
 
 <!-- > A Programmer in Quant. -->
 
-{{% admonition info 我是谁 %}}
+{{% admonition info "我是谁" %}}
 A Programmer in Quant.
 {{% /admonition %}}
 
-{{% admonition abstract 做什么 %}}
+{{% admonition abstract "做什么" %}}
 1. Quant Dev
 2. Data Administrators
 {{% /admonition %}}
 
-{{% admonition example "example" %}}
-biu biu biu.
+{{% admonition example "项目列表" %}}
+- 自建 MySQL 数据库：
+    + ChinaFutures
+    + ChinaStocks
+- 程序化交易系统
+    + CTP
+    + XTP
+    + TORA
 {{% /admonition %}}
