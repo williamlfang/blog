@@ -1,4 +1,4 @@
-@font-face{
+/*@font-face{
     font-family:Chancery;
     src:url(fonts/chancery/apple-chancery-webfont.eot);
     src:local("Apple Chancery"),
@@ -7,7 +7,7 @@
         url(fonts/chancery/apple-chancery-webfont.woff) format("woff"),
         url(fonts/chancery/apple-chancery-webfont.ttf) format("truetype"),
         url(fonts/chancery/apple-chancery-webfont.svg#apple-chancery) format("svg");font-weight:lighter;font-style:normal}
-
+*/
 @font-face{
     font-family:Chancery;
     src:url(src/fonts/chancery/apple-chancery-webfont.eot);
