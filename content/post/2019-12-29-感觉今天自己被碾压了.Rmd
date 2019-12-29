@@ -12,5 +12,5 @@ ToC: false
 
 其实已经在 **shared** 里面提高了这次会面的事情，不过还是单独拿出来做一遍博客，以此来警惕自己，未来还需要在技术的道路上更加努力，深入把握技术的每一个细节。
 
-![](/images/work-hard-dream-big.jpg)
+![胸有大志，脚踏实地](/images/work-hard-dream-big.jpg)
 
