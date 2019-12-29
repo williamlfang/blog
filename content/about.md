@@ -13,8 +13,8 @@ A Programmer in Quant.
 {{% /admonition %}}
 
 {{% admonition abstract "做什么" %}}
-1. Quant Dev
-2. Data Administrators
+- Quant Dev
+- Data Administrators
 {{% /admonition %}}
 
 {{% admonition example "项目列表" %}}

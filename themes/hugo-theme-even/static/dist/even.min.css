@@ -123,9 +123,9 @@
 .post .post-content .admonition.tip .admonition-title{background-color:rgba(0,191,165,.1)}
 .post .post-content .admonition.tip .admonition-title:before{color:#00bfa5;content:"\E906"}
 
-.post .post-content .admonition.success{border-left-color:#00c853}
+.post .post-content .admonition.success{border-left-color:#F0E68C}
 .post .post-content .admonition.success .admonition-title{background-color:rgba(0,200,83,.1)}
-.post .post-content .admonition.success .admonition-title:before{color:#00c853;content:"\EA10"}
+.post .post-content .admonition.success .admonition-title:before{color:#F0E68C;content:"\EA10"}
 
 .post .post-content .admonition.question{border-left-color:#64dd17}
 .post .post-content .admonition.question .admonition-title{background-color:rgba(100,221,23,.1)}
