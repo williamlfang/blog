@@ -15,9 +15,9 @@ ToC: true
 <p>在上一期的 <strong>「期货数据」</strong> 系列，我介绍了 <a href="https://williamlfang.github.io/post/2017-10-18-%E6%9C%9F%E8%B4%A7%E6%95%B0%E6%8D%AE-%E6%95%B0%E6%8D%AE%E6%B8%85%E7%90%86%E8%A6%81%E7%82%B9/">数据清理要点</a>。这一期，我将介绍如何使用统计编程语言 <code>R</code> 来读取从交易所接收下来的数据文件。</p>
 <!--more-->
 <hr />
-<div id="r-读取数据" class="section level1">
+<div id="r-" class="section level1">
 <h1><code>R</code> 读取数据</h1>
-<div id="萝卜与青菜" class="section level2">
+<div class="section level2">
 <h2>萝卜与青菜</h2>
 <p>我在之前的一篇博客谈到了如何使用 <code>readr</code> 包<a href="https://williamlfang.github.io/post/2017-10-10-r%E8%AF%BB%E5%8F%96%E4%B8%AD%E6%96%87%E5%AD%97%E6%AE%B5%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF/">读取包含中文字段的数据文件</a>。同时，文件也提到，<code>readr</code> 对于读取大文件存在性能上的不足。因此，我日常仍然以另外一个软件包为主要工具。</p>
 <p>这个神奇的软件包，就是大名鼎鼎的 <code>data.table</code>，提高了从读取数据、数据清洗、数据汇总到数据写入的全方位功能函数，而且难能可贵的是，它的处理效率惊人得强大。我估计会在以后单独写一篇博客来介绍这个扩展包。不过这里作为引子，请允许我隆重介绍今天的主角：<code>fread</code>。</p>
@@ -29,9 +29,8 @@ help(read_csv)</code></pre>
 </div>
 <div id="fread" class="section level2">
 <h2><code>fread</code></h2>
-<pre class="r"><code>library(data.table)</code></pre>
-<pre><code>Warning: 程辑包&#39;data.table&#39;是用R版本3.4.4 来建造的</code></pre>
-<pre class="r"><code>help(fread)</code></pre>
+<pre class="r"><code>library(data.table)
+help(fread)</code></pre>
 <hr />
 </div>
 </div>

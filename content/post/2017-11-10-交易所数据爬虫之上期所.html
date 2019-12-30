@@ -23,14 +23,14 @@ ToC: true
 <p class="caption">上期所网站提供期货相关的数据</p>
 </div>
 <hr />
-<div id="日行情数据" class="section level1">
+<div class="section level1">
 <h1>日行情数据</h1>
 <p>我们首先打开交易数据相关的网页，可以看到上期所提供了大量的与期货交易相关的数据，其中包括日行情数据、交易排名数据等。点击选择 <code>日交易快讯</code>，我们便可以看到这一天的上期所期货合约日行情数据，具体的字段包括 <code>OHLC</code>、<code>SettplementPrice</code>、<code>Volume</code>等，不过没有 <code>Turnover</code>，这个算是有点遗憾，意味着我们无法使用上期所公布的当天的数据来计算 <code>vwap</code>。</p>
 <div class="figure">
 <img src="/images/2017-11-10-交易所数据爬虫之上期所/daily01.png" alt="日行情数据" />
 <p class="caption">日行情数据</p>
 </div>
-<div id="动态异步加载" class="section level2">
+<div class="section level2">
 <h2>动态异步加载</h2>
 <p>我们试试通过左栏的日历表，选取不同交易日期的数据看看。各位注意到没有，我们点击了不同的网页链接，可以浏览器的地址栏的 <code>paramdate=</code> 这个字段也在随着发生改变。也就是说，我们可以使用历史所有的交易日期来生成不同的日行情网页链接，接下来只需要打开各个链接地址，就能看到具体的数据表格了。</p>
 <p>不过与我们之前介绍的中金所或郑商所不一样，后两家交易所是针对不同的交易日期提供了单独的数据界面，即我们所说的静态网页；而上期所采用的是动态异步加载的方式，我们使用鼠标选择好交易日期后，上期所服务器才发送数据给浏览器解析并呈现出来。因此，我们无法通过直接下载数据文件的链接来获取数据。</p>
@@ -50,7 +50,7 @@ ToC: true
 <li>等服务器传送数据结束后，读取网页数据</li>
 </ul>
 </div>
-<div id="定位交易日期" class="section level2">
+<div class="section level2">
 <h2>定位交易日期</h2>
 <p>即利用历史的期货交易日期，生成单独的链接地址，然后使用 <code>Selenium</code> 驱动浏览器来打开网页。</p>
 <pre class="r"><code>## 开启 Selenium 和 firefox
@@ -72,7 +72,7 @@ remDr$open(silent = TRUE)
 remDr$navigate(tempURL)
 Sys.sleep(0.5)</code></pre>
 </div>
-<div id="读取网页数据" class="section level2">
+<div class="section level2">
 <h2>读取网页数据</h2>
 <p>到目前为止，我们能够看到在 <code>firefox</code> 浏览器已经打开了当前的日行情数据网页。接下来，我们需要对网页进行数据爬虫。</p>
 <div class="figure">
@@ -129,7 +129,7 @@ try({
 })
 ## ===========================================================================</code></pre>
 </div>
-<div id="完整的-demo" class="section level2">
+<div id="-demo" class="section level2">
 <h2>完整的 Demo</h2>
 <pre class="r"><code>################################################################################
 ##! shfe.R
@@ -286,7 +286,7 @@ sapply(1:nrow(ChinaFuturesCalendar),shfeData)
 <hr />
 </div>
 </div>
-<div id="成交持仓排名" class="section level1">
+<div class="section level1">
 <h1>成交持仓排名</h1>
 <div class="figure">
 <img src="/images/2017-11-10-交易所数据爬虫之上期所/oi01.png" alt="成交持仓排名数据" />
@@ -296,7 +296,7 @@ sapply(1:nrow(ChinaFuturesCalendar),shfeData)
 <pre class="r"><code>## 改为 pm
 exchURL &lt;- &quot;http://www.shfe.com.cn/statements/dataview.html?paramid=pm&amp;paramdate=&quot;
 tempURL &lt;- paste0(exchURL, exchCalendar[i,days])</code></pre>
-<div id="选择全部合约" class="section level2">
+<div class="section level2">
 <h2>选择全部合约</h2>
 <div class="figure">
 <img src="/images/2017-11-10-交易所数据爬虫之上期所/oi02.png" alt="需要选择上期所全部期货合约" />
@@ -315,7 +315,7 @@ temp &lt;- remDr$findElements(using = &#39;id&#39;, value = &#39;li_all&#39;)[[1
 tempWeb &lt;- temp$clickElement()</code></pre>
 <p>现在，我们就能在本地获取所有合约的成交持仓排名数据了。对网页进行数据爬虫与上面的日行情数据爬虫一样，不再赘述。</p>
 </div>
-<div id="完整的-demo-1" class="section level2">
+<div id="-demo-1" class="section level2">
 <h2>完整的 Demo</h2>
 <div class="figure">
 <img src="/images/2017-11-10-交易所数据爬虫之上期所/oi03.png" alt="成交持仓排名的网页结构" />
