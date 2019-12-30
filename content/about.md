@@ -7,12 +7,12 @@ weight: 100
 ---
 
 
-{{% admonition type="note" title="note" details="true" %}}
+<!-- {{% admonition type="note" title="note" details="true" %}}
 biu biu biu.
-{{% /admonition %}}
+{{% /admonition %}} -->
 
-{{% admonition type="info" title="关于我" details="false" %}}
-A Programmer in Quant
+{{% admonition type="info" title="A Programmer in Quant" details="false" %}}
+一个在金融街写代码的键盘手。
 {{% /admonition %}}
 
 {{% admonition success "success" %}}

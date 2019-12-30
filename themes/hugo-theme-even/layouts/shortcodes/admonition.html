@@ -11,8 +11,7 @@
 
 <div class="admonition {{ .Get "type" }}">
   {{- with .Get "title" }}<p class="admonition-title">{{ . }}</p>{{ end }}
-  <!-- {{ .Inner }} -->
-  sdfdsf
+  {{ .Inner }}
 </div>
 
   {{- end }}
@@ -23,16 +22,14 @@
 
 <details class="admonition {{ .Get 0 }}">
   {{- with .Get 1 }}<summary class="admonition-title">{{ . }}</summary>{{ end }}
-  <!-- {{ .Inner }} -->
-  sdfdf
+  {{ .Inner }}
 </details>
 
   {{- else -}}
 
 <div class="admonition {{ .Get 0 }}">
   {{- with .Get 1 }}<p class="admonition-title">{{ . }}</p>{{ end }}
-  <!-- {{ .Inner }} -->
-  sdfds
+  {{ .Inner }}
 </div>
 
   {{- end }}
