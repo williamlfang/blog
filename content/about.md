@@ -6,7 +6,7 @@ menu: "main"
 weight: 100
 ---
 
-{{% admonition info "我是谁" %}}
+<!-- {{% admonition info "我是谁" %}}
 A Programmer in Quant.
 {{% /admonition %}}
 
@@ -14,7 +14,7 @@ A Programmer in Quant.
 1. Quant Dev
 2. Data Administrators
 {{% /admonition %}}
-
+ -->
 {{% admonition example example %}}
 - 自建 MySQL 数据库：
     + ChinaFutures
