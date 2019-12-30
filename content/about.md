@@ -10,9 +10,9 @@ weight: 100
 一个在金融圈写代码的键盘手。
 {{% /admonition %}}
 
-{{% admonition type="note" title="note" details="false" %}}
+<!-- {{% admonition type="note" title="note" details="false" %}}
 一个在金融圈写代码的键盘手。
-{{% /admonition %}}
+{{% /admonition %}} -->
 
 <!-- {{% admonition info "我是谁" %}}
 A Programmer in Quant.
