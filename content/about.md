@@ -9,7 +9,7 @@ weight: 100
 - he
 - worl
 
-{{% admonition info "我是谁" %}}
+{{% admonition info info %}}
 A Programmer in Quant.
 {{% /admonition %}}
 
