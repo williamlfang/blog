@@ -2,18 +2,16 @@
 
   {{ if eq (.Get "details") "true" -}}
 
-<details class="admonition {{ .Get "type" }}">
-    sdf
-<!--   {{- with .Get "title" }}<summary class="admonition-title">{{ . }}</summary>{{ end }}
-  {{ .Inner }} -->
+<details class="admonition {{ .Get 'type' }}">
+  {{- with .Get "title" }}<summary class="admonition-title">{{ . }}</summary>{{ end }}
+  {{ .Inner }}
 </details>
 
   {{- else -}}
 
-<div class="admonition {{ .Get "type" }}">
-    sdf
-<!--   {{- with .Get "title" }}<p class="admonition-title">{{ . }}</p>{{ end }}
-  {{ .Inner }} -->
+<div class="admonition {{ .Get 'type' }}">
+  {{- with .Get "title" }}<p class="admonition-title">{{ . }}</p>{{ end }}
+  {{ .Inner }}
 </div>
 
   {{- end }}
@@ -23,15 +21,15 @@
   {{ if eq (.Get 2) "true" -}}
 
 <details class="admonition {{ .Get 0 }}">
-<!--   {{- with .Get 1 }}<summary class="admonition-title">{{ . }}</summary>{{ end }}
-  {{ .Inner }} -->
+  {{- with .Get 1 }}<summary class="admonition-title">{{ . }}</summary>{{ end }}
+  {{ .Inner }}
 </details>
 
   {{- else -}}
 
 <div class="admonition {{ .Get 0 }}">
- <!--  {{- with .Get 1 }}<p class="admonition-title">{{ . }}</p>{{ end }}
-  {{ .Inner }} -->
+  {{- with .Get 1 }}<p class="admonition-title">{{ . }}</p>{{ end }}
+  {{ .Inner }}
 </div>
 
   {{- end }}
