@@ -19,7 +19,7 @@ weight: 100
 {{% admonition type="info" title="A Programmer in Quant" details="false" %}}
 一个在金融圈写代码的键盘手。
 
-- OS：Linux
+- OS：Linux/Ubuntu/CentOS
 - 数据分析：R+Python
 - 交易执行：C/C++
 - 文档编辑：[R]markdown
