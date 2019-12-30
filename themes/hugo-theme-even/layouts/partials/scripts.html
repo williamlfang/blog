@@ -1,5 +1,11 @@
 <!-- js -->
-<script src="{{ "lib/highlight/highlight.pack.js?v=20171001" | relURL }}"></script>
+<link rel="stylesheet"
+    href="lib/highlight/solarized-dark.css">
+<script src="lib/highlight/highlight.pack.js"></script>
+
+<!-- <script src="{{ "lib/highlight/highlight.pack.js?v=20171001" | relURL }}"></script> -->
+
+
 {{- if .Site.Params.publicCDN.enable }}
   {{ .Site.Params.publicCDN.jquery | safeHTML }}
   {{ .Site.Params.publicCDN.slideout | safeHTML }}
