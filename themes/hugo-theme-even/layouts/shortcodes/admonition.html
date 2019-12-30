@@ -2,17 +2,17 @@
 
   {{ if eq (.Get "details") "true" -}}
 
-<!-- <details class="admonition {{ .Get "type" }}">
+<details class="admonition {{ .Get "type" }}">
   {{- with .Get "title" }}<summary class="admonition-title">{{ . }}</summary>{{ end }}
   {{ .Inner }}
-</details> -->
+</details>
 
   {{- else -}}
 
-<!-- <div class="admonition {{ .Get "type" }}">
+<div class="admonition {{ .Get "type" }}">
   {{- with .Get "title" }}<p class="admonition-title">{{ . }}</p>{{ end }}
   {{ .Inner }}
-</div> -->
+</div>
 
   {{- end }}
 

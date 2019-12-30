@@ -6,10 +6,6 @@ menu: "main"
 weight: 100
 ---
 
-<!-- > A Programmer in Quant. -->
-1. Quant Dev
-2. Data Administrators
-
 {{% admonition info "我是谁" %}}
 A Programmer in Quant.
 {{% /admonition %}}
