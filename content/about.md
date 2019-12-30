@@ -14,16 +14,13 @@ weight: 100
 一个在金融圈写代码的键盘手。
 {{% /admonition %}}
 
-{{% admonition info "我是谁" %}}
-A Programmer in Quant.
-{{% /admonition %}}
 
 {{% admonition abstract "做什么" %}}
 - Quant Dev
 - Data Administrators
 {{% /admonition %}}
 
-<!-- {{% admonition example example %}}
+{{% admonition example example %}}
 - 自建 MySQL 数据库：
     + ChinaFutures
     + ChinaStocks
@@ -32,4 +29,4 @@ A Programmer in Quant.
     + XTP
     + TORA
 {{% /admonition %}}
- -->
+
