@@ -14,8 +14,7 @@ weight: 100
 一个在金融圈写代码的键盘手。
 {{% /admonition %}}
 
-
-{{% admonition abstract "做什么" %}}
+{{% admonition abstract "Major Fields" %}}
 - Quant Dev
 - Data Administrators
 {{% /admonition %}}
