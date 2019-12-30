@@ -19,6 +19,10 @@ biu biu biu.
 biu biu biu.
 {{%/* /admonition */%}}
 
+{{% admonition quote "quote" %}}
+biu biu biu.
+{{% /admonition %}}
+
 <!-- {{% admonition info "我是谁" %}}
 A Programmer in Quant.
 {{% /admonition %}}
