@@ -6,6 +6,11 @@ menu: "main"
 weight: 100
 ---
 
+
+{{% admonition type="note" title="note" details="true" %}}
+biu biu biu.
+{{% /admonition %}}
+
 <!-- {{% admonition info "我是谁" %}}
 A Programmer in Quant.
 {{% /admonition %}}
@@ -15,7 +20,7 @@ A Programmer in Quant.
 2. Data Administrators
 {{% /admonition %}}
  -->
-{{% admonition example example %}}
+<!-- {{% admonition example example %}}
 - 自建 MySQL 数据库：
     + ChinaFutures
     + ChinaStocks
@@ -24,7 +29,7 @@ A Programmer in Quant.
     + XTP
     + TORA
 {{% /admonition %}}
-
+ -->
 # Admonition
 
 {{% admonition note "I'm title!" false %}}
