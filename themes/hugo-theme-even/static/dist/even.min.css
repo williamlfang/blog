@@ -135,12 +135,18 @@
     border-left:.25rem solid #448aff;
     border-radius:.125rem;
     overflow:auto}
-.post .post-content .admonition .admonition-title{margin:0 -.75rem;
+.post .post-content .admonition .admonition-title{
+    margin:0 -.75rem;
     padding:.5rem .75rem .5rem 2.5rem;
-border-bottom:.1rem solid rgba(68,138,255,.1);
-background-color:rgba(68,138,255,.1);
-font-weight:700}
-.post .post-content .admonition .admonition-title:before{cursor:auto;position:absolute;left:.75rem;top:.75rem}.post .post-content .admonition.note{border-left-color:#448aff}
+    border-bottom:.1rem solid rgba(68,138,255,.1);
+    background-color:rgba(68,138,255,.1);
+    font-weight:700}
+.post .post-content .admonition .admonition-title:before{
+    cursor:auto;
+    position:absolute;
+    left:.75rem;
+    top:.75rem}
+.post .post-content .admonition.note{border-left-color:#448aff}
 .post .post-content .admonition.note .admonition-title:before{color:#448aff;content:"\E903"}
 /*.post .post-content .admonition .admonition-title{margin:0 -.75rem;padding:.5rem .75rem .5rem 2.5rem;border-bottom:.1rem solid rgba(68,138,255,.1);background-color:rgba(68,138,255,.1);font-weight:700}*/
     
