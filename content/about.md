@@ -11,6 +11,10 @@ weight: 100
 biu biu biu.
 {{% /admonition %}}
 
+{{% admonition type="info" title="关于我" details="false" %}}
+A Programmer in Quant
+{{% /admonition %}}
+
 {{% admonition success "success" %}}
 biu biu biu.
 {{% /admonition %}}
