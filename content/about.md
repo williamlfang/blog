@@ -19,7 +19,7 @@ A Programmer in Quant.
 2. Data Administrators
 {{% /admonition %}}
 
-{{% admonition example "项目列表" %}}
+{{% admonition example example %}}
 - 自建 MySQL 数据库：
     + ChinaFutures
     + ChinaStocks
