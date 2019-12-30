@@ -14,19 +14,26 @@
 
 .post .post-content .admonition .admonition-title:before,
 .post .post-content details.admonition summary:after{
-    font-family:iconfont!important;speak:none;
-    font-style:normal;font-weight:400;font-variant:normal;
-    text-transform:none;line-height:1;-webkit-text-stroke-width:.2px;
-    cursor:pointer;letter-spacing:0;-webkit-font-feature-settings:
-    "liga";font-feature-settings:
-    "liga";-webkit-font-variant-ligatures:discretionary-ligatures;
-    font-variant-ligatures:discretionary-ligatures;-webkit-font-smoothing:antialiased;
+    font-family:iconfont!important;
+    speak:none;
+    font-style:normal;
+    font-weight:400;
+    font-variant:normal;
+    text-transform:none;line-height:1;
+    -webkit-text-stroke-width:.2px;
+    cursor:pointer;letter-spacing:0;
+    -webkit-font-feature-settings:"liga";
+    font-feature-settings:"liga";
+    -webkit-font-variant-ligatures:discretionary-ligatures;
+    font-variant-ligatures:discretionary-ligatures;
+    -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale}
 
 .iconfont{font-family:iconfont!important;font-style:normal;-webkit-font-smoothing:antialiased;-webkit-text-stroke-width:.2px;-moz-osx-font-smoothing:grayscale;cursor:pointer}
 .icon-instagram:before{font-size:.95em;content:"\E611";position:relative;top:-1px}
 .icon-douban:before{content:"\E610"}
-.icon-tumblr:before{content:"\E69F";font-size:.85em;position:relative;top:-4px}.icon-linkedin:before{content:"\E60D";position:relative;top:-4px}.icon-twitter:before{content:"\E600"}
+.icon-tumblr:before{content:"\E69F";font-size:.85em;position:relative;top:-4px}
+.icon-linkedin:before{content:"\E60D";position:relative;top:-4px}.icon-twitter:before{content:"\E600"}
 .icon-weibo:before{content:"\E602"}.icon-stack-overflow:before{content:"\E603";font-size:.85em;position:relative;top:-4px}.icon-email:before{content:"\E605";position:relative;top:-2px}.icon-facebook:before{content:"\E601";font-size:.95em;position:relative;top:-2px}.icon-github:before{content:"\E606";position:relative;top:-3px}.icon-rss:before{content:"\E604"}.icon-google:before{content:"\E609"}.icon-zhihu:before{content:"\E607";font-size:.9em;position:relative;top:-2px}.icon-pocket:before{content:"\E856"}.icon-heart:before{content:"\E608"}.icon-right:before{content:"\E60A"}
 .icon-left:before{content:"\E60B"}.icon-up:before{content:"\E60C"}
 .icon-close:before{content:"\E60F"}
