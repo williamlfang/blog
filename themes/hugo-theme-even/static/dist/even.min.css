@@ -27,8 +27,11 @@
     -webkit-font-variant-ligatures:discretionary-ligatures;
     font-variant-ligatures:discretionary-ligatures;
     -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale}
-*/
+    -moz-osx-font-smoothing:grayscale}*/
+
+.post .post-content .admonition .admonition-title:before,
+.post .post-content details.admonition summary:after{font-family:iconfont!important;speak:none;font-style:normal;font-weight:400;font-variant:normal;text-transform:none;line-height:1;-webkit-text-stroke-width:.2px;cursor:pointer;letter-spacing:0;-webkit-font-feature-settings:"liga";font-feature-settings:"liga";-webkit-font-variant-ligatures:discretionary-ligatures;font-variant-ligatures:discretionary-ligatures;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+
 .iconfont{
     font-family:iconfont!important;
     font-style:normal;
@@ -125,6 +128,12 @@
 .post .post-content .highlight.language-yaml>table:after{content:"YAML"}.post .post-content .highlight.language-yaml>figcaption>span:after{content:" \B7   YAML"}.post .post-content .highlight.language-yaml figcaption+table:after{display:none}
 .post .post-content .highlight.language-toml>table:after{content:"TOML"}.post .post-content .highlight.language-toml>figcaption>span:after{content:" \B7   TOML"}.post .post-content .highlight.language-toml figcaption+table:after{display:none}
 .post .post-content .highlight figcaption{position:absolute;top:0;width:100%;padding:2px 7px;font-size:13px;font-weight:700;color:#b1b1b1;background:#f4efe1;z-index:20;overflow-x:hidden;box-sizing:border-box}.post .post-content .highlight figcaption>a{position:absolute;right:0;display:inline-box;margin-right:7px;font-weight:400}.post .post-content .highlight figcaption>a:hover{text-decoration:none;border:0}.post .post-content .highlight .code pre{margin:0;padding:30px 10px 10px}.post .post-content .highlight .gutter{width:10px;color:#cacaca}.post .post-content .highlight .gutter pre{margin:0;padding:30px 7px 10px}.post .post-content .highlight .line{height:20px}.post .post-content .highlight table,.post .post-content .highlight td,.post .post-content .highlight tr{margin:0;padding:0;width:100%;border-collapse:collapse}.post .post-content .highlight .code .hljs-comment,.post .post-content .highlight .code .hljs-quote{color:#93a1a1}.post .post-content .highlight .code .hljs-addition,.post .post-content .highlight .code .hljs-keyword,.post .post-content .highlight .code .hljs-selector-tag{color:#859900}.post .post-content .highlight .code .hljs-doctag,.post .post-content .highlight .code .hljs-literal,.post .post-content .highlight .code .hljs-meta .hljs-meta-string,.post .post-content .highlight .code .hljs-number,.post .post-content .highlight .code .hljs-regexp,.post .post-content .highlight .code .hljs-string{color:#2aa198}.post .post-content .highlight .code .hljs-name,.post .post-content .highlight .code .hljs-section,.post .post-content .highlight .code .hljs-selector-class,.post .post-content .highlight .code .hljs-selector-id,.post .post-content .highlight .code .hljs-title{color:#268bd2}.post .post-content .highlight .code .hljs-attr,.post .post-content .highlight .code .hljs-attribute,.post .post-content .highlight .code .hljs-class .hljs-title,.post .post-content .highlight .code .hljs-template-variable,.post .post-content .highlight .code .hljs-type,.post .post-content .highlight .code .hljs-variable{color:#b58900}.post .post-content .highlight .code .hljs-bullet,.post .post-content .highlight .code .hljs-link,.post .post-content .highlight .code .hljs-meta,.post .post-content .highlight .code .hljs-meta .hljs-keyword,.post .post-content .highlight .code .hljs-selector-attr,.post .post-content .highlight .code .hljs-selector-pseudo,.post .post-content .highlight .code .hljs-subst,.post .post-content .highlight .code .hljs-symbol{color:#cb4b16}.post .post-content .highlight .code .hljs-built_in,.post .post-content .highlight .code .hljs-deletion{color:#dc322f}.post .post-content .highlight .code .hljs-formula{background:#eee8d5}.post .post-content .highlight .code .hljs-emphasis{font-style:italic}.post .post-content .highlight .code .hljs-strong{font-weight:700}
+
+.post .post-content .admonition{-webkit-box-shadow:0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.2);box-shadow:0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.2);position:relative;margin:.9765em 0;padding:0 .75rem;border-left:.25rem solid #448aff;border-radius:.125rem;overflow:auto}
+.post .post-content .admonition .admonition-title{margin:0 -.75rem;padding:.5rem .75rem .5rem 2.5rem;border-bottom:.1rem solid rgba(68,138,255,.1);background-color:rgba(68,138,255,.1);font-weight:700}
+.post .post-content .admonition .admonition-title:before{cursor:auto;position:absolute;left:.75rem;top:.75rem}
+.post .post-content .admonition.note{border-left-color:#448aff}
+.post .post-content .admonition.note .admonition-title:before{color:#448aff;content:"\E903"}
 
 /*.post .post-content .admonition{
     -webkit-box-shadow:0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.2);
