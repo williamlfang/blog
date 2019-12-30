@@ -19,7 +19,7 @@ weight: 100
 - Data Administrators
 {{% /admonition %}}
 
-{{% admonition example "Projects" %}}
+{{% admonition example "Some Projects" %}}
 - 自建 MySQL 数据库：
     + ChinaFutures
     + ChinaStocks

@@ -1,3 +1,5 @@
+{{ $_hugo_config := `{ "version": 1 }` }}
+
 {{ if .IsNamedParams -}}
 
   {{ if eq (.Get "details") "true" -}}
@@ -11,8 +13,8 @@
 
 <div class="admonition {{ .Get "type" }}">
   {{- with .Get "title" }}<p class="admonition-title">{{ . }}</p>{{ end }}
-  <!-- {{ .Inner }} -->
-  <p> {{ .Inner }} </p>
+  {{ .Inner | markdownify }}
+  <!-- <p> {{ .Inner }} </p> -->
 </div>
 
   {{- end }}
@@ -30,8 +32,8 @@
 
 <div class="admonition {{ .Get 0 }}">
   {{- with .Get 1 }}<p class="admonition-title">{{ . }}</p>{{ end }}
-  <!-- {{ .Inner }} -->
-  <p> {{ .Inner }} </p>
+  {{ .Inner | markdownify}}
+  <!-- <p> {{ .Inner }} </p> -->
 </div>
 
   {{- end }}
