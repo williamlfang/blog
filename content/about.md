@@ -6,6 +6,9 @@ menu: "main"
 weight: 100
 ---
 
+- he
+- worl
+
 {{% admonition info "我是谁" %}}
 A Programmer in Quant.
 {{% /admonition %}}
