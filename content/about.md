@@ -11,23 +11,12 @@ weight: 100
 biu biu biu.
 {{% /admonition %}}
  -->
-{{% admonition type="info" title="note" details="false" %}}
+
+
+{{% admonition type="note" title="note" details="true" %}}
 一个在金融圈写代码的键盘手。
 {{% /admonition %}}
 
-
-{{% admonition success "success" %}}
-biu biu biu.
-{{% /admonition %}}
-
-
-{{%/* admonition abstract abstract */%}}
-biu biu biu.
-{{%/* /admonition */%}}
-
-{{% admonition quote "quote" %}}
-biu biu biu.
-{{% /admonition %}}
 
 <!-- {{% admonition info "我是谁" %}}
 A Programmer in Quant.
