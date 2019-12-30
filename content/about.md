@@ -23,7 +23,7 @@ A Programmer in Quant.
 - Data Administrators
 {{% /admonition %}}
 
-{{% admonition example example %}}
+<!-- {{% admonition example example %}}
 - 自建 MySQL 数据库：
     + ChinaFutures
     + ChinaStocks
@@ -32,3 +32,4 @@ A Programmer in Quant.
     + XTP
     + TORA
 {{% /admonition %}}
+ -->
