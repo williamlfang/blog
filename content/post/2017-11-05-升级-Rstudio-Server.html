@@ -12,7 +12,7 @@ ToC: true
 
 
 
-<div id="强大的-r-ide" class="section level1">
+<div id="-r-ide" class="section level1">
 <h1>强大的 <code>R IDE</code></h1>
 <p><code>Rstudio</code> 是非常强大的、专注于 <code>R</code> 统计语言编程环境的 <code>IDE</code>，基本取代了原生的操作界面而成为目前使用范围最广泛、功能最强大的编程软件。一般而言，我们在桌面 PC 操作系统，直接安装使用 <code>Rstudio</code> 即可实现代码编写、测试运行、画图等操作；而对于服务器，我们则需要安装 <code>Rstudio-Server</code> 这个版本，通过网页登录来模拟桌面的 <code>IDE</code>，实现完全无缝连接地使用我们最爱的 <code>R</code> 编辑与测试环境。</p>
 <div class="figure">
@@ -27,9 +27,9 @@ ToC: true
 <p>因此，我们决定对原来的 <code>CentOS</code> 操作系统安装的旧版进行省级。以下简要记录升级过程。</p>
 <hr />
 </div>
-<div id="升级过程" class="section level1">
+<div class="section level1">
 <h1>升级过程</h1>
-<div id="下载新版软件" class="section level2">
+<div class="section level2">
 <h2>下载新版软件</h2>
 <p>首先需要到 Rstudio 的官网下载最新版本的 Rstudio-server，记得选择 CentOS/RHEL</p>
 <pre class="bash"><code>cd /tmp
@@ -40,11 +40,11 @@ wget https://download2.rstudio.org/rstudio-server-rhel-1.1.383-x86_64.rpm
 ## 使用管理员权限安装软件
 sudo yum install --nogpgcheck rstudio-server-rhel-1.1.383-x86_64.rpm</code></pre>
 </div>
-<div id="测试是否安装成功" class="section level2">
+<div class="section level2">
 <h2>测试是否安装成功</h2>
 <p>安装完成后，默认的配置端口号为 <code>8787</code>，我们可以直接在浏览器输入：<code>192.168.1.166:8787</code>。</p>
 </div>
-<div id="异常排查" class="section level2">
+<div class="section level2">
 <h2>异常排查</h2>
 <p>如果没有意外的话，我们是可以直接在网页打开 Rstudio 界面的。不过，如果我们的更新的过程中，不小心把原来的程序关闭了，这时候需要重启端口</p>
 <pre class="bash"><code>## 尝试重启服务

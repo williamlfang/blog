@@ -12,7 +12,7 @@ ToC: true
 
 
 
-<div id="痛点" class="section level1">
+<div class="section level1">
 <h1>痛点</h1>
 <p>今天在网上看到一个 <code>R</code> 编程语言的扩展包，解决了长期以来困扰我的一个难题：如果在本地终端编辑运行位于远程服务器上的 <code>R</code> 命令脚本，并在需要的时候，能够把远程的画图同步输出到本地，使得在本地也可以浏览画图效果。针对这个问题，其实我们可以有以下至少三种解决方案：</p>
 <ol style="list-style-type: decimal">
@@ -23,14 +23,14 @@ ToC: true
 <p>当然，第一种使用 <code>Rstudio</code> 其实是非常好的方案，运行在网页打开，整个界面其实就是本地化的 <code>IDE</code>，这也是我们团队目前使用的方案。但是，对于我这样使用惯了终端命令行的开发人员，更倾向于在 <code>Sublime</code> 编辑脚本，然后通过 <code>SublimeREPL</code> 把命令发送到远程服务器的解释器进行运行。长期以来，我一直在苦苦寻找这样的方案。</p>
 <p>今天隆重介绍这个优秀的扩展包：<a href="https://github.com/cloudyr/rmote"><code>rmote</code></a></p>
 </div>
-<div id="解决" class="section level1">
+<div class="section level1">
 <h1>解决</h1>
-<div id="ssh-登录服务器" class="section level2">
+<div id="ssh-" class="section level2">
 <h2>ssh 登录服务器</h2>
 <p><code>rmote</code> 默认开启 <strong>4321</strong> 的服务端口，可以通过 <code>rmote::start_rmote()</code> 进行设置。这个命令是把远程消息同步映射到本地浏览器端</p>
 <pre class="bash"><code>ssh -L 4321:localhost:4321 fl@192.168.1.166</code></pre>
 </div>
-<div id="启动-r-服务" class="section level2">
+<div id="-r-" class="section level2">
 <h2>启动 R 服务</h2>
 <p>通过以上命令我们就登录了远程服务器，接下来是启动 <code>R</code> 进程开始运行</p>
 <pre class="r"><code>R                                                                                                                                                                     [14:44:16]
@@ -102,7 +102,7 @@ hostname: (logical) try to get hostname and use it in viewer page title
           the viewer?
 </code></pre>
 </div>
-<div id="运行命令" class="section level2">
+<div class="section level2">
 <h2>运行命令</h2>
 <p>输入命令运行</p>
 <pre class="r"><code>?plot
@@ -110,12 +110,12 @@ hostname: (logical) try to get hostname and use it in viewer page title
 library(ggplot2)
 qplot(mpg, wt, data=mtcars, colour=cyl)</code></pre>
 </div>
-<div id="本地浏览器查看" class="section level2">
+<div class="section level2">
 <h2>本地浏览器查看</h2>
 <p>这样，我们可以在浏览器打开 <a href="http://localhost:4321/">http://localhost:4321</a> 即可查看图片。</p>
 </div>
 </div>
-<div id="sublime-集成快捷键" class="section level1">
+<div id="sublime-" class="section level1">
 <h1>Sublime 集成快捷键</h1>
 <pre class="bash"><code>// 使用 Rmote 功能，实现远程服务器图片在本地浏览
   { &quot;keys&quot;: [&quot;f8&quot;],
@@ -161,9 +161,9 @@ qplot(mpg, wt, data=mtcars, colour=cyl)</code></pre>
 <p class="caption">Rmote+Chrome</p>
 </div>
 </div>
-<div id="问题" class="section level1">
+<div class="section level1">
 <h1>问题</h1>
-<div id="提示" class="section level2">
+<div class="section level2">
 <h2>提示:</h2>
 <pre class="r"><code>- not sending to rmote because another graphics device has been opened...
 - sending to the open graphics device instead...
