@@ -1,0 +1,22 @@
+---
+title: "Linux 设置系统语言"
+author: William
+date: 2020-01-08
+lastmod: 2020-01-08
+categories: [Programming]
+tags: [Linux,etc]
+description: 设置系统语言为英文。
+draft: false
+ToC: true
+---
+
+
+```bash
+vim /etc/environment                                                                                                              
+
+#LC_ALL=zh_CN.UTF_8
+#LANG=zh_CN.UTF_8  
+
+LC_ALL=en_US.utf8
+LANG=en_US.utf8
+```
