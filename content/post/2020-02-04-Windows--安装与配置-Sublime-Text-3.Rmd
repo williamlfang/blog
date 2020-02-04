@@ -28,6 +28,8 @@ ToC: true
 }
 ```
 
+> 这里有一个小的提示，在 Windows 操作系统中，如果需要清屏幕，需要使用 `Shift+Ctrl+c` 进行操作。原来在 `Linux` 系统使用 `Ctrl+l`。这个在 `SublimeREPL` 的文档里面有[快捷键说明](https://sublimerepl.readthedocs.io/en/latest/)。以及 StackOverFlow 的提问：[how to clear SublimeREPL window in Sublime 2](https://stackoverflow.com/questions/23831038/how-to-clear-sublimerepl-window-in-sublime-2)
+
 # sftp: 远程编辑文件
 
 `sftp` 提供了内置的连接远程服务器方式，并且可以直接在服务器上面进行编辑。
