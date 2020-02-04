@@ -1,0 +1,156 @@
+---
+title: "Windows: 安装与配置 Sublime Text 3"
+author: William
+date: 2020-02-04
+lastmod: 2020-02-04
+categories: [Programming]
+tags: [Windowns,Sublime,R,Python]
+description: 
+draft: false
+ToC: true
+---
+
+# Sublime REPL: 配置
+
+打开 `Preferences/Packages Settings/SublimeREPL/Settings - User`，增加
+
+```bash
+{
+    // 对于 Windows，需要添加路径
+    // 1. R: C:\\Program Files\\R\\R-3.6.2\\bin\\x64
+    // 2. cywgin: C:\\cygwin64\\bin
+    "default_extend_env": 
+        {
+            "PATH": "{PATH};C:\\Program Files\\R\\R-3.6.2\\bin\\x64;C:\\cygwin64\\bin"
+        },
+
+    "show_transferred_text": true
+}
+```
+
+# R: 配置
+
+## 快捷键F5: 本地服务器
+
+打开 `Preferences/ Key Bidings`，增加快捷键用于打开 `R`
+
+```bash
+// 使用 快捷键 F5 打开 R,
+// 在 windows 的路径需要去查找
+    {
+        "keys": ["f5"],
+        "caption": "SublimeREPL: R",
+        "command":"repl_open","args":
+            {
+                "type": "subprocess",
+                "external_id": "r",
+                "additional_scopes": ["tex.latex.knitr"],
+                "encoding": 
+                    {
+                        "windows": "$win_cmd_encoding",
+                        "linux": "utf8",
+                        "osx": "utf8"
+                    },
+                "soft_quit": "\nquit(save=\"no\")\n",
+                "cmd": 
+                    {
+                        "linux": ["R", "--interactive", "--no-readline"],
+                        "osx": ["R", "--interactive", "--no-readline"],
+                        "windows": ["Rterm.exe", "--ess", "--encoding=$win_cmd_encoding"]
+                    },
+                "cwd": "$file_path",
+                "extend_env": 
+                    {
+                        "osx": {"PATH": "{PATH}:/usr/local/bin"},
+                        "linux": {"PATH": "{PATH}:/usr/local/bin"},
+                        // 添加 Windows 操作系统下 的 R 路径，记得需要指定 /bin/x64/
+                        "windows": {"PATH": "{PATH};C:\\Program Files\\R\\R-3.6.2\\bin\\x64\\\\R.exe"}
+                    },
+                "cmd_postfix": "\n",
+                "suppress_echo": 
+                    {
+                        "osx": true,
+                        "linux": true,
+                        "windows": false
+                    },
+                "syntax": "Packages/R/R Console.tmLanguage"
+            }
+    },  
+```
+
+## 设置英文界面
+
+参考：[设置R界面语言-- set console / menu language of R](https://d.cosx.org/d/101979-101979)
+
+1. 找到 `Rconsole`，可以到 `C:\Program Files\R\R-3.6.2\etc` 查找
+2. 打开 `Rconsole`，然后修改语言选项
+    
+    > ## Language for messages
+    > language = en
+    
+3. 重新启动 `R` 就会发现现在的系统语言变成了英文
+
+## 快捷键F6: 远程连接服务器
+
+我们也可以设置快捷键 `F6` 进行远程连接服务器。
+
+- 需要安装 cywgin，使用 `ssh` 进行登录
+- 生成 `ssh-keygen`，文件位置在 `/home/Administrator/.ssh`
+- 拷贝 `id_rsa.pub` 到远程服务器的 `~/.ssh/authorized_keys`
+
+接着，我们便可以设置快捷键了
+
+```bash
+// 使用 F6 连接远程服务器
+    {
+        "keys": ["f6"],
+        "caption": "SublimeREPL: R",
+        "command":"repl_open","args":
+            {
+                "type": "subprocess",
+                "external_id": "r",
+                "additional_scopes": ["tex.latex.knitr"],
+                "encoding": 
+                    {
+                        "windows": "$win_cmd_encoding",
+                        "linux": "utf8",
+                        "osx": "utf8"
+                    },
+                "soft_quit": "\nquit(save=\"no\")\n",
+                "cmd": 
+                    {
+                        "linux": 
+                            [
+                                "ssh",
+                                "fl@114.67.109.5", "-p6166",
+                                "R","--interactive", "--no-readline"
+                            ],
+                        "osx": ["R", "--interactive", "--no-readline"],
+                        "windows": 
+                            [
+                                "ssh",
+                                "fl@114.67.109.5", "-p6166",
+                                "R","--interactive", "--no-readline",
+                                 "--encoding=$win_cmd_encoding"
+                            ]
+                    },
+                "cwd": "$file_path",
+                "extend_env": 
+                    {
+                        "osx": {"PATH": "{PATH}:/usr/local/bin"},
+                        "linux": {"PATH": "{PATH}:/usr/local/bin"},
+                        // 需要把 cygwin 路径添加到这里
+                        "windows": {"PATH": "{PATH};C:\\cygwin64\\bin"}
+                    },
+                "cmd_postfix": "\n",
+                "suppress_echo": 
+                    {
+                        "osx": true,
+                        "linux": true,
+                        "windows": true
+                    },
+                "syntax": "Packages/R/R Console.tmLanguage"
+            }
+    },      
+```
+

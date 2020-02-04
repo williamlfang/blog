@@ -1,0 +1,151 @@
+---
+title: "Windows: 安装与配置 Sublime Text 3"
+author: William
+date: 2020-02-04
+lastmod: 2020-02-04
+categories: [Programming]
+tags: [Windowns,Sublime,R,Python]
+description: 
+draft: false
+ToC: true
+---
+
+
+
+<div id="sublime-repl-配置" class="section level1">
+<h1>Sublime REPL: 配置</h1>
+<p>打开 <code>Preferences/Packages Settings/SublimeREPL/Settings - User</code>，增加</p>
+<pre class="bash"><code>{
+    // 对于 Windows，需要添加路径
+    // 1. R: C:\\Program Files\\R\\R-3.6.2\\bin\\x64
+    // 2. cywgin: C:\\cygwin64\\bin
+    &quot;default_extend_env&quot;: 
+        {
+            &quot;PATH&quot;: &quot;{PATH};C:\\Program Files\\R\\R-3.6.2\\bin\\x64;C:\\cygwin64\\bin&quot;
+        },
+
+    &quot;show_transferred_text&quot;: true
+}</code></pre>
+</div>
+<div id="r-配置" class="section level1">
+<h1>R: 配置</h1>
+<div id="快捷键f5-本地服务器" class="section level2">
+<h2>快捷键F5: 本地服务器</h2>
+<p>打开 <code>Preferences/ Key Bidings</code>，增加快捷键用于打开 <code>R</code></p>
+<pre class="bash"><code>// 使用 快捷键 F5 打开 R,
+// 在 windows 的路径需要去查找
+    {
+        &quot;keys&quot;: [&quot;f5&quot;],
+        &quot;caption&quot;: &quot;SublimeREPL: R&quot;,
+        &quot;command&quot;:&quot;repl_open&quot;,&quot;args&quot;:
+            {
+                &quot;type&quot;: &quot;subprocess&quot;,
+                &quot;external_id&quot;: &quot;r&quot;,
+                &quot;additional_scopes&quot;: [&quot;tex.latex.knitr&quot;],
+                &quot;encoding&quot;: 
+                    {
+                        &quot;windows&quot;: &quot;$win_cmd_encoding&quot;,
+                        &quot;linux&quot;: &quot;utf8&quot;,
+                        &quot;osx&quot;: &quot;utf8&quot;
+                    },
+                &quot;soft_quit&quot;: &quot;\nquit(save=\&quot;no\&quot;)\n&quot;,
+                &quot;cmd&quot;: 
+                    {
+                        &quot;linux&quot;: [&quot;R&quot;, &quot;--interactive&quot;, &quot;--no-readline&quot;],
+                        &quot;osx&quot;: [&quot;R&quot;, &quot;--interactive&quot;, &quot;--no-readline&quot;],
+                        &quot;windows&quot;: [&quot;Rterm.exe&quot;, &quot;--ess&quot;, &quot;--encoding=$win_cmd_encoding&quot;]
+                    },
+                &quot;cwd&quot;: &quot;$file_path&quot;,
+                &quot;extend_env&quot;: 
+                    {
+                        &quot;osx&quot;: {&quot;PATH&quot;: &quot;{PATH}:/usr/local/bin&quot;},
+                        &quot;linux&quot;: {&quot;PATH&quot;: &quot;{PATH}:/usr/local/bin&quot;},
+                        // 添加 Windows 操作系统下 的 R 路径，记得需要指定 /bin/x64/
+                        &quot;windows&quot;: {&quot;PATH&quot;: &quot;{PATH};C:\\Program Files\\R\\R-3.6.2\\bin\\x64\\\\R.exe&quot;}
+                    },
+                &quot;cmd_postfix&quot;: &quot;\n&quot;,
+                &quot;suppress_echo&quot;: 
+                    {
+                        &quot;osx&quot;: true,
+                        &quot;linux&quot;: true,
+                        &quot;windows&quot;: false
+                    },
+                &quot;syntax&quot;: &quot;Packages/R/R Console.tmLanguage&quot;
+            }
+    },  </code></pre>
+</div>
+<div id="设置英文界面" class="section level2">
+<h2>设置英文界面</h2>
+<p>参考：<a href="https://d.cosx.org/d/101979-101979">设置R界面语言– set console / menu language of R</a></p>
+<ol style="list-style-type: decimal">
+<li>找到 <code>Rconsole</code>，可以到 <code>C:\Program Files\R\R-3.6.2\etc</code> 查找</li>
+<li><p>打开 <code>Rconsole</code>，然后修改语言选项</p>
+<blockquote>
+<h2 id="language-for-messages">Language for messages</h2>
+<p>language = en</p>
+</blockquote></li>
+<li><p>重新启动 <code>R</code> 就会发现现在的系统语言变成了英文</p></li>
+</ol>
+</div>
+<div id="快捷键f6-远程连接服务器" class="section level2">
+<h2>快捷键F6: 远程连接服务器</h2>
+<p>我们也可以设置快捷键 <code>F6</code> 进行远程连接服务器。</p>
+<ul>
+<li>需要安装 cywgin，使用 <code>ssh</code> 进行登录</li>
+<li>生成 <code>ssh-keygen</code>，文件位置在 <code>/home/Administrator/.ssh</code></li>
+<li>拷贝 <code>id_rsa.pub</code> 到远程服务器的 <code>~/.ssh/authorized_keys</code></li>
+</ul>
+<p>接着，我们便可以设置快捷键了</p>
+<pre class="bash"><code>// 使用 F6 连接远程服务器
+    {
+        &quot;keys&quot;: [&quot;f6&quot;],
+        &quot;caption&quot;: &quot;SublimeREPL: R&quot;,
+        &quot;command&quot;:&quot;repl_open&quot;,&quot;args&quot;:
+            {
+                &quot;type&quot;: &quot;subprocess&quot;,
+                &quot;external_id&quot;: &quot;r&quot;,
+                &quot;additional_scopes&quot;: [&quot;tex.latex.knitr&quot;],
+                &quot;encoding&quot;: 
+                    {
+                        &quot;windows&quot;: &quot;$win_cmd_encoding&quot;,
+                        &quot;linux&quot;: &quot;utf8&quot;,
+                        &quot;osx&quot;: &quot;utf8&quot;
+                    },
+                &quot;soft_quit&quot;: &quot;\nquit(save=\&quot;no\&quot;)\n&quot;,
+                &quot;cmd&quot;: 
+                    {
+                        &quot;linux&quot;: 
+                            [
+                                &quot;ssh&quot;,
+                                &quot;fl@114.67.109.5&quot;, &quot;-p6166&quot;,
+                                &quot;R&quot;,&quot;--interactive&quot;, &quot;--no-readline&quot;
+                            ],
+                        &quot;osx&quot;: [&quot;R&quot;, &quot;--interactive&quot;, &quot;--no-readline&quot;],
+                        &quot;windows&quot;: 
+                            [
+                                &quot;ssh&quot;,
+                                &quot;fl@114.67.109.5&quot;, &quot;-p6166&quot;,
+                                &quot;R&quot;,&quot;--interactive&quot;, &quot;--no-readline&quot;,
+                                 &quot;--encoding=$win_cmd_encoding&quot;
+                            ]
+                    },
+                &quot;cwd&quot;: &quot;$file_path&quot;,
+                &quot;extend_env&quot;: 
+                    {
+                        &quot;osx&quot;: {&quot;PATH&quot;: &quot;{PATH}:/usr/local/bin&quot;},
+                        &quot;linux&quot;: {&quot;PATH&quot;: &quot;{PATH}:/usr/local/bin&quot;},
+                        // 需要把 cygwin 路径添加到这里
+                        &quot;windows&quot;: {&quot;PATH&quot;: &quot;{PATH};C:\\cygwin64\\bin&quot;}
+                    },
+                &quot;cmd_postfix&quot;: &quot;\n&quot;,
+                &quot;suppress_echo&quot;: 
+                    {
+                        &quot;osx&quot;: true,
+                        &quot;linux&quot;: true,
+                        &quot;windows&quot;: true
+                    },
+                &quot;syntax&quot;: &quot;Packages/R/R Console.tmLanguage&quot;
+            }
+    },      </code></pre>
+</div>
+</div>
