@@ -27,6 +27,63 @@ ToC: true
     &quot;show_transferred_text&quot;: true
 }</code></pre>
 </div>
+<div id="sftp-远程编辑文件" class="section level1">
+<h1>sftp: 远程编辑文件</h1>
+<p><code>sftp</code> 提供了内置的连接远程服务器方式，并且可以直接在服务器上面进行编辑。</p>
+<div id="安装-sftp" class="section level2">
+<h2>安装 <code>sftp</code></h2>
+</div>
+<div id="添加服务器" class="section level2">
+<h2>添加服务器：</h2>
+<ul>
+<li>进入 <code>C:\Users\Administrator\AppData\Roaming\Sublime Text 3\Packages\User\sftp_servers</code></li>
+<li>添加文件 <code>fl@166.sublime-settings</code></li>
+<li>设置服务器连接信息</li>
+</ul>
+<pre class="bash"><code>{
+    // The tab key will cycle through the settings when first created
+    // Visit http://wbond.net/sublime_packages/sftp/settings for help
+    
+    // sftp, ftp or ftps
+    &quot;type&quot;: &quot;sftp&quot;,
+
+    &quot;sync_down_on_open&quot;: true,
+    &quot;sync_same_age&quot;: true,
+    
+    &quot;host&quot;: &quot;114.67.109.5&quot;,
+    &quot;user&quot;: &quot;fl&quot;,
+    &quot;password&quot;: &quot;***************&quot;,
+    &quot;port&quot;: &quot;6166&quot;,
+    
+    &quot;remote_path&quot;: &quot;/home/fl&quot;,
+    //&quot;file_permissions&quot;: &quot;664&quot;,
+    //&quot;dir_permissions&quot;: &quot;775&quot;,
+    
+    //&quot;extra_list_connections&quot;: 0,
+
+    &quot;connect_timeout&quot;: 30,
+    //&quot;keepalive&quot;: 120,
+    //&quot;ftp_passive_mode&quot;: true,
+    //&quot;ftp_obey_passive_host&quot;: false,
+    //&quot;ssh_key_file&quot;: &quot;~/.ssh/id_rsa&quot;,
+    //&quot;sftp_flags&quot;: [&quot;-F&quot;, &quot;/path/to/ssh_config&quot;],
+    
+    //&quot;preserve_modification_times&quot;: false,
+    //&quot;remote_time_offset_in_hours&quot;: 0,
+    //&quot;remote_encoding&quot;: &quot;utf-8&quot;,
+    //&quot;remote_locale&quot;: &quot;C&quot;,
+    //&quot;allow_config_upload&quot;: false,
+}</code></pre>
+</div>
+<div id="连接服务器" class="section level2">
+<h2>连接服务器</h2>
+<p>使用 <code>sftp: browse server</code> 即可查看服务器上面的文件</p>
+<div class="figure">
+<img src="/images/2020-02-04-Windows--安装与配置-Sublime-Text-3/sftp.png" alt="编辑远程文件，并在远程服务器运行 R 脚本程序" />
+<p class="caption">编辑远程文件，并在远程服务器运行 R 脚本程序</p>
+</div>
+</div>
+</div>
 <div id="r-配置" class="section level1">
 <h1>R: 配置</h1>
 <div id="快捷键f5-本地服务器" class="section level2">

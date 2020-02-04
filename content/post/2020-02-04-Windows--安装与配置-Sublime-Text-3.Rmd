@@ -28,6 +28,61 @@ ToC: true
 }
 ```
 
+# sftp: 远程编辑文件
+
+`sftp` 提供了内置的连接远程服务器方式，并且可以直接在服务器上面进行编辑。
+
+## 安装 `sftp`
+
+## 添加服务器：
+
+- 进入 `C:\Users\Administrator\AppData\Roaming\Sublime Text 3\Packages\User\sftp_servers`
+- 添加文件 `fl@166.sublime-settings`
+- 设置服务器连接信息
+
+```bash
+{
+    // The tab key will cycle through the settings when first created
+    // Visit http://wbond.net/sublime_packages/sftp/settings for help
+    
+    // sftp, ftp or ftps
+    "type": "sftp",
+
+    "sync_down_on_open": true,
+    "sync_same_age": true,
+    
+    "host": "114.67.109.5",
+    "user": "fl",
+    "password": "***************",
+    "port": "6166",
+    
+    "remote_path": "/home/fl",
+    //"file_permissions": "664",
+    //"dir_permissions": "775",
+    
+    //"extra_list_connections": 0,
+
+    "connect_timeout": 30,
+    //"keepalive": 120,
+    //"ftp_passive_mode": true,
+    //"ftp_obey_passive_host": false,
+    //"ssh_key_file": "~/.ssh/id_rsa",
+    //"sftp_flags": ["-F", "/path/to/ssh_config"],
+    
+    //"preserve_modification_times": false,
+    //"remote_time_offset_in_hours": 0,
+    //"remote_encoding": "utf-8",
+    //"remote_locale": "C",
+    //"allow_config_upload": false,
+}
+```    
+
+## 连接服务器
+
+使用 `sftp: browse server` 即可查看服务器上面的文件
+
+![编辑远程文件，并在远程服务器运行 R 脚本程序](/images/2020-02-04-Windows--安装与配置-Sublime-Text-3/sftp.png)
+
 # R: 配置
 
 ## 快捷键F5: 本地服务器
