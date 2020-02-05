@@ -179,6 +179,7 @@ ToC: true
                         "linux": 
                             [
                                 "ssh",
+                                "-L", "4321:localhost:4321", 
                                 "fl@114.67.109.5", "-p6166",
                                 "R","--interactive", "--no-readline"
                             ],
@@ -186,6 +187,7 @@ ToC: true
                         "windows": 
                             [
                                 "ssh",
+                                "-L", "4321:localhost:4321", 
                                 "fl@114.67.109.5", "-p6166",
                                 "R","--interactive", "--no-readline",
                                  "--encoding=$win_cmd_encoding"
