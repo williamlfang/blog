@@ -35,10 +35,11 @@ ToC: true
 
     ```bash
     vim frps.ini
-
+    
     [common]
     #bind_addr = 127.0.0.1
     bind_port = 7000
+    token = *********
     ```
 
 - 增加允许访问的端口。这个是需要通过 `7000` 的端口转发去访问的客户机端口，可以配置多个。比如我们在客户机的 `frpc.init` 增加了3个可以访问的端口，那么我们就需要告诉服务器，需要开放 `6011`、`6035`、`6066` 这3个端口的远程访问权限：
@@ -47,19 +48,20 @@ ToC: true
     [common]
     server_addr = 114.67.109.5
     server_port = 7000
-
+    token = *********
+    
     [sshlocal]
     type = tcp
     local_ip = 127.0.0.1
     local_port = 22
     remote_port = 6011
-
+    
     [ssh135]
     type = tcp
     local_ip = 192.168.1.135
     local_port = 22
     remote_port = 6035
-
+    
     [ssh166]
     type = tcp
     local_ip = 192.168.1.166
@@ -77,10 +79,10 @@ ToC: true
     firewall-cmd --zone=public --add-port=6066/tcp --permanent
     firewall-cmd --zone=public --add-port=6088/tcp --permanent
     firewall-cmd --zone=public --add-port=6099/tcp --permanent
-
+    
     firewall-cmd --zone=public --add-port=7066/tcp --permanent
     firewall-cmd --zone=public --add-port=7099/tcp --permanent
-
+    
     # 2.重启防火墙
     systemctl restart firewalld.service
     ```

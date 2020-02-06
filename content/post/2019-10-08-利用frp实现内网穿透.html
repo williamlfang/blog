@@ -31,11 +31,13 @@ cd frp_0.21.0_linux_amd64/</code></pre></li>
 
 [common]
 #bind_addr = 127.0.0.1
-bind_port = 7000</code></pre></li>
+bind_port = 7000
+token = *********</code></pre></li>
 <li><p>增加允许访问的端口。这个是需要通过 <code>7000</code> 的端口转发去访问的客户机端口，可以配置多个。比如我们在客户机的 <code>frpc.init</code> 增加了3个可以访问的端口，那么我们就需要告诉服务器，需要开放 <code>6011</code>、<code>6035</code>、<code>6066</code> 这3个端口的远程访问权限：</p>
 <pre class="bash"><code>[common]
 server_addr = 114.67.109.5
 server_port = 7000
+token = *********
 
 [sshlocal]
 type = tcp
