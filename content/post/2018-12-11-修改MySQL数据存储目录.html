@@ -14,24 +14,24 @@ ToC: false
 
 <p><code>MySQL</code>默认的数据存储路径是在 <code>/var</code> 下面。由于该目录可能设置空间不大，后期会影响使用，我准备把数据存储在 <code>/data/DataBase</code> 这个目录下面，用于集中的管理，后期也可以把磁盘空间增加到足够大。</p>
 <p>本文参考了这篇<a href="http://www.cnblogs.com/kerrycode/p/4371938.html">文章</a>。</p>
-<div id="确认当前存储路径" class="section level1">
+<div class="section level1">
 <h1>确认当前存储路径</h1>
 <pre class="bash"><code>[root@localhost ~]# mysqladmin -u root -p variables | grep datadir
 Enter password: 
 | datadir                                           | /var/lib/mysql/ </code></pre>
 </div>
-<div id="停止-mysql-服务" class="section level1">
+<div id="-mysql-" class="section level1">
 <h1>停止 <code>MySQL</code> 服务</h1>
 <p>在 <code>CentOS7</code> 下，统一使用 <code>systemctl</code> 来管理所有的服务进程。同时，需要注意的是，从 <code>MySQL5.5</code> 开始，默认的存储引擎改成了 <code>mariadb</code>。因此，为了停止 <code>MySQL</code> 服务进程，我们可以使用命令：</p>
 <pre class="bash"><code>[root@localhost ~]# systemctl stop mariadb.service
 Warning: mariadb.service changed on disk. Run &#39;systemctl daemon-reload&#39; to reload units.</code></pre>
 </div>
-<div id="把数据移动到指定目录" class="section level1">
+<div class="section level1">
 <h1>把数据移动到指定目录</h1>
 <p>事先在 <code>/data/</code> 文件夹下面建立 <code>/data/DataBase</code> 用来专门存储 <code>MySQL</code> 所有的数据。我们需要把原来的数据库移动到该目录下：</p>
 <pre class="bash"><code>[root@localhost data]# mv /var/lib/mysql /data/DataBase/</code></pre>
 </div>
-<div id="修改配置文件" class="section level1">
+<div class="section level1">
 <h1>修改配置文件</h1>
 <p>一般是在 <code>/etc/my.cnf</code> 这个文件：</p>
 <pre class="bash"><code>vim /etc/my.cnf
@@ -66,7 +66,7 @@ pid-file=/var/run/mysqld/mysqld.pid
 [client]
 socket=/data/DataBase/mysql/mysql.sock</code></pre>
 </div>
-<div id="检查是否已经生效" class="section level1">
+<div class="section level1">
 <h1>检查是否已经生效</h1>
 <pre class="bash"><code>[root@localhost data]# systemctl start mariadb.service
 [root@localhost data]# mysqladmin -u root -p variables | grep datadir

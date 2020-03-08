@@ -1,0 +1,83 @@
+---
+title: "v2ray Ubuntu 配置教程"
+author: William
+date: 2020-03-08
+lastmod: 2020-03-08
+categories: [Programming]
+tags: [翻墙,v2ray,Ubuntu]
+description: 
+draft: false
+ToC: false
+---
+
+
+
+<div id="-v2ray-" class="section level1">
+<h1>安装 v2ray 客户端</h1>
+<ol style="list-style-type: decimal">
+<li>下载客户端安装包，去<a href="https://github.com/v2ray/v2ray-core/releases">官网</a>下载相应的版本，即在 <code>Linux</code> 操作系统需要下载 <code>v2ray-linux-64.zip</code></li>
+<li>把下载得到的安装包解压后，复制到 <code>/usr/local/v2ray</code></li>
+<li>编辑配置文件 <code>config.json</code></li>
+<li>创建配置文件目录 <code>/etc/v2ray</code>，并将以上的配置文件 <code>config.json</code> 拷贝到此目录</li>
+<li>开始启动</li>
+</ol>
+<pre class="bash"><code>## 下载安装包
+cd ~/Downloads
+## https://github.com/v2ray/v2ray-core/releases
+wget https://github.com/v2ray/v2ray-core/releases/download/v4.22.1/v2ray-linux-64.zip
+unzip v2ray-linux-64.zip
+
+## 拷贝安装包到 /usr/local
+sudo cp -r v2ray-linux-64 /usr/local/v2ray
+
+## 复制配置文件 ----------------------------------
+mkdir -p /etc/v2ray
+sudo cp ~/Documents/config.json /usr/local/v2ray
+sudo cp ~/Documents/config.json /etc/v2ray
+
+## 启动客户端
+cd /usr/local/v2ray
+sudo ./v2ray --config=/etc/v2ray/config.json</code></pre>
+</div>
+<div class="section level1">
+<h1>配置命令行代理</h1>
+<pre class="bash"><code>## 1.安装 proxychains
+cd ~/Downloads
+git clone https://github.com/rofl0r/proxychains-ng
+cd proxychains-ng
+sudo ./configure --prefix=/usr --sysconfdir=/etc
+sudo make -j
+sudo make install
+sudo make install-config ## (安装proxychains.conf配置文件)
+
+
+## 2. 配置 proxychains
+sudo vim /etc/proxychains.conf
+## 在 在proxychains.conf文件末尾修改你的socks5服务地址,可以把sock4删除
+## 注意：可以通过查看 /etc/v2ray/config.json 查看端口，这里假定端口号是 1086
+[ProxyList]
+# add proxy here ...
+# meanwile
+# defaults set to &quot;tor&quot;
+#socks4         127.0.0.1 9050
+socks5  127.0.0.1 1086
+
+## 使用命令
+proxychains4 程序 参数
+
+curl www.twitter.com
+proxychains4 curl www.twitter.com
+
+[proxychains] config file found: /etc/proxychains.conf
+[proxychains] preloading /usr/lib/libproxychains4.so
+[proxychains] DLL init: proxychains-ng 4.14-git-8-gb8fa2a7
+[proxychains] Strict chain  ...  127.0.0.1:1086  ...  www.twitter.com:80  ...  OK</code></pre>
+</div>
+<div class="section level1">
+<h1>配置桌面客户端</h1>
+<ol style="list-style-type: decimal">
+<li><p>在目录<code>/home/william/.local/share/applications</code> 下建立桌面客户端 `<code>v2ray.desktop</code></p></li>
+<li><p>内容填写</p></li>
+</ol>
+<p><code>bash    [Desktop Entry]    Categories=Network;Internet;    Comment=A platform for building proxies to bypass network restrictions.    Exec=/usr/local/v2ray/v2ray    GenericName=V2Ray Client    Icon=/home/william/.local/share/applications/v2ray.png    Name=V2Ray    Terminal=false    Type=Application    X-Deepin-Vendor=user-custom    Name[en_US]=v2ray.desktop</code></p>
+</div>

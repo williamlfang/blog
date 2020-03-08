@@ -13,7 +13,7 @@ ToC: true
 
 
 <p>下面我们来推导远期利率与互换利率。这两个利率变量常常在金融建模中有重要的作用。</p>
-<div id="远期利率互换fra" class="section level2">
+<div id="fra" class="section level2">
 <h2>远期利率互换(FRA)</h2>
 <p>远期利率互换（Forward Rate Agreement）指的是这样一种金融合约，<span class="math inline">\(FRA(t; T, S)\)</span>:</p>
 <ul>
@@ -21,22 +21,17 @@ ToC: true
 <li>到 <span class="math inline">\(T\)</span> 以事先约定的支付金额 <span class="math inline">\(K\)</span>;</li>
 <li>交割到期日为 <span class="math inline">\(S\)</span> 的债券。</li>
 </ul>
-<p>其合约价值为
-<span class="math display">\[
+<p>其合约价值为 <span class="math display">\[
 \begin{align}
  V_{FRA} &amp;= N P(t, S) \tau(T, S) \big[ K- L(T, S) \big], \label{value-fra}
 \end{align}
-\]</span>
-其中，<span class="math inline">\(\tau(T,S)\)</span> 表示在两个时期的时间差，通常按照年为单位计算。<span class="math inline">\(L(T,S)\)</span> 是简单复合利率，通常指的是<strong>LIBOR</strong>。下面我们来求得远期即期利率<span class="math inline">\(F(t;T,S)\)</span>。</p>
+\]</span> 其中，<span class="math inline">\(\tau(T,S)\)</span> 表示在两个时期的时间差，通常按照年为单位计算。<span class="math inline">\(L(T,S)\)</span> 是简单复合利率，通常指的是<strong>LIBOR</strong>。下面我们来求得远期即期利率<span class="math inline">\(F(t;T,S)\)</span>。</p>
 <!-- more -->
-<p>由式子<span class="math inline">\(\eqref{value-fra}\)</span>展开
-<span class="math display">\[
+<p>由式子<span class="math inline">\(\eqref{value-fra}\)</span>展开 <span class="math display">\[
 \begin{align}
  V_{FRA} &amp;= N \Big[ P(t, S) \tau(T, S)  K - P(t, S) \tau(T, S)  L(T, S) \Big].
 \end{align}
-\]</span>
-根据无套利条件，我们有以下关系成立(详细推导见：Filipovic: Term Structure Model: A Graduate Course)
-<span class="math display">\[
+\]</span> 根据无套利条件，我们有以下关系成立(详细推导见：Filipovic: Term Structure Model: A Graduate Course) <span class="math display">\[
 \begin{align}
  P(t,S) &amp;= P(t,T) P(T,S)
 \end{align}
@@ -48,8 +43,7 @@ ToC: true
  \tau(T,S)L(T,S)  =&amp; \frac{1}{P(T,S)} - 1 \\ 
 \end{align}
 \]</span></p>
-<p>因此，
-<span class="math display">\[
+<p>因此， <span class="math display">\[
 \begin{align}
  V_{FRA} &amp;= N \Big[ P(t, S) \tau(T, S)  K - P(t, S) \tau(T, S)  L(T, S) \Big] \\
    &amp;= N \Big[ P(t, S) \tau(T, S)  K - P(t, S) \big(\frac{1}{P(T,S)} - 1 \big) \Big] \\
@@ -58,10 +52,9 @@ ToC: true
 \end{align}
 \]</span></p>
 </div>
-<div id="远期即期利率" class="section level2">
+<div class="section level2">
 <h2>远期即期利率</h2>
-<p>在无套利的要求下，远期即期利率（Future spot rate）必需满足一个「公平价格」的原则，即使得远期利率协议的价值为零的利率水平，则
-<span class="math display">\[
+<p>在无套利的要求下，远期即期利率（Future spot rate）必需满足一个「公平价格」的原则，即使得远期利率协议的价值为零的利率水平，则 <span class="math display">\[
 \begin{align}
  V_{FRA} &amp;= 0 = N  \Big[ P(t, S) \tau(T, S)  F(t;T,S) -   P(t,T)  + P(t, S)  \Big] \\
  \Rightarrow 
@@ -69,7 +62,7 @@ ToC: true
 \end{align}
 \]</span></p>
 </div>
-<div id="利率互换irs" class="section level2">
+<div id="irs" class="section level2">
 <h2>利率互换（IRS）</h2>
 <p>下面我们来介绍另外一种利率产品：利率互换（Interest Rate Swap,IRS):</p>
 <ul>
@@ -77,22 +70,19 @@ ToC: true
 <li>浮动利率：合同的另一方则需要根据合同拟采用的浮动利率水平来做对冲支付，一般而言，该浮动利率为短期简单复利的<strong>LIBOR</strong>, <span class="math inline">\(L(T_{i-1}, T_{i})\)</span>。</li>
 </ul>
 <p>我们记该时间段为 <span class="math inline">\(\mathcal{T} = \{ T_{\alpha}, T_{\alpha+1},\cdots,T_{\beta - 1}, T_{\beta}\}\)</span>，<span class="math inline">\(\tau_{i} = \tau(T_{i-1}, T_{i}),\)</span> 且有 <span class="math inline">\(\mathcal{\tau} = \{ \tau_{\alpha + 1}, \tau_{\alpha+2},\cdots,\tau_{\beta - 1}, \tau_{\beta}\}\)</span> 。</p>
-<p>则我们可以得到 IRS 的合约价值为
-<span class="math display">\[
+<p>则我们可以得到 IRS 的合约价值为 <span class="math display">\[
 \begin{align}
  V_{IRS} &amp;= \sum_{i=\alpha+1}^{\beta} D(t,T_i) N \tau_i \bigg[ K - L(T_{i-1}, T_{i}) \bigg] \label{value-irs}
 \end{align}
 \]</span></p>
-<p>对比 <span class="math inline">\(\eqref{value-fra}\)</span> 和 <span class="math inline">\(\eqref{value-irs}\)</span>，我们不难发现，利率互换可以看作来一系列的远期利率协议的总和，即
-<span class="math display">\[
+<p>对比 <span class="math inline">\(\eqref{value-fra}\)</span> 和 <span class="math inline">\(\eqref{value-irs}\)</span>，我们不难发现，利率互换可以看作来一系列的远期利率协议的总和，即 <span class="math display">\[
 \begin{align}
   V_{IRS} &amp;= \sum_{i=\alpha+1}^{\beta} V_{FRA}  \\
   &amp;= \sum_{i=\alpha+1}^{\beta} N P(t, T_i) \tau_i \big[ K- F(t;T_{i-1},T_{i}) \big] \\
   &amp;= N \sum_{i=\alpha+1}^{\beta}  P(t, T_i) \tau_i  K - N \boxed{ \sum_{i=\alpha+1}^{\beta} P(t, T_i) \tau_i F(t;T_{i-1},T_{i}) }.
 \end{align}
 \]</span></p>
-<p>对于方框内的式子，我们可以做如下运算
-<span class="math display">\[
+<p>对于方框内的式子，我们可以做如下运算 <span class="math display">\[
 \begin{align*}
 &amp; \boxed{ \sum_{i=\alpha+1}^{\beta}  P(t, T_i) \tau_i F(t;T_{i-1},T_{i})  }  \\
  =&amp; \sum_{i=\alpha+1}^{\beta}  P(t, T_i) \tau(T_{i-1},T_{i}) \cdot \frac{1}{\tau(T_{i-1},T_{i})} \bigg[ \frac{P(t,T_{i-1})}{P(t,T_{i})} - 1 \bigg] \\
@@ -100,17 +90,15 @@ ToC: true
  =&amp;  P(t,T_{\alpha}) - P(t,T_{\beta})
 \end{align*}
 \]</span></p>
-<p>从而，
-<span class="math display">\[
+<p>从而， <span class="math display">\[
 \begin{align}
  V_{IRS} &amp;=  N \sum_{i=\alpha+1}^{\beta}  P(t, T_i) \tau_i  K - N \bigg( P(t,T_{\alpha}) - P(t,T_{\beta}) \bigg)
 \end{align}
 \]</span></p>
 </div>
-<div id="互换利率swap-rate" class="section level2">
+<div id="swap-rate" class="section level2">
 <h2>互换利率（Swap Rate）</h2>
-<p>同理，为来得到无套利条件，我们要求互换利率使得该利率互换的价值为零，即
-<span class="math display">\[
+<p>同理，为来得到无套利条件，我们要求互换利率使得该利率互换的价值为零，即 <span class="math display">\[
 \begin{align}
  V_{IRS} &amp;= 0 = N \sum_{i=\alpha+1}^{\beta}  P(t, T_i) \tau_i   S_{\alpha, \beta} (t)  - N \bigg( P(t,T_{\alpha}) - P(t,T_{\beta}) \bigg) \\
  \Rightarrow 
@@ -121,26 +109,23 @@ ToC: true
 <ul>
 <li>首先，投资者为了对冲未来利率不确定所带来的影响，要求在未来的某个时间段内以固定的收益 <span class="math inline">\(P(t,T_{\alpha})\)</span> 提前买入债券，而将在更远的未来 <span class="math inline">\(T_{\beta}\)</span> 抛售手里的债券，价值为 <span class="math inline">\(P(t,T_{\beta})\)</span>，其总和的盈余收益为 <span class="math inline">\(P(t,T_{\alpha}) - P(t,T_{\beta})\)</span>。</li>
 <li>在合约期间，投资者放弃的机会成本总共为 <span class="math inline">\(\sum_{i=\alpha+1}^{\beta} P(t, T_i) \tau_i\)</span>。</li>
-<li>因此，在满足市场无套利的条件下，互换利率因该使得该投资策略的超额收益率是零，即该投掷策略的收益与互换利率持平，是故
-<span class="math display">\[
+<li>因此，在满足市场无套利的条件下，互换利率因该使得该投资策略的超额收益率是零，即该投掷策略的收益与互换利率持平，是故 <span class="math display">\[
 \begin{align}
  S_{\alpha, \beta} (t) &amp;= \frac{ P(t,T_{\alpha}) - P(t,T_{\beta}) }{ \sum_{i=\alpha+1}^{\beta}  P(t, T_i) \tau_i   }
  \end{align}
 \]</span></li>
 </ul>
 </div>
-<div id="远期即期利率与远期互换利率的关系" class="section level2">
+<div class="section level2">
 <h2>远期即期利率与远期互换利率的关系</h2>
-<p>我们知道任一两个债券价格可以通过远期即期利率产生联系，例如
-<span class="math display">\[
+<p>我们知道任一两个债券价格可以通过远期即期利率产生联系，例如 <span class="math display">\[
 \begin{align}
  \frac{P(t,T_{k})}{P(t,T_{\alpha})}
  &amp;= \frac{P(t,T_{\alpha + 1})}{P(t,T_{\alpha})} \cdot \frac{P(t,T_{\alpha + 2})}{P(t,T_{\alpha + 1})} \cdots \frac{P(t,T_{\beta})}{P(t,T_{\beta - 1})}  \\
  &amp;= \prod_{j=\alpha+1}^{k} \frac{1}{1 + \tau_j F(t;T_{j-1}, T_j)}
 \end{align}
 \]</span></p>
-<p>从而，我们也可以利用这个关系来推导得到远期即期利率与远期互换利率的关系
-<span class="math display">\[
+<p>从而，我们也可以利用这个关系来推导得到远期即期利率与远期互换利率的关系 <span class="math display">\[
 \begin{align}
  S_{\alpha, \beta} (t) &amp;= \frac{ P(t,T_{\alpha}) - P(t,T_{\beta}) }{ \sum_{i=\alpha+1}^{\beta}  P(t, T_i) \tau_i  K } \\
  &amp;= \frac{ 1 - \frac{P(t,T_{\beta})}{P(t,T_{\alpha})} }{ \sum_{i=\alpha+1}^{\beta} \tau_i \frac{P(t, T_i) }{ P(t,T_{\alpha}) } }  \\

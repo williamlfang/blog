@@ -15,10 +15,10 @@ ToC: true
 <p>在服务器操作系统领域，<code>Linux</code> 绝对是独领风骚的佼佼者，拥有开放兼容的社区神态、功能强大的开发环境以及持续高效的运行性能。而作为 <code>Linux</code> 的重要分支，<code>CentOS</code> 则凭借稳定的性能，占领了大部分的大型企业级别服务器操作市场。因此，目前几乎所有的企业均在服务器上部署了 <code>CentOS</code> 操作系统。我们公司目前所有的服务器均安装 <code>CentOS7</code>，这是目前最新的版本，有足够强大的社区技术支持，同时也适合采用更加强大的新技术。</p>
 <!--more-->
 <p>接下来，我将根据开发经验，从安装操作系统开始，到如何配置相关文件，设定操作环境，到最后，我们将搭建一套强大的操作系统，用于开发并运行程序化交易系统。该过程将全部使用脚本进行操作，从而保证在任何一台服务器上，都达到完全一样的配置环境。</p>
-<div id="安装" class="section level2">
+<div class="section level2">
 <h2>安装</h2>
 </div>
-<div id="配置" class="section level2">
+<div class="section level2">
 <h2>配置</h2>
 <p>最近公司以我个人的名义采购了一台阿里云服务器，具体的云服务器配置如下：</p>
 <ul>
@@ -29,7 +29,7 @@ ToC: true
 </ul>
 <p>这个配置其实算比较低档次的，不过用于平时接收<code>CTP</code>行情数据倒是也可以够用。毕竟，价格优惠明显摆在那儿：三年使用期限，总共花费 279元。算是业内的良心价格了。</p>
 <p>下面就要开始配置服务器了。对于 <code>CentOS7</code> 系统，这个配置过程基本类似，所以我就把以前写的一篇博客拿过来使用了。</p>
-<div id="设置远程服务器-root-密码" class="section level3">
+<div id="-root-" class="section level3">
 <h3>设置远程服务器 root 密码</h3>
 <ul>
 <li>选择管理控制台，点击 <code>ECS</code></li>
@@ -37,7 +37,7 @@ ToC: true
 <li>修改完成密码后，记得需要点击选择 <code>重启</code> 才能够生效。我是在这一步忘记重启，结果掉坑里了。还好后来找到出口爬了出来。</li>
 </ul>
 </div>
-<div id="增加用户组" class="section level3">
+<div class="section level3">
 <h3>增加用户/组</h3>
 <pre class="bash"><code># 增加用户 trader
 adduser trader
@@ -45,7 +45,7 @@ adduser trader
 # 设置密码
 passwd trader</code></pre>
 </div>
-<div id="设置固定静态ip" class="section level3">
+<div id="ip" class="section level3">
 <h3>设置固定(静态)IP</h3>
 <pre class="bash"><code>[root@localhost ~]# cd /etc/sysconfig/network-scripts/
 [root@localhost network-scripts]# pwd
@@ -80,7 +80,7 @@ DNS99=8.8.4.4 // 新增
 ## 重启网络
 systemctl restart network</code></pre>
 </div>
-<div id="增加-swap-空间" class="section level3">
+<div id="-swap-" class="section level3">
 <h3>增加 <code>swap</code> 空间</h3>
 <blockquote>
 <p>参考文章:<a href="https://blog.tanteng.me/2016/03/aliyun-centos-7-swap/">在阿里云CentOS 7创建swap分区</a></p>
@@ -107,7 +107,7 @@ vim /etc/fstab
 
 /home/swap swap swap default 0 0</code></pre>
 </div>
-<div id="时间校准" class="section level3">
+<div class="section level3">
 <h3>时间校准</h3>
 <p><a href="https://blog.csdn.net/z_dianjun/article/details/51819450">简单几步让CentOS系统时间同步</a></p>
 <pre class="bash"><code>yum install -y ntpdate
@@ -118,7 +118,7 @@ ntpdate us.pool.ntp.org
 crontab -e
 0-59/10 * * * * /usr/sbin/ntpdate us.pool.ntp.org | logger -t NTP</code></pre>
 </div>
-<div id="增加常用-yum-源" class="section level3">
+<div id="-yum-" class="section level3">
 <h3>增加常用 yum 源</h3>
 <pre class="bash"><code>## 配置下centos的DNS
 ## 一个国内,一个国外
@@ -169,7 +169,7 @@ ls
 # 再次清除系统yum缓存，并重新生成新的yum缓存
 yum clean all &amp;&amp; yum makecache</code></pre>
 </div>
-<div id="安装常用软件包" class="section level3">
+<div class="section level3">
 <h3>安装常用软件包</h3>
 <pre class="bash"><code>yum install -y cmake bzip2 htop
 
@@ -194,11 +194,11 @@ yum install mysql-devel
 systemctl start|stop|restart mariadb.service</code></pre>
 </div>
 </div>
-<div id="运维" class="section level2">
+<div class="section level2">
 <h2>运维</h2>
-<div id="mysqlmariadb-数据库管理" class="section level3">
+<div id="mysqlmariadb-" class="section level3">
 <h3><code>MySQL/MariaDB</code> 数据库管理</h3>
-<div id="安装-mariadb-引擎" class="section level4">
+<div id="-mariadb-" class="section level4">
 <h4>安装 <code>MariaDB</code> 引擎</h4>
 <pre class="bash"><code># 安装 mysql
 yum install mysql
@@ -208,7 +208,7 @@ yum install mysql-devel
 ## 启动 mariadb.service 引擎
 systemctl start|stop|restart mariadb.service</code></pre>
 </div>
-<div id="增加远程访问端口-3306" class="section level4">
+<div id="-3306" class="section level4">
 <h4>增加远程访问端口 <code>3306</code></h4>
 <pre class="bash"><code>## 增加远程访问 MySQL 3306 端口
 
@@ -224,12 +224,12 @@ systemctl restart firewalld.service</code></pre>
 <li><code>--permanent</code>：永久生效，没有此参数重启后失效</li>
 </ul>
 </div>
-<div id="设置允许访问的最大连接数" class="section level4">
+<div class="section level4">
 <h4>设置允许访问的最大连接数</h4>
 <p>连接 <code>MySQL</code> 数据库后，会自动分配一个连接点，并在关闭该连接后进行注销。但是，如果由于用户忘记关闭，或者程序错误导致没有把之前分配的连接点注销，长期以往，则可能超过当前允许的最大连接数量，导致新开连接失败。这时候数据库会报错：</p>
 <pre class="bash"><code>&quot;SQL Error 1040: Too Many Connection&quot;</code></pre>
 <p>解决的思路当然是尽量调高系统运行的最大连接数。有两种方法可以完成。</p>
-<div id="临时增加最大连接数" class="section level5">
+<div class="section level5">
 <h5>临时增加最大连接数</h5>
 <blockquote>
 <p>Ref: <a href="https://stackoverflow.com/questions/14331032/mysql-error-1040-too-many-connection/34176072" class="uri">https://stackoverflow.com/questions/14331032/mysql-error-1040-too-many-connection/34176072</a></p>
@@ -238,7 +238,7 @@ systemctl restart firewalld.service</code></pre>
 <pre class="sql"><code>show variables like &quot;max_connections&quot;;
 set global max_connections = 2000;</code></pre>
 </div>
-<div id="永久增加最大连接数" class="section level5">
+<div class="section level5">
 <h5>永久增加最大连接数</h5>
 <blockquote>
 <p>Ref: <a href="https://www.cnblogs.com/kevingrace/p/6226324.html" class="uri">https://www.cnblogs.com/kevingrace/p/6226324.html</a></p>
@@ -273,7 +273,7 @@ systemctl restart mariadb.service</code></pre>
 show variables like &#39;%open_files_limit%&#39;;</code></pre>
 </div>
 </div>
-<div id="修改-root-账户密码" class="section level4">
+<div id="-root-" class="section level4">
 <h4>修改 <code>root</code> 账户密码</h4>
 <pre class="sql"><code>## 更改 root 密码
 mysqladmin -u root password MyNewPassword
@@ -285,7 +285,7 @@ quit;
 
 mysql -u root -pMyNewPassHere</code></pre>
 </div>
-<div id="数据库用户管理" class="section level4">
+<div class="section level4">
 <h4>数据库用户管理</h4>
 <pre class="sql"><code>## 增加用户
 create user &#39;trader&#39;@&#39;localhost&#39; identified by &#39;************&#39;;
@@ -295,7 +295,7 @@ grant all/select/write on dbName.tbName to &#39;userID&#39;@&#39;%&#39; identifi
 
 ## 收回用户权限</code></pre>
 </div>
-<div id="设置密码安全" class="section level4">
+<div class="section level4">
 <h4>设置密码安全</h4>
 <blockquote>
 <p>Ref:</p>
@@ -311,7 +311,7 @@ set global validate_password_number_count=3;
 set global validate_password_special_char_count=0; 
 set global validate_password_length=3;  </code></pre>
 </div>
-<div id="彻底解决mysql中文乱码" class="section level4">
+<div id="mysql" class="section level4">
 <h4>彻底解决mysql中文乱码</h4>
 <pre class="bash"><code>## Ref: https://blog.csdn.net/u012410733/article/details/61619656
 
@@ -327,7 +327,7 @@ default-character-set=utf8
 default-character-set=utf8  </code></pre>
 </div>
 </div>
-<div id="安装-boost-1.55" class="section level3">
+<div id="-boost-1.55" class="section level3">
 <h3>安装 <code>Boost 1.55</code></h3>
 <p><code>Boost.Python</code> 提供了通过 <code>Python</code> 调用 <code>C/C++</code> 的方法，通过封装 <code>C/C++</code> 给 <code>Python</code> 函数调用。</p>
 <pre class="bash"><code>cd temp
