@@ -77,7 +77,7 @@ ToC: true
     //"remote_locale": "C",
     //"allow_config_upload": false,
 }
-```    
+```
 
 ## 连接服务器
 
@@ -141,7 +141,7 @@ ToC: true
 
 1. 找到 `Rconsole`，可以到 `C:\Program Files\R\R-3.6.2\etc` 查找
 2. 打开 `Rconsole`，然后修改语言选项
-    
+   
     > ## Language for messages
     > language = en
     
@@ -211,5 +211,34 @@ ToC: true
                 "syntax": "Packages/R/R Console.tmLanguage"
             }
     },      
+```
+
+# Windows 无法传送命令的问题
+
+在 Windows 操作系统中，有一个问题，我现在还是没有很好的方法，只能提供一个权宜之计：
+
+> 有时候，打开 SublimeREPL，却无法发送代码到解释器。
+
+这个有可能是 Window 在处理信号的时候，找不到 Sublime。
+
+我现在的做法是：
+
+- 先使用 `kill` 杀死进程
+- 然后在重新 `restart` 一个进程
+
+可以设置快捷键如下 `F1` -> `F12`
+
+```json
+  // 使用 Sublime REPL  F1 先杀死 python
+  // F1:kill
+  { "keys": ["f1"],
+      "caption": "SublimeREPL: Kill",
+      "command": "repl_kill", "caption": "Kill"
+  },
+  // F12:restart
+  { "keys": ["f12"],
+      "caption": "SublimeREPL: Restart",
+      "command": "repl_restart", "caption": "Restart"
+  },
 ```
 

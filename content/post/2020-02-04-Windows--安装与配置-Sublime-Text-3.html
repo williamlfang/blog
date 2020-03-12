@@ -211,3 +211,28 @@ ToC: true
     },      </code></pre>
 </div>
 </div>
+<div id="windows-" class="section level1">
+<h1>Windows 无法传送命令的问题</h1>
+<p>在 Windows 操作系统中，有一个问题，我现在还是没有很好的方法，只能提供一个权宜之计：</p>
+<blockquote>
+<p>有时候，打开 SublimeREPL，却无法发送代码到解释器。</p>
+</blockquote>
+<p>这个有可能是 Window 在处理信号的时候，找不到 Sublime。</p>
+<p>我现在的做法是：</p>
+<ul>
+<li>先使用 <code>kill</code> 杀死进程</li>
+<li>然后在重新 <code>restart</code> 一个进程</li>
+</ul>
+<p>可以设置快捷键如下 <code>F1</code> -&gt; <code>F12</code></p>
+<pre class="json"><code>  // 使用 Sublime REPL  F1 先杀死 python
+  // F1:kill
+  { &quot;keys&quot;: [&quot;f1&quot;],
+      &quot;caption&quot;: &quot;SublimeREPL: Kill&quot;,
+      &quot;command&quot;: &quot;repl_kill&quot;, &quot;caption&quot;: &quot;Kill&quot;
+  },
+  // F12:restart
+  { &quot;keys&quot;: [&quot;f12&quot;],
+      &quot;caption&quot;: &quot;SublimeREPL: Restart&quot;,
+      &quot;command&quot;: &quot;repl_restart&quot;, &quot;caption&quot;: &quot;Restart&quot;
+  },</code></pre>
+</div>
