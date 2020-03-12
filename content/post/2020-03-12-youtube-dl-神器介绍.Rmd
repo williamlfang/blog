@@ -1,0 +1,49 @@
+---
+title: "youtube dl 神器介绍"
+author: William
+date: 2020-03-12
+lastmod: 2020-03-12
+categories: [Tools]
+tags: [youtube,youtube-dl,翻墙]
+description: 使用 youtube-dl 下载油管视频。
+draft: false
+ToC: true
+---
+
+# 安装
+
+```bash
+## CentOS
+sudo yum -y install ffmpeg ffmpeg-devel
+
+## buntu
+sudo apt install ffmpeg
+
+## 安装 youtube-dl
+pip install youtube-dl   #安装
+pip install --upgrade youtube-dl  #升级
+```
+
+# 使用
+
+- 设置代理
+- 设置下载功能
+
+```bash
+alias youdl='youtube-dl --yes-playlist --proxy "socks5://127.0.0.1:1086" --write-sub --sub-format "ass/srt/best" --convert-subs "srt"'
+
+youdl https://www.youtube.com/watch?v=xVT1y0xWgww
+```
+
+## 效果
+
+```bash
+youdl https://www.youtube.com/watch?v=xVT1y0xWgww
+
+[youtube] xVT1y0xWgww: Downloading webpage
+[info] Writing video subtitles to: CppCon 2017 - Nir Friedman “What C++ developers should know about globals (and the linker)”-xVT1y0xWgww.en.vtt
+WARNING: Requested formats are incompatible for merge and will be merged into mkv.
+[download] Destination: CppCon 2017 - Nir Friedman “What C++ developers should know about globals (and the linker)”-xVT1y0xWgww.f248.webm
+[download]  17.4% of 221.79MiB at 914.28KiB/s ETA 03:25
+```
+

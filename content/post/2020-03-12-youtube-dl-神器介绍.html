@@ -1,0 +1,46 @@
+---
+title: "youtube dl 神器介绍"
+author: William
+date: 2020-03-12
+lastmod: 2020-03-12
+categories: [Tools]
+tags: [youtube,youtube-dl,翻墙]
+description: 使用 youtube-dl 下载油管视频。
+draft: false
+ToC: true
+---
+
+
+
+<div class="section level1">
+<h1>安装</h1>
+<pre class="bash"><code>## CentOS
+sudo yum -y install ffmpeg ffmpeg-devel
+
+## buntu
+sudo apt install ffmpeg
+
+## 安装 youtube-dl
+pip install youtube-dl   #安装
+pip install --upgrade youtube-dl  #升级</code></pre>
+</div>
+<div class="section level1">
+<h1>使用</h1>
+<ul>
+<li>设置代理</li>
+<li>设置下载功能</li>
+</ul>
+<pre class="bash"><code>alias youdl=&#39;youtube-dl --yes-playlist --proxy &quot;socks5://127.0.0.1:1086&quot; --write-sub --sub-format &quot;ass/srt/best&quot; --convert-subs &quot;srt&quot;&#39;
+
+youdl https://www.youtube.com/watch?v=xVT1y0xWgww</code></pre>
+<div class="section level2">
+<h2>效果</h2>
+<pre class="bash"><code>youdl https://www.youtube.com/watch?v=xVT1y0xWgww
+
+[youtube] xVT1y0xWgww: Downloading webpage
+[info] Writing video subtitles to: CppCon 2017 - Nir Friedman “What C++ developers should know about globals (and the linker)”-xVT1y0xWgww.en.vtt
+WARNING: Requested formats are incompatible for merge and will be merged into mkv.
+[download] Destination: CppCon 2017 - Nir Friedman “What C++ developers should know about globals (and the linker)”-xVT1y0xWgww.f248.webm
+[download]  17.4% of 221.79MiB at 914.28KiB/s ETA 03:25</code></pre>
+</div>
+</div>

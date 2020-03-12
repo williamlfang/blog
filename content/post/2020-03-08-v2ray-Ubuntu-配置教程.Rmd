@@ -91,18 +91,18 @@ proxychains4 curl www.twitter.com
 
 2. 内容填写
 
-   ```bash
-   [Desktop Entry]
-   Categories=Network;Internet;
-   Comment=A platform for building proxies to bypass network restrictions.
-   Exec=/usr/local/v2ray/v2ray
-   GenericName=V2Ray Client
-   Icon=/home/william/.local/share/applications/v2ray.png
-   Name=V2Ray
-   Terminal=false
-   Type=Application
-   X-Deepin-Vendor=user-custom
-   Name[en_US]=v2ray.desktop
-   ```
+    ```bash
+    [Desktop Entry]
+    Categories=Network;Internet;
+    Comment=A platform for building proxies to bypass network restrictions.
+    Exec=/usr/local/v2ray/v2ray
+    GenericName=V2Ray Client
+    Icon=/home/william/.local/share/applications/v2ray.png
+    Name=V2Ray
+    Terminal=false
+    Type=Application
+    X-Deepin-Vendor=user-custom
+    Name[en_US]=v2ray.desktop
+    ```
 
    
