@@ -33,11 +33,12 @@ sudo cp -r v2ray-linux-64 /usr/local/v2ray
 ## 复制配置文件 ----------------------------------
 mkdir -p /etc/v2ray
 sudo cp ~/Documents/config.json /usr/local/v2ray
-sudo cp ~/Documents/config.json /etc/v2ray
+#sudo cp ~/Documents/config.json /etc/v2ray
 
 ## 启动客户端
 cd /usr/local/v2ray
-sudo ./v2ray --config=/etc/v2ray/config.json</code></pre>
+nohup sudo ./v2ray &amp;
+#sudo ./v2ray --config=/etc/v2ray/config.json</code></pre>
 </div>
 <div class="section level1">
 <h1>配置命令行代理</h1>
