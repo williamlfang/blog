@@ -1,0 +1,72 @@
+---
+title: "Sublime 使用 Jupyter Notebook"
+author: William
+date: 2020-03-13
+lastmod: 2020-03-13
+categories: [Programming]
+tags: [Sublime,Jupyter,python]
+description: 在 Sublime 里面使用 Jupyter Notebook 功能。
+draft: false
+ToC: true
+---
+
+
+
+<div class="section level1">
+<h1>安装</h1>
+<div id="-pyzmq" class="section level2">
+<h2>安装 pyzmq</h2>
+<pre class="bash"><code>## 需要安装 pyzmq
+pc /usr/bin/python3.6 -m pip install pyzmqc</code></pre>
+</div>
+<div id="-helium" class="section level2">
+<h2>安装 Helium</h2>
+<p>在 <code>Sublime</code> 中打开 <code>Shift+Ctrl+P</code>，然后输入 <code>Helium</code> 进行安装</p>
+</div>
+</div>
+<div id="-jupyter" class="section level1">
+<h1>打开 Jupyter</h1>
+<p>先在命令行打开</p>
+<pre class="bash"><code>jupyterlab</code></pre>
+<p>然后使用命令进行查询连接信息</p>
+<pre class="bash"><code>## 在 Jupyter 里面执行 magic 方法
+%connect_info
+
+{
+  &quot;shell_port&quot;: 51835,
+  &quot;iopub_port&quot;: 43591,
+  &quot;stdin_port&quot;: 37817,
+  &quot;control_port&quot;: 39041,
+  &quot;hb_port&quot;: 50915,
+  &quot;ip&quot;: &quot;127.0.0.1&quot;,
+  &quot;key&quot;: &quot;f4739d3c-a1e6462527617877ebf90e25&quot;,
+  &quot;transport&quot;: &quot;tcp&quot;,
+  &quot;signature_scheme&quot;: &quot;hmac-sha256&quot;,
+  &quot;kernel_name&quot;: &quot;&quot;
+}
+
+Paste the above JSON into a file, and connect with:
+    $&gt; jupyter &lt;app&gt; --existing &lt;file&gt;
+or, if you are local, you can connect with just:
+    $&gt; jupyter &lt;app&gt; --existing kernel-7826a41d-5ed1-4014-b421-a9205a712668.json
+or even just:
+    $&gt; jupyter &lt;app&gt; --existing
+if this is the most recent Jupyter kernel you have started.</code></pre>
+</div>
+<div id="-helium" class="section level1">
+<h1>连接 Helium</h1>
+<ul>
+<li>在 Sublime 打开，<code>Hermes: connect kernel</code>，然后输入以上的连接信息</li>
+<li>打开命令 <code>Hermes: Execute Block</code> 执行命令</li>
+</ul>
+<div class="figure">
+<img src="/images/2020-03-13-Sublime-使用-Jupyter-Notebook/helium.png" />
+
+</div>
+</div>
+<div class="section level1">
+<h1>快捷键</h1>
+</div>
+<div class="section level1">
+<h1>连接远程服务器</h1>
+</div>
