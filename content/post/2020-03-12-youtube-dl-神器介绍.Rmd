@@ -34,7 +34,7 @@ sudo apt-get install youtube-dl
 - 设置下载功能
 
 ```bash
-alias youdl='youtube-dl --yes-playlist --proxy "socks5://127.0.0.1:1086" --write-sub --sub-format "ass/srt/best" --convert-subs "srt"'
+alias youdl='youtube-dl --yes-playlist  --playlist-start 0 --proxy "socks5://127.0.0.1:1086" --write-sub --sub-format "ass/srt/best" --convert-subs "srt"'
 
 youdl https://www.youtube.com/watch?v=xVT1y0xWgww
 ```
