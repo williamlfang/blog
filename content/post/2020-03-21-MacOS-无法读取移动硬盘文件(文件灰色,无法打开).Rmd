@@ -1,0 +1,28 @@
+---
+title: "MacOS 无法读取移动硬盘文件(文件灰色,无法打开)"
+author: William
+date: 2020-03-21
+lastmod: 2020-03-21
+categories: [Tools]
+tags: [Mac,硬盘]
+description: 从 Mac 复制文件到移动硬盘后，变成灰色，无法打开。
+draft: false
+ToC: false
+---
+
+![](/images/2020-03-21-MacOS-无法读取移动硬盘文件(文件灰色,无法打开)/无法打开文件.png)
+
+解决方法如下：
+
+-   安装 `Mounty`，然后进行挂载操作
+
+-   找到硬盘文件所在的路径，使用命令进行提升权限
+
+    ```bash
+    sudo xattr -d -r com.apple.FinderInfo /Volumes/William/youtube/*
+    ```
+
+之后再查看，即可打开文件了
+
+![](/images/2020-03-21-MacOS-无法读取移动硬盘文件(文件灰色,无法打开)/可以打开文件.png)
+
