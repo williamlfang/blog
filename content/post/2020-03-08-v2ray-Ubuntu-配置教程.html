@@ -12,7 +12,7 @@ ToC: false
 
 
 
-<div id="-v2ray-" class="section level1">
+<div id="安装-v2ray-服务器" class="section level1">
 <h1>安装 v2ray 服务器</h1>
 <pre class="bash"><code>bash &lt;(curl -s -L https://git.io/v2ray.sh)</code></pre>
 <p>可以顺便给 <code>vps</code> 测速</p>
@@ -126,7 +126,7 @@ Softlayer, HongKong, CN   119.81.130.170    10.7MB/s            154.140 ms
 长沙        : Fail       长春        : 161.75 ms  福州        : 154.07 ms
 --------------------------------------------------------------------------</code></pre>
 </div>
-<div id="-v2ray-" class="section level1">
+<div id="安装-v2ray-客户端" class="section level1">
 <h1>安装 v2ray 客户端</h1>
 <ol style="list-style-type: decimal">
 <li>下载客户端安装包，去<a href="https://github.com/v2ray/v2ray-core/releases">官网</a>下载相应的版本，即在 <code>Linux</code> 操作系统需要下载 <code>v2ray-linux-64.zip</code></li>
@@ -154,7 +154,7 @@ cd /usr/local/v2ray
 nohup sudo ./v2ray &amp;
 #sudo ./v2ray --config=/etc/v2ray/config.json</code></pre>
 </div>
-<div class="section level1">
+<div id="配置命令行代理" class="section level1">
 <h1>配置命令行代理</h1>
 <pre class="bash"><code>## 1.安装 proxychains
 cd ~/Downloads
@@ -188,7 +188,7 @@ proxychains4 curl www.twitter.com
 [proxychains] DLL init: proxychains-ng 4.14-git-8-gb8fa2a7
 [proxychains] Strict chain  ...  127.0.0.1:1086  ...  www.twitter.com:80  ...  OK</code></pre>
 </div>
-<div class="section level1">
+<div id="配置桌面客户端" class="section level1">
 <h1>配置桌面客户端</h1>
 <ol style="list-style-type: decimal">
 <li><p>在目录<code>/home/william/.local/share/applications</code> 下建立桌面客户端 `<code>v2ray.desktop</code></p></li>
