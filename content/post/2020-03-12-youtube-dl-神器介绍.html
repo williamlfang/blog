@@ -15,6 +15,10 @@ ToC: true
 <div id="安装" class="section level1">
 <h1>安装</h1>
 <pre class="bash"><code>## CentOS
+sudo yum install epel-release
+sudo rpm -v --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
+sudo rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm
+
 sudo yum -y install ffmpeg ffmpeg-devel
 
 ## ubuntu
