@@ -20,6 +20,9 @@ ToC: false
 
     ```bash
     sudo xattr -d -r com.apple.FinderInfo /Volumes/William/youtube/*
+    
+    ## 可以设置成段命令
+    alias mount.disk="sudo xattr -d -r com.apple.FinderInfo /Volumes/William/youtube/*"
     ```
 
 之后再查看，即可打开文件了
