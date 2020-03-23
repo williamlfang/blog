@@ -2762,7 +2762,8 @@ namespace loguru
             pos += snprintf(out_buff + pos, out_buff_size - pos, &quot;(  uptime  ) &quot;);
         }
         if (g_preamble_thread &amp;&amp; pos &lt; out_buff_size) {
-            pos += snprintf(out_buff + pos, out_buff_size - pos, &quot;[%-*s]&quot;, LOGURU_THREADNAME_WIDTH, &quot; thread name/id&quot;);
+            //pos += snprintf(out_buff + pos, out_buff_size - pos, &quot;[%-*s]&quot;, LOGURU_THREADNAME_WIDTH, &quot; thread name/id&quot;);
+            pos += snprintf(out_buff + pos, out_buff_size - pos, &quot;[%-*s]&quot;, LOGURU_THREADNAME_WIDTH, &quot; thread id &quot;);
         }
         if (g_preamble_file &amp;&amp; pos &lt; out_buff_size) {
             pos += snprintf(out_buff + pos, out_buff_size - pos, &quot;%*s:line  &quot;, LOGURU_FILENAME_WIDTH, &quot;file&quot;);
