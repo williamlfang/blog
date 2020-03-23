@@ -199,13 +199,13 @@ static void print_preamble(char* out_buff, size_t out_buff_size, Verbosity verbo
 #ifndef LOGURU_FILENAME_WIDTH
 	// Width of the column containing the file name
 	// #define LOGURU_FILENAME_WIDTH 23
-    #define LOGURU_FILENAME_WIDTH 15
+    #define LOGURU_FILENAME_WIDTH 18
 #endif
 
 #ifndef LOGURU_THREADNAME_WIDTH
 	// Width of the column containing the thread name
 	// #define LOGURU_THREADNAME_WIDTH 16
-    #define LOGURU_THREADNAME_WIDTH 15
+    #define LOGURU_THREADNAME_WIDTH 12
 #endif
 ```
 

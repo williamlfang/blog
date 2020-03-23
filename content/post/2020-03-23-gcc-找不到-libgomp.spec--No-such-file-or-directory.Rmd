@@ -1,0 +1,21 @@
+---
+title: "gcc 找不到 libgomp.spec: No such file or directory"
+author: William
+date: 2020-03-23
+lastmod: 2020-03-23
+categories: [Programming]
+tags: [gcc,libgomp]
+description: 在为 R 安装 data.table 的时候报错：找不到 libgomp.spec。
+draft: false
+ToC: false
+---
+
+![error: can't find libgomp.spec](http://forum.openmp.org/forum/viewtopic.php?f=3&t=183)
+
+在网上找了好久的解决方法，其实是因为最近安装了新版本的 `gcc`，无法与旧版本的动态库链接。这里需要拷贝一份到 `LD_LIBRARY_PATH` 所在的路径
+
+```bash
+sudo cp /home/william/Documents/Linux-Tools/gcc/gcc9/gcc-9.2.0/x86_64-pc-linux-gnu/libgomp/libgomp.spec /usr/lib
+sudo cp /home/william/Documents/Linux-Tools/gcc/gcc9/gcc-9.2.0/x86_64-pc-linux-gnu/libgomp/libgomp.spec /usr/local/lib
+```
+
