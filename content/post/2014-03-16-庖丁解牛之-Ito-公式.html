@@ -23,7 +23,7 @@ ToC: true
 \]</span></p>
 <p>下面我们来推导股票价格 <span class="math inline">\(S_t\)</span> 的动态方程，这主要是使用著名的 <strong>Ito 公式</strong>。过于理论的东西我在这里不推导了，主要是利用一个简单的例子来说明如何使用 <strong>Ito 公式</strong> 解 <strong>SDE</strong> 类问题。</p>
 <!-- more -->
-<div id="ito-" class="section level2">
+<div id="ito-公式求解" class="section level2">
 <h2>Ito 公式求解</h2>
 <p>首先，令 <span class="math inline">\(Y_t = ln S_t\)</span>，由简单的偏微分求导得到 <span class="math display">\[
 \begin{align}
@@ -59,7 +59,7 @@ ToC: true
 \end{align}
 \]</span></p>
 </div>
-<div class="section level2">
+<div id="几何布朗运动" class="section level2">
 <h2>几何布朗运动</h2>
 <p>我们知道，对于任何一个正态分布做线性转换后依然服从正态分布。由于布朗运动 <span class="math inline">\(W_t \sim \mathcal{N} (0, t)\)</span>，则 <span class="math display">\[
 \begin{align}
@@ -96,7 +96,7 @@ ToC: true
 \end{align} \\
 \]</span></p>
 </div>
-<div class="section level3">
+<div id="期望与方差" class="section level3">
 <h3>期望与方差</h3>
 <p>这个特征对于求一个「对数正态分布」十分有用。由<span class="math inline">\(\eqref{gbm_norm}\)</span> <span class="math display">\[
 \begin{align}
@@ -184,7 +184,7 @@ X(t)  &amp;= e^{-\kappa t} (X(0)-\theta) + \theta + \int_{0}^{t}  \sigma  e^{-\k
  \end{align}
 \]</span></p></li>
 </ul>
-<div class="section level3">
+<div id="期望" class="section level3">
 <h3>期望</h3>
 <p>由<span class="math inline">\(\eqref{oup}\)</span>得到 <span class="math display">\[
  \begin{align}
@@ -202,7 +202,7 @@ X(t)  &amp;= e^{-\kappa t} (X(0)-\theta) + \theta + \int_{0}^{t}  \sigma  e^{-\k
  \end{align}
 \]</span></p>
 </div>
-<div class="section level3">
+<div id="协方差" class="section level3">
 <h3>协方差</h3>
 <p>任一区间内 <span class="math inline">\([s,t]\)</span> 协方差可以由以下求出。 <span class="math display">\[
  \begin{align}
@@ -306,7 +306,7 @@ E\bigg[
 \]</span></p></li>
 </ul>
 </div>
-<div class="section level3">
+<div id="方差" class="section level3">
 <h3>方差</h3>
 <p>方差也就是0阶协方差， <span class="math display">\[
  \begin{align}
