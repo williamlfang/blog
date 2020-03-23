@@ -17,9 +17,9 @@ ToC: true
 <li><code>Ubuntu</code>: <code>smbd</code></li>
 <li><code>CentOS</code>: <code>smb</code></li>
 </ul>
-<div class="section level1">
+<div id="安装" class="section level1">
 <h1>安装</h1>
-<div class="section level2">
+<div id="安装软件" class="section level2">
 <h2>安装软件</h2>
 <pre class="bash"><code>## Ubuntu
 sudo apt update
@@ -28,7 +28,7 @@ sudo apt-get install samba
 ## CentOS
 yum install samba</code></pre>
 </div>
-<div class="section level2">
+<div id="查看状态" class="section level2">
 <h2>查看状态</h2>
 <div id="ubuntu" class="section level3">
 <h3>Ubuntu</h3>
@@ -81,7 +81,7 @@ samba-common-4.8.3-4.el7.noarch
 samba-libs-4.8.3-4.el7.x86_64</code></pre>
 </div>
 </div>
-<div class="section level2">
+<div id="启动服务" class="section level2">
 <h2>启动服务</h2>
 <div id="ubuntu-1" class="section level3">
 <h3>Ubuntu</h3>
@@ -97,7 +97,7 @@ sudo ufw allow &#39;Samba&#39;</code></pre>
 systemctl start smb</code></pre>
 </div>
 </div>
-<div class="section level2">
+<div id="查看服务进程" class="section level2">
 <h2>查看服务进程</h2>
 <div id="ubuntu-2" class="section level3">
 <h3>Ubuntu</h3>
@@ -147,11 +147,11 @@ Dec 03 10:34:47 hicloud systemd[1]: Started Samba SMB Daemon.
 Hint: Some lines were ellipsized, use -l to show in full.</code></pre>
 </div>
 </div>
-<div class="section level2">
+<div id="设置开机启动" class="section level2">
 <h2>设置开机启动</h2>
 <pre class="bash"><code>systemctl enable smb</code></pre>
 </div>
-<div id="-selinux" class="section level2">
+<div id="临时关闭-selinux" class="section level2">
 <h2>临时关闭 SeLinux</h2>
 <p>需要关闭 <code>SeLinux</code> 才可以让 Windows 用户访问 <code>samba</code></p>
 <pre class="bash"><code>setenforce 0</code></pre>
@@ -167,7 +167,7 @@ Policy MLS status:              enabled
 Policy deny_unknown status:     allowed
 Max kernel policy version:      31</code></pre>
 </div>
-<div id="-selinux" class="section level2">
+<div id="永久关闭-selinux" class="section level2">
 <h2>永久关闭 SeLinux</h2>
 <p>修改配置文件/etc/selinux/config，将SELINU置为disabled</p>
 <pre class="bash"><code>cat /etc/selinux/config
@@ -189,20 +189,20 @@ SELINUXTYPE=targeted </code></pre>
 SELinux status:                 disabled</code></pre>
 </div>
 </div>
-<div class="section level1">
+<div id="用户设置" class="section level1">
 <h1>用户设置</h1>
-<div class="section level2">
+<div id="添加用户" class="section level2">
 <h2>添加用户</h2>
 <pre class="bash"><code>useradd fl</code></pre>
 </div>
-<div class="section level2">
+<div id="设置密码" class="section level2">
 <h2>设置密码</h2>
 <pre class="bash"><code>smbpasswd -a fl</code></pre>
 <p>然后重启 <code>samba</code></p>
 <pre class="bash"><code>systemctl restart samba</code></pre>
 </div>
 </div>
-<div class="section level1">
+<div id="设置访问" class="section level1">
 <h1>设置访问</h1>
 <p>有关访问权限配置参数在</p>
 <pre class="bash"><code>vim /etc/samba/smb.conf
@@ -269,7 +269,7 @@ SELinux status:                 disabled</code></pre>
     available = yes
     valid users = fl,root</code></pre>
 </div>
-<div id="windows-" class="section level1">
+<div id="windows-连接" class="section level1">
 <h1>Windows 连接</h1>
 <ol style="list-style-type: decimal">
 <li><code>网络连接</code></li>
@@ -277,7 +277,7 @@ SELinux status:                 disabled</code></pre>
 <li>然后使用账户、密码即可登录</li>
 </ol>
 </div>
-<div id="windows-" class="section level1">
+<div id="windows-没有权限访问的解决方法" class="section level1">
 <h1>Windows 没有权限访问的解决方法</h1>
 <p>有可能是 <code>Centos</code> 打开了 <code>selinux</code>， 需要关闭即可</p>
 <pre class="bash"><code>setenforce 0</code></pre>

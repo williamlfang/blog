@@ -13,15 +13,15 @@ ToC: true
 
 
 <p><code>wireshark</code> 与 <code>tcpdump</code> 是网络抓包的两大神器。其中，前者提供了更加便捷的界面操作，后者则比较适合在命令行进行操作。</p>
-<div class="section level1">
+<div id="安装" class="section level1">
 <h1>安装</h1>
 <p><code>Ubuntu</code> 可以直接从默认仓库安装，但是提供的是稳(too)定(old)的版本。为了使用新功能，我决定从源代码安装 <code>wireshark</code>。</p>
-<div class="section level2">
+<div id="下载代码" class="section level2">
 <h2>下载代码</h2>
 <p>我们可以直接从官网下载<a href="https://www.wireshark.org/#download">最新版本的源代码</a>，或者找到<a href="https://www.wireshark.org/download/src/">历史版本</a>。最好开启 Chrome 的翻墙功能，下载速度会快一些。</p>
 <pre class="bash"><code>wget https://1.as.dl.wireshark.org/src/wireshark-3.0.7.tar.xz</code></pre>
 </div>
-<div class="section level2">
+<div id="安装依赖" class="section level2">
 <h2>安装依赖</h2>
 <p>有可能提示找不到 <code>libgcrypt</code></p>
 <pre class="bash"><code>apt install qttools5-dev qttools5-dev-tools libqt5svg5-dev qtmultimedia5-dev build-essential automake autoconf libgtk2.0-dev libglib2.0-dev flex bison libpcap-dev libgcrypt20-dev cmake -y
@@ -29,7 +29,7 @@ sudo apt-get install libgcrypt20-dev
 sudo apt-get install keepassx
 sudo apt-get install build-essential libgl1-mesa-dev</code></pre>
 </div>
-<div id="-wireshark" class="section level2">
+<div id="安装-wireshark" class="section level2">
 <h2>安装 wireshark</h2>
 <pre class="bash"><code>tar -xf wireshark-3.0.7.tar.xz
 cd wireshark-3.0.7
@@ -66,7 +66,7 @@ Built using gcc 7.4.0.</code></pre>
 <p class="caption">成功启动</p>
 </div>
 </div>
-<div class="section level2">
+<div id="问题解决" class="section level2">
 <h2>问题解决</h2>
 <ol style="list-style-type: decimal">
 <li><p>出现错误：file not recognized: File truncated</p>
@@ -87,14 +87,14 @@ make: *** [all] Error 2      </code></pre>
 </ol>
 </div>
 </div>
-<div class="section level1">
+<div id="抓包" class="section level1">
 <h1>抓包</h1>
 <div class="figure">
 <img src="/images/2019-12-10-Ubuntu-源代码安装-wireshark/capture.png" alt="抓包现场发来图片" />
 <p class="caption">抓包现场发来图片</p>
 </div>
 </div>
-<div class="section level1">
+<div id="参考链接" class="section level1">
 <h1>参考链接</h1>
 <ol style="list-style-type: decimal">
 <li><a href="https://kifarunix.com/install-latest-wireshark-on-ubuntu-18-04/">Install Latest Wireshark on Ubuntu 18.04</a></li>

@@ -12,15 +12,15 @@ ToC: true
 
 
 
-<div class="section level1">
+<div id="干中学" class="section level1">
 <h1>干中学</h1>
 <p>最近在学习一个 <code>C++</code> 项目，需要重新把以前的课本拿起来。学习的最好方法，尤其是编程技能的学习，就是对照着教材，边学边练，即 「Learning by doing」。这是我多年以来领悟到的最好经验。</p>
 <p>对于 <code>c/C++</code> 这类<strong>编译语言</strong>，需要在编写完源文件(source file)后，使用编译器进行编译，生成相应的可执行文件(executable file)。因此，一个既能提供高效文本编辑环境、同时又能提供快速编译功能的「软件」，对于实现项目开发是极为关键的。</p>
 </div>
-<div id="sublime" class="section level1">
+<div id="sublime编辑神器" class="section level1">
 <h1><code>Sublime</code>编辑神器</h1>
 <p>基于使用习惯，我一般都是在 <code>Sublime</code> 进行文本的编辑，然后通过使用支持相关语言处理的配套插件，进行程序开发。这么多年来，<code>Sublime</code> 已经发展成了我得心应手的编辑器与<strong>开发环境</strong>。我之前有介绍过<a href="https://williamlfang.github.io/post/2017-10-13-我的-sublime-text-设置">如何配置</a>，今天这篇文章则介绍如何配置 <code>C/C++</code> 开发环境。</p>
-<div class="section level2">
+<div id="新建配置文件" class="section level2">
 <h2>新建配置文件</h2>
 <p>在 “Tools -&gt; Build System”，点击 “New Build System”，会自动弹出一个文件，我们在这里写入相应的配置方案：</p>
 <pre class="bash"><code>{
@@ -81,7 +81,7 @@ ToC: true
     ]
 }</code></pre>
 </div>
-<div class="section level2">
+<div id="调试" class="section level2">
 <h2>调试</h2>
 <p>我们可以在编辑一个 <code>C/C++</code> 文件后，直接调用 <code>Ctrl+B</code> 来编译文件，使用 <code>Ctrl+Shift+B</code> 选择指定的运行方式。</p>
 <div class="figure">
@@ -89,7 +89,7 @@ ToC: true
 <p class="caption">build system</p>
 </div>
 </div>
-<div class="section level2">
+<div id="设置快捷键" class="section level2">
 <h2>设置快捷键</h2>
 <p>在 <code>Sublime</code> 里，我们可以十分方便的根据个人偏好，设置我们常用的一些快捷键。比如，运行一个已经编译好的 <code>C/C++</code> 可执行文件，我们就可以使用 <code>F1</code> 实现直接运行该文件。</p>
 <pre class="bash"><code>{&quot;keys&quot;: [&quot;f1&quot;], &quot;command&quot;: &quot;build&quot;, &quot;args&quot;: {&quot;variant&quot;: &quot;Run&quot;}}</code></pre>

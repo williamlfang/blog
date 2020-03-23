@@ -25,10 +25,10 @@ ToC: true
 <img src="/images/2020-03-23-C++日志模块-loguru/loguru.png" />
 
 </div>
-<div class="section level1">
+<div id="安装" class="section level1">
 <h1>安装</h1>
 <p>由于我们后面需要使用 <code>fmtlib</code> 模块用于更好的输出日志，所以需要先进行安装。</p>
-<div id="-fmtlib" class="section level2">
+<div id="安装-fmtlib" class="section level2">
 <h2>安装 <code>fmtlib</code></h2>
 <pre class="bash"><code>cd ~/Downloads
 git clone git@github.com:fmtlib/fmt.git
@@ -39,23 +39,23 @@ sudo cmake ..
 sudo make 
 sudo install</code></pre>
 </div>
-<div id="-loguru" class="section level2">
+<div id="安装-loguru" class="section level2">
 <h2>安装 <code>loguru</code></h2>
 <p>首先，我们把这个项目拷贝到本地，然后再通过修改相应的模块。</p>
 <pre class="bash"><code>git clone git@github.com:emilk/loguru.git</code></pre>
 </div>
 </div>
-<div id="-loguru" class="section level1">
+<div id="定制-loguru" class="section level1">
 <h1>定制 <code>loguru</code></h1>
 <p>由于这个提供了源代码，我们可以根据公司的日志记录需要，进行定制化配置。</p>
-<div class="section level2">
+<div id="修改日志头文件" class="section level2">
 <h2>修改日志头文件</h2>
 <pre class="cpp"><code>// vim loguru.cpp
 // 1. 修改日志表头的显示
 // #define LOGURU_PREAMBLE_WIDTH (53 + LOGURU_THREADNAME_WIDTH + LOGURU_FILENAME_WIDTH)
 #define LOGURU_PREAMBLE_WIDTH (57 + LOGURU_THREADNAME_WIDTH + LOGURU_FILENAME_WIDTH)</code></pre>
 </div>
-<div id="-micro-" class="section level2">
+<div id="修改-micro-精确的时间戳" class="section level2">
 <h2>修改 micro 精确的时间戳</h2>
 <pre class="cpp"><code>// vim loguru.cpp
 //## 2. 增加 micro 时间戳
@@ -71,7 +71,7 @@ void write_date_time(char* buff, size_t buff_size)
         time_info.tm_hour, time_info.tm_min, time_info.tm_sec, ms_since_epoch % 1000000);
 }</code></pre>
 </div>
-<div id="-micro-" class="section level2">
+<div id="打印-micro-时间戳" class="section level2">
 <h2>打印 micro 时间戳</h2>
 <pre class="cpp"><code>// vim loguru.cpp
 // 打印 micro 时间戳
@@ -138,7 +138,7 @@ static void print_preamble(char* out_buff, size_t out_buff_size, Verbosity verbo
     }
 }</code></pre>
 </div>
-<div class="section level2">
+<div id="修改函数运行时间计数器" class="section level2">
 <h2>修改函数运行时间计数器</h2>
 <pre class="cpp"><code>// vim loguru.cpp
 // 3.修改函数运行时间
@@ -154,7 +154,7 @@ static void print_preamble(char* out_buff, size_t out_buff_size, Verbosity verbo
 
 </code></pre>
 </div>
-<div id="-fmtlib-" class="section level2">
+<div id="增加-fmtlib-支持" class="section level2">
 <h2>增加 fmtlib 支持</h2>
 <pre class="hpp"><code>// vim loguru.hpp
 // 增加 fmt 支持
@@ -171,17 +171,17 @@ static void print_preamble(char* out_buff, size_t out_buff_size, Verbosity verbo
 #ifndef LOGURU_FILENAME_WIDTH
     // Width of the column containing the file name
     // #define LOGURU_FILENAME_WIDTH 23
-    #define LOGURU_FILENAME_WIDTH 15
+    #define LOGURU_FILENAME_WIDTH 18
 #endif
 
 #ifndef LOGURU_THREADNAME_WIDTH
     // Width of the column containing the thread name
     // #define LOGURU_THREADNAME_WIDTH 16
-    #define LOGURU_THREADNAME_WIDTH 15
+    #define LOGURU_THREADNAME_WIDTH 12
 #endif</code></pre>
 </div>
 </div>
-<div class="section level1">
+<div id="编译静态库" class="section level1">
 <h1>编译静态库</h1>
 <pre class="cmake"><code>## CMakeLists.txt
 project(loguru)
@@ -193,7 +193,7 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/)
 add_library(loguru STATIC loguru.cpp)
 target_link_libraries(loguru fmt)</code></pre>
 </div>
-<div class="section level1">
+<div id="我的配置方案" class="section level1">
 <h1>我的配置方案</h1>
 <div id="loguru.hpp" class="section level2">
 <h2><code>loguru.hpp</code></h2>

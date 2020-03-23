@@ -17,7 +17,7 @@ ToC: true
 <li><code>frps.init</code> 是服务器配置文件</li>
 <li><code>frpc.init</code> 是客户端配置文件</li>
 </ul>
-<div class="section level1">
+<div id="服务器配置" class="section level1">
 <h1>服务器配置</h1>
 <ul>
 <li><p>下载 <code>frp</code></p>
@@ -74,7 +74,7 @@ systemctl restart firewalld.service</code></pre></li>
 <pre class="bash"><code>nohup ./frps -c frps.ini &amp;</code></pre></li>
 </ul>
 </div>
-<div class="section level1">
+<div id="客户端配置" class="section level1">
 <h1>客户端配置</h1>
 <ul>
 <li><p>下载、解压“：</p>
@@ -167,7 +167,7 @@ tcp6       0      0 :::6011                 :::*                    LISTEN      
 tcp6       0      0 :::7099                 :::*                    LISTEN      22623/./frps
 ```</code></pre>
 </div>
-<div id="-ssh-" class="section level1">
+<div id="使用-ssh-连接" class="section level1">
 <h1>使用 <code>ssh</code> 连接</h1>
 <pre class="bash"><code>ssh -p 6066 fl@xxx.xxx.xxx.xxx
 &#39;&#39;$&#39;\n&#39;&#39;            &#39;   boost_1_70_0.tar.bz2   Documents              log      Pictures          Templates   Videos
@@ -182,7 +182,7 @@ Are you sure you want to continue connecting (yes/no)? yes
 Warning: Permanently added &#39;[XXX.XXX.XXX.XXX]:6066&#39; (RSA) to the list of known hosts.
 Last login: Tue Oct  8 20:03:19 2019 from 192.168.1.111</code></pre>
 </div>
-<div class="section level1">
+<div id="总结" class="section level1">
 <h1>总结</h1>
 <p>其实网上有很多类似的教程，但是如果一味的照搬他们的方法，其实是不能实现连接的。这里面的小技巧是要记得使用 <code>firewall</code> 开放端口的远程访问权限，才能进行转发。</p>
 </div>

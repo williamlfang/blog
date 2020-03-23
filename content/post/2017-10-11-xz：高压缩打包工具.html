@@ -17,7 +17,7 @@ ToC: true
 <img src="/images/2017-10-11-xz/xz01.png" />
 
 </div>
-<div class="section level1">
+<div id="安装" class="section level1">
 <h1>安装</h1>
 <div id="centos" class="section level2">
 <h2><code>CentOS</code></h2>
@@ -28,9 +28,9 @@ ToC: true
 <pre class="bash"><code>sudo apt-get install xz-utils</code></pre>
 </div>
 </div>
-<div class="section level1">
+<div id="基本操作" class="section level1">
 <h1>基本操作</h1>
-<div class="section level2">
+<div id="压缩文件" class="section level2">
 <h2>压缩文件</h2>
 <p><strong><code>xz</code> 默认的会在压缩完成后，删除原始的文件</strong>。这一点需要特别注意，对于一些不愿意删除的文件，我们可以使用参数 <code>-k</code> 来保留。</p>
 <pre class="bash"><code>## 单文件，压缩存入 file.txt.xz, 并删除原始文件 file.txt
@@ -42,7 +42,7 @@ xz file1.txt file2.txt
 ## 不删除文件，使用 -k 来限制
 xz -k file.txt</code></pre>
 </div>
-<div class="section level2">
+<div id="解压文件" class="section level2">
 <h2>解压文件</h2>
 <p>同样的，<strong><code>xz</code>在解压文件的时候，默认的会删除压缩包</strong>。所以我们需要增加参数 <code>-k</code> 来现在不删除原始的压缩包。</p>
 <pre class="bash"><code>## 解压文件，并删除 file.txt.xz
@@ -51,24 +51,24 @@ unxz file.txt.xz
 ## 解压文件，但不删除原始压缩包文件，file.txt.xz
 unxz -k file.txt.xz</code></pre>
 </div>
-<div class="section level2">
+<div id="显示压缩包信息" class="section level2">
 <h2>显示压缩包信息</h2>
 <pre class="bash"><code>xz -l file.txt.xz</code></pre>
 </div>
-<div class="section level2">
+<div id="调整压缩率" class="section level2">
 <h2>调整压缩率</h2>
 <p>可以使用 <code>0-9</code> 来表明想要得到的压缩率，分别<strong>从低压缩比率到高压缩比率</strong>。压缩比越高，则压缩后得到的文件占用空间越小，但同时也意味着系统需要使用更多的时间来处理压缩。</p>
 <pre class="bash"><code>xz -0kv file.txt
 
 xz -9kv file.txt</code></pre>
 </div>
-<div class="section level2">
+<div id="启动极限模式" class="section level2">
 <h2>启动极限模式</h2>
 <p>通过使用极限模式，<code>xz</code> 将尽可能的最大化利用当前系统空余的<code>CPU</code>资源，这将提高程序的处理能力。</p>
 <pre class="bash"><code>## 最高压缩比，启动极限模式，保留原始文件，显示具体处理过程
 xz -9ekv file.txt</code></pre>
 </div>
-<div class="section level2">
+<div id="多线程" class="section level2">
 <h2>多线程</h2>
 <p>一般来说，现在的电脑都是多核多线程的操作系统，尤其是对于我们目前在使用的服务器系统<code>CentOS</code>，最大配置了<strong>32</strong>核的<code>CPU</code>。<code>xz</code> 默认使用单核单线程，如果需要提升运算性能，我们可以设置多线程来增加压缩处理的能力。这个参数就是 <code>--threads=n</code>。<code>n</code> 为设置的数字；如果为<strong>0</strong>，则会使用系统所有的线程资源。</p>
 <pre class="bash"><code>## 启用 8 线程
@@ -77,7 +77,7 @@ xz -9ekv --threads=8 file.txt
 ## 启用所有的线程资源
 xz -9ekv --threads=0 file.txt</code></pre>
 </div>
-<div class="section level2">
+<div id="文件夹压缩打包" class="section level2">
 <h2>文件夹压缩打包</h2>
 <p>最后，来介绍一下对整个文件夹的压缩及打包。这里有两种方法可以选择</p>
 <ul>
@@ -92,7 +92,7 @@ tar -Jcvf file.tar.xz directory/</code></pre>
 XZ_OPT=&#39;-9ek --threads=12&#39; tar -Jcvf $i.tar.xz $i/</code></pre>
 </div>
 </div>
-<div class="section level1">
+<div id="打包期货数据" class="section level1">
 <h1>打包期货数据</h1>
 <p>以下是我写的一个 <code>shell</code> 脚本，用于打包中国期货分笔数据的原始<code>csv</code>文件。事实证明，<code>xz</code> 确实能够极大的较少文件占用的磁盘空间。</p>
 <pre class="bash"><code>#!/bin/bash
