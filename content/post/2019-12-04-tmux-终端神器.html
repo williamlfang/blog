@@ -12,14 +12,14 @@ ToC: true
 
 
 
-<div id="编程如手艺" class="section level1">
+<div class="section level1">
 <h1>编程如手艺</h1>
 <p>编程是一门手艺活，仅仅是凭借思而不动、想而不做，是无法完成工作的。我常常把编程比喻成一门手艺活，既需要我们懂得如何设计框架、如何布局，又需要结合实际的材料、配置手中的资源，然后使用娴熟的手艺一点点的认真打磨，最后得到一件称心如意的产品。现在人们喜欢讨论工匠精神，其实是推崇对手艺的尊重，对于一件事情持之以恒的追求。</p>
 <p>当然，巧妇难为无米之炊，为了更好的完成工作，我们也需要配合一套得心应手的工具，这些工具犹如我们的左右手，拓展了我们可以活动的想象空间。具体的，在编程领域，我们同样需要一套优良的的开发工具，从而可以极大的提升工作效率。</p>
 </div>
 <div id="tmux" class="section level1">
 <h1>tmux</h1>
-<div id="安装" class="section level2">
+<div class="section level2">
 <h2>安装</h2>
 <div class="figure">
 <img src="/images/2019-12-04-tmux-终端神器/tmux.png" alt="tmux" />
@@ -64,7 +64,7 @@ export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 tmux -u</code></pre>
 </div>
-<div id="配置" class="section level2">
+<div class="section level2">
 <h2>配置</h2>
 <p>可以通过修改 <code>~/.tmux.conf</code> 进行设置</p>
 <pre class="bash"><code>#
@@ -312,7 +312,7 @@ run-shell ~/Documents/tmux-resurrect/resurrect.tmux
 
 set -g pane-border-status bottom
 set -g pane-border-format &quot;#P #T #{pane_current_command}&quot;</code></pre>
-<div id="设置窗口显示" class="section level3">
+<div class="section level3">
 <h3>设置窗口显示</h3>
 <pre class="bash"><code>#-- base settings --#
 ## set -g default-terminal &quot;screen-256color&quot;
@@ -325,7 +325,7 @@ set -g base-index 1
 set -g pane-base-index 1
 set -g renumber-windows on</code></pre>
 </div>
-<div id="修改绑定键" class="section level3">
+<div class="section level3">
 <h3>修改绑定键</h3>
 <p>原来的绑定是 <code>ctrl+b</code>，总感觉这个有点逆人性，每次按下这两个键的时候整个手掌都是弯曲的，后来就干脆分开使用两只手分别按住一个键，这样就避免了使用单手产生的扭曲感</p>
 <pre class="bash"><code>##-- bindkeys --#
@@ -334,7 +334,7 @@ set -g prefix ^k
 unbind ^b
 bind k send-prefix</code></pre>
 </div>
-<div id="分屏" class="section level3">
+<div class="section level3">
 <h3>分屏</h3>
 <p>这个是 <code>tmux</code> 的看家本领，允许我们通过快捷键进行屏幕的任意切分，相比于 <code>terminator</code> 的方式要灵活很多。这里我使用了</p>
 <ul>
@@ -345,8 +345,7 @@ bind k send-prefix</code></pre>
 <li><code>j</code>：跳转下面屏幕</li>
 <li><code>k</code>：跳转上面屏幕</li>
 <li><code>h</code>：跳转左边屏幕</li>
-<li><code>l</code>：跳转右边屏幕
-其实这个方向跟 <code>vim</code> 的操作是一样的想法，避免了记忆压力。</li>
+<li><code>l</code>：跳转右边屏幕 其实这个方向跟 <code>vim</code> 的操作是一样的想法，避免了记忆压力。</li>
 </ul></li>
 <li>同时，我还可以使用快捷键进行屏幕大小调整。
 <ol style="list-style-type: decimal">
@@ -388,7 +387,7 @@ bind ^e last  # select the last window (prefix Ctrl+e)
 bind q killp  # kill pane (prefix q)
 bind ^q killw # kill window (prefix Ctrl+q)</code></pre>
 </div>
-<div id="状态栏显示" class="section level3">
+<div class="section level3">
 <h3>状态栏显示</h3>
 <p>作为程序员，我们每天都在与终端打交道，几乎所有的视线就是整个屏幕范围。因此，我当然希望所有的监控状态也同样可以在视野所及范围内都一一收下。<code>tmux</code> 也同样允许我们通过修改配置进行调整</p>
 <pre class="bash"><code>#-- colorscheme --#
@@ -502,7 +501,7 @@ bind -r a select-pane -t .+1 \;  resize-pane -Z
 # setw -g pane-border-status bottom
 # setw -g window-active-style &#39;bg=#3a3a3a,bold&#39;</code></pre>
 </div>
-<div id="设置活跃窗口" class="section level3">
+<div class="section level3">
 <h3>设置活跃窗口</h3>
 <pre class="bash"><code>## -----------------------------------------------------
 ## 设置活跃窗口的背景颜色
@@ -538,7 +537,7 @@ run-shell ~/Documents/tmux-resurrect/resurrect.tmux
 set -g pane-border-status bottom
 set -g pane-border-format &quot;#P #T #{pane_current_command}&quot;</code></pre>
 </div>
-<div id="屏幕右边显示命令执行时间" class="section level3">
+<div class="section level3">
 <h3>屏幕右边显示命令执行时间</h3>
 <p>这个主要为了提醒我们在什么时候执行了操作。其实是通过修改 <code>~/.oh-my-zsh/themes/agnoster.zsh-theme</code>。不过我把这条放在一起</p>
 <pre class="bash"><code>## 显示命令执行时间

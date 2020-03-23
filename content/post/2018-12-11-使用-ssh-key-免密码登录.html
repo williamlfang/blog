@@ -12,12 +12,12 @@ ToC: false
 
 
 
-<div id="终结痛苦" class="section level1">
+<div class="section level1">
 <h1>终结痛苦</h1>
 <p>通常，我们登录远程服务器使用的是 <code>ssh</code> 安全通道，通过终端交互的形式与服务器进行对话。但是，使用该命令要求每次都输入账号和密码。这对于一个理想主义者来说，实在是不能忍受的痛苦，而且还存在密码被暴露的风险。我更希望是，通过一定的配置，远程服务器能够「认识」我，并且十分友好的让我进入操作界面。</p>
 <p>这个问题从另一方面来看，实际上是实现了远程登录的「静音模式」，尤其是对于日常运行的脚本，可以实现自动运行，不需要我们每次都有交互输入，比如在本地和远程服务器之间传输数据与文件的命令，<code>rsync</code>，就可以做到无人值守了。</p>
 </div>
-<div id="ssh-key生成多个公钥私钥" class="section level1">
+<div id="ssh-key" class="section level1">
 <h1><code>ssh-key</code>生成多个公钥、私钥</h1>
 <p>使用 <code>ssh-key</code> 生成密匙，「通知」远程服务器「我们是自己人」。需要注意的是，如果不想要输入密码，旧直接敲击两次回车键即可。</p>
 <pre class="bash"><code>ssh-keygen -t rsa -C &quot;fl@192.168.1.166&quot; -f ~/.ssh/id_rsa_fl166
@@ -42,7 +42,7 @@ The key&#39;s randomart image is:
 +----[SHA256]-----+</code></pre>
 <p>默认存放在 <code>~/.ssh/id_rsa_fl166.pub</code>。这相当于设置了公共访问权限，允许外部访问者可以访问本机。同时，如果把这个权限放在</p>
 </div>
-<div id="配置config文件" class="section level1">
+<div id="config" class="section level1">
 <h1>配置<code>config</code>文件</h1>
 <p><code>~/.ssh/config</code>文件相当于一个<code>钥匙柜子</code>，里面存放了本地系统运行外部访问的公钥，可以十分方便的用来管理多个账户的公钥。我们可以配置该文件如下：</p>
 <pre class="bash"><code>subl ~/.ssh/config
@@ -62,7 +62,7 @@ Host fl166
     User fl
     IdentityFile ~/.ssh/id_rsa_fl166</code></pre>
 </div>
-<div id="将公匙拷贝至远程主机" class="section level1">
+<div class="section level1">
 <h1>将公匙拷贝至远程主机</h1>
 <p>把本地的公钥拷贝到远程服务器。不过，由于我前期已经在服务器有 <code>~/.ssh/authorized_keys</code> 的文件夹，这时候直接拷贝会报错：sh: .ssh/authorized_keys: Is a directory。参考了<a href="https://askubuntu.com/questions/844156/sh-ssh-authorized-keys-is-a-directory">SO</a>上面的回答，发现原来这个是一个文件夹，无法进行直接拷贝。需要先把原来的文件夹删除掉，然后再进行复制。</p>
 <pre class="bash"><code>## 如果有报错，
@@ -85,7 +85,7 @@ Number of key(s) added: 1
 Now try logging into the machine, with:   &quot;ssh &#39;fl@192.168.1.166&#39;&quot;
 and check to make sure that only the key(s) you wanted were added.</code></pre>
 </div>
-<div id="免密码登录-ssh" class="section level1">
+<div id="-ssh" class="section level1">
 <h1>免密码登录 ssh</h1>
 <p>现在，远程服务器已经有本地的公钥，也就是可以「认识」本地机器，这意味着可以直接进行 <code>ssh</code> 免密码登录服务器。</p>
 <pre class="bash"><code>ssh fl@192.168.1.166  
@@ -94,7 +94,7 @@ Last login: Thu Jan 10 14:38:55 2019 from 192.168.1.115
 
 ## 没有输入密码即可登录</code></pre>
 </div>
-<div id="使用-rsync-传输文件" class="section level1">
+<div id="-rsync-" class="section level1">
 <h1>使用 <code>rsync</code> 传输文件</h1>
 <p>现在，我们便可以使用 <code>rsync</code> 在不需要输入密码的情况下，进行本地机器与远程服务器之间同步文件了。</p>
 <pre class="bash"><code>rsync --progress -avz -e ssh /home/william/Documents/QUANTAXIS/myTask/data/daily/* fl@192.168.1.166:/home/fl/myData/data/ChinaStocks/Bar/FromTDX
@@ -117,7 +117,7 @@ sh600143.csv
 <li><code>-e</code> 执行命令，也就是后面的 <code>ssh</code></li>
 </ul>
 </div>
-<div id="自动配置脚本" class="section level1">
+<div class="section level1">
 <h1>自动配置脚本</h1>
 <p>编写一个简单的部署脚本:</p>
 <pre class="sh"><code>#!/usr/bin/bash

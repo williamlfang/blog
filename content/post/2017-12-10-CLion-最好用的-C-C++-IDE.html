@@ -14,10 +14,10 @@ ToC: true
 
 <p><code>C/Cpp</code> 编程常常使程序员感到懊恼，一方面是编程语言本身的难度较高，另一方面，我认为也是因为没有比较好用的 <code>IDE</code>。不像 <code>R</code> 或者 <code>Python</code> 这些解释性编程语言，不需要经过编译即可运行 <code>REPL</code>(read-evaluate-print-loop)，提供实时互动的编程环境；<code>C/Cpp</code> 是一种静态的、需要经过编译的编程语言，这增加了我们查找代码错误的难度，也就是无法提供实时的纠错功能，而只能是在整个项目运行结束后才把相关的错误提示给到程序员。因此，对一款「好用IDE」的向往应该是一家有抱负的科技企业的奋斗动力。</p>
 <p>神奇的 <code>JetBrain</code> 就是这么一家牛逼的公司，最早开发了 <code>CLion</code> 造福广大的 <code>C/Cpp</code> 程序员，后来又陆陆续续的开发了 <code>PyCharm</code> 等多款好用又好看的 <code>IDE</code>，可以说功德千秋、造福万代啊。今天我们来看看怎么在操作系统安装和使用这么好用的 <code>C/Cpp</code> IDE。</p>
-<div id="安装" class="section level1">
+<div class="section level1">
 <h1>安装</h1>
 <p>所谓「工欲善其事必先利其器」，我们得先把软件安装起来了才能敲代码嘛。</p>
-<div id="下载" class="section level2">
+<div class="section level2">
 <h2>下载</h2>
 <p><code>CLion</code> 是一款跨平台的软件，提供了 <code>Linux</code>、<code>Mac</code> 和 <code>Windows</code> 三种操作系统下的安装。当然，我平时基本不用 <code>Windows</code>，主要的开发环境都是在 <code>Linux/Ubuntu/CentOS</code>，或者偶尔会使用 <code>Mac</code> 来开发。基本的安装流程跟其他软件都差不多。</p>
 <div class="figure">
@@ -26,7 +26,7 @@ ToC: true
 </div>
 <div id="linux" class="section level3">
 <h3><code>Linux</code></h3>
-<div id="下载-1" class="section level4">
+<div id="-1" class="section level4">
 <h4>下载</h4>
 <p>在 <code>Linux</code> 操作系统下，下载源代码包 <code>*.tar.gz</code>，并将其解压到安装目录。</p>
 <pre class="bash"><code>cd /home/william
@@ -35,7 +35,7 @@ wget https://download.jetbrains.8686c.com/cpp/CLion-2017.3.tar.gz
 tar -zcvf CLion-2017.3.tar.gz
 cd CLion-2017.3</code></pre>
 </div>
-<div id="设置环境变量" class="section level4">
+<div class="section level4">
 <h4>设置环境变量</h4>
 <p>然后再配置环境变量，把软件包添加到系统</p>
 <pre class="bash"><code>vim ~/.bashrc
@@ -43,13 +43,13 @@ cd CLion-2017.3</code></pre>
 ## 添加到系统路径
 export PATH=/home/william/clion-2017.3/bin:${PATH}</code></pre>
 </div>
-<div id="命令行启动" class="section level4">
+<div class="section level4">
 <h4>命令行启动</h4>
 <p>经过把 <code>CLion</code> 添加到系统环境后，我们可以直接启动</p>
 <pre class="bash"><code>clion.sh</code></pre>
 <p>当然，也可以通过添加桌面图标的方式来启动 <code>CLion</code>。</p>
 </div>
-<div id="图标启动" class="section level4">
+<div class="section level4">
 <h4>图标启动</h4>
 <p>新建立一个文件 <code>CLion.desktop</code>, 保存到 <code>~/.local/share/applications</code>，里面的内容为</p>
 <pre class="bash"><code>[Desktop Entry]
@@ -60,12 +60,12 @@ Terminal=false
 Type=Application</code></pre>
 </div>
 </div>
-<div id="mac-安装" class="section level3">
+<div id="mac-" class="section level3">
 <h3><code>Mac</code> 安装</h3>
 <p>在 <code>Mac</code> 操作系统下安装其实就是一建「傻瓜式」，直接下载 <code>*.dmg</code> 然后点击安装即可，默认已经帮我们把环境路径设置好了。</p>
 </div>
 </div>
-<div id="首次使用" class="section level2">
+<div class="section level2">
 <h2>首次使用</h2>
 <p>第一次打开 <code>CLion</code> 后，会出现一个界面询问是否需要导入偏好，通常我们不需要导入。</p>
 <div class="figure">
@@ -113,7 +113,7 @@ Type=Application</code></pre>
 </div>
 </div>
 </div>
-<div id="破解" class="section level1">
+<div class="section level1">
 <h1>破解</h1>
 <p>我们知道，<code>CLion</code> 并非是一个免费的软件，而是收费的，且价格不菲。之前有公司同事购买过一个注册码，大约是 <code>$80</code>，相比于其提供的便利性而言，还是很值得的。</p>
 <p>不过也有大神通过搭建服务器的方式来提供许可证共享，具体的链接可以参考 <a href="http://xclient.info/a/f0b9738a-36fd-8a97-a966-0d3db497092d.html?_=f93a5bdea18006637eea16701ce2163f">JetBrains IDEA 系列产品通用xx方法</a>。</p>

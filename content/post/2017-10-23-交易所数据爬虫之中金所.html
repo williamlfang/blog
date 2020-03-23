@@ -22,7 +22,7 @@ ToC: true
 <li>使用并行计算模式下载所有的历史数据文件</li>
 </ul>
 <hr />
-<div id="配置文件" class="section level1">
+<div class="section level1">
 <h1>配置文件</h1>
 <p>配置文件位于 <code>myInit.R</code>，如果没有安装相关的软件包，我这里已经写好一个命令行，会自动启动安装程序。</p>
 <pre class="r"><code>################################################################################
@@ -44,7 +44,7 @@ sapply(pkgs, require, character.only = TRUE)</code></pre>
 <p>同时，我建议使用 <code>Chrome</code> 浏览器，并安装一款非常好用的<code>HTML</code> 页面解析插件 <code>SelectGadget</code>，可以用来探测网页元素，方便我们查找相应的路径。</p>
 <hr />
 </div>
-<div id="日行情数据" class="section level1">
+<div class="section level1">
 <h1>日行情数据</h1>
 <p>中金所网站提供了所有股指期货的历史行情数据：</p>
 <ul>
@@ -54,7 +54,7 @@ sapply(pkgs, require, character.only = TRUE)</code></pre>
 <li><code>T</code></li>
 <li><code>TF</code></li>
 </ul>
-<div id="识别文件链接" class="section level2">
+<div class="section level2">
 <h2>识别文件链接</h2>
 <p>为了找到行情数据对应的文件链接，我们首先点击左栏的 <code>行情数据</code>/<code>日统计</code>，得到当日收盘后统计的理日行情数据列表。</p>
 <div class="figure">
@@ -83,7 +83,7 @@ sapply(pkgs, require, character.only = TRUE)</code></pre>
 </div>
 <p>对于链接地址，一般有两种形式</p>
 <ul>
-<li>静态链接：即链接指向一个相对路径，这个路径是显式的。比如我们在上面看到的链接，显示一个相对根目录的相对路径，<code>href="./201710/17/20171017_1.csv"</code>，文件路径是显式、具体的。我们可以直接在浏览器打开这个文件来查看，或者使用 <code>R</code> 直接读取文件数据。</li>
+<li>静态链接：即链接指向一个相对路径，这个路径是显式的。比如我们在上面看到的链接，显示一个相对根目录的相对路径，<code>href=&quot;./201710/17/20171017_1.csv&quot;</code>，文件路径是显式、具体的。我们可以直接在浏览器打开这个文件来查看，或者使用 <code>R</code> 直接读取文件数据。</li>
 <li>动态链接：即由一段 <code>Javascript</code> 来控制操作，只有鼠标点击才能进行下一步的操作如下载。对于这类链接的解析，我们需要使用脚本解析或者模拟鼠标操作（我会在另外一篇博客讨论如何使用 <code>Selenium</code> 模拟鼠标下载大商所的数据）。</li>
 </ul>
 <p>如此一来，我们便知道需要下载的文件链接全称是</p>
@@ -92,16 +92,16 @@ sapply(pkgs, require, character.only = TRUE)</code></pre>
 <li><code>相对路径</code>：<code>/201710/17/20171017_1.csv</code></li>
 </ul>
 </div>
-<div id="文件命名规则" class="section level2">
+<div class="section level2">
 <h2>文件命名规则</h2>
 <p>文件的命令规律果然是以交易日为基础，在上面稍作变动，即 <code>/yyyymm/dd/yyyymmdd_1.csv</code>。对于历史的数据，我们只要使用循环来编写后面的相对文件路径，即可获取所有的历史数据文件所对应的网页链接。</p>
 <p>这里我使用到了之前介绍的<a href="https://williamlfang.github.io/post/2017-10-10-%E4%B8%AD%E5%9B%BD%E6%9C%9F%E8%B4%A7%E4%BA%A4%E6%98%93%E6%97%A5%E5%8E%86/">中国期货交易日历表</a>，使用这个日历表来生成相应的文件路径。</p>
 </div>
-<div id="行情数据" class="section level2">
+<div class="section level2">
 <h2>行情数据</h2>
 <p>我们先来看看现实是不是真是如我们所预想的，包含所有的行情数据。首先来读取某一天的数据文件看看</p>
 <pre class="r"><code>Sys.setlocale(&quot;LC_ALL&quot;, &#39;en_US.UTF-8&#39;)</code></pre>
-<pre><code>[1] &quot;en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/C&quot;</code></pre>
+<pre><code>[1] &quot;LC_CTYPE=en_US.UTF-8;LC_NUMERIC=C;LC_TIME=en_US.UTF-8;LC_COLLATE=en_US.UTF-8;LC_MONETARY=en_US.UTF-8;LC_MESSAGES=en_US.UTF-8;LC_PAPER=en_US.UTF-8;LC_NAME=C;LC_ADDRESS=C;LC_TELEPHONE=C;LC_MEASUREMENT=en_US.UTF-8;LC_IDENTIFICATION=C&quot;</code></pre>
 <pre class="r"><code>library(magrittr)
 library(readr)
 
@@ -143,7 +143,7 @@ cols(
 # … with 14 more rows, and 3 more variables: 涨跌2 &lt;dbl&gt;,
 #   `隐含波动率(%)` &lt;chr&gt;, Delta &lt;chr&gt;</code></pre>
 </div>
-<div id="并行下载" class="section level2">
+<div class="section level2">
 <h2>并行下载</h2>
 <p>哦科，到此为止，所有的材料已经准备完毕：</p>
 <ul>
@@ -197,14 +197,14 @@ stopCluster(cl)</code></pre>
 <hr />
 </div>
 </div>
-<div id="成交持仓排名" class="section level1">
+<div class="section level1">
 <h1>成交持仓排名</h1>
 <p>利用相同的技术手段，我们也可以从中金所网站下载当日收盘后的期货公司成交持仓排名数据。这份数据包含了<strong>成交量与当日收盘后持仓排名前20</strong>的期货公司详细数据。通过分析持仓数量变动，我们可以挖掘到各个期货公司主力资金对市场走势的情绪判断，从而对未来的期货价格走势产生一定的影响。</p>
 <div class="figure">
 <img src="/images/2017-10-23-交易所数据爬虫之中金所/oi01.png" alt="中金所在每日收盘后公布成交排名" />
 <p class="caption">中金所在每日收盘后公布成交排名</p>
 </div>
-<div id="识别文件链接-1" class="section level2">
+<div id="-1" class="section level2">
 <h2>识别文件链接</h2>
 <p>我们点击某一天的交易日期，然后点击查询，即可看到当日的各股指期货品种的成交持仓排名数据。</p>
 <div class="figure">
@@ -238,7 +238,7 @@ productCalenar &lt;- lapply(productSet[,productID], function(id) {
 }) %&gt;% rbindlist()
 ## -----------------------------------------------------------------------------</code></pre>
 </div>
-<div id="成交持仓排名数据" class="section level2">
+<div class="section level2">
 <h2>成交持仓排名数据</h2>
 <p>我们来检查一下数据是不是正确的。</p>
 <pre class="r"><code>exchURL &lt;- &#39;http://www.cffex.com.cn/sj/ccpm&#39;
@@ -249,22 +249,22 @@ dt &lt;- dataFile %&gt;% read_csv(., locale = locale(encoding = &quot;GB18030&qu
 
 print(dt)</code></pre>
 <pre><code># A tibble: 46 x 9
-   交易日 合约  会员类别 总成交量 比上交易日增减 总持买单量 比上交易日增减_1
-   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;           
- 1 20171… IF17… 期货公司 21774    -1166          16859      -3096           
- 2 20171… IF17… 非期货公司… 0        0              0          0               
- 3 20171… IF17… 期货公司 2586     -530           12518      170             
- 4 20171… IF17… 非期货公司… 0        0              0          0               
- 5 交易日 合约  排名     成交量排名… &lt;NA&gt;           &lt;NA&gt;       持买单量排名    
- 6 &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;     会员简称 成交量         比上一交易日增减… 会员简称        
- 7 20171… IF17… 1        中信期货 2670           19         中信期货        
- 8 20171… IF17… 2        国泰君安 1269           -100       五矿经易        
- 9 20171… IF17… 3        银河期货 1163           172        国泰君安        
-10 20171… IF17… 4        海通期货 1055           -6         申银万国        
-# … with 36 more rows, and 2 more variables: 总持卖单量 &lt;chr&gt;,
-#   比上一交易日增减 &lt;chr&gt;</code></pre>
+   交易日 合约  会员类别 总成交量 比上交易日增减 总持买单量
+   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;          &lt;chr&gt;     
+ 1 20171… IF17… 期货公司 21774    -1166          16859     
+ 2 20171… IF17… 非期货公司… 0        0              0         
+ 3 20171… IF17… 期货公司 2586     -530           12518     
+ 4 20171… IF17… 非期货公司… 0        0              0         
+ 5 交易日 合约  排名     成交量排名… &lt;NA&gt;           &lt;NA&gt;      
+ 6 &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;     会员简称 成交量         比上一交易日增减…
+ 7 20171… IF17… 1        中信期货 2670           19        
+ 8 20171… IF17… 2        国泰君安 1269           -100      
+ 9 20171… IF17… 3        银河期货 1163           172       
+10 20171… IF17… 4        海通期货 1055           -6        
+# … with 36 more rows, and 3 more variables: 比上交易日增减_1 &lt;chr&gt;,
+#   总持卖单量 &lt;chr&gt;, 比上一交易日增减 &lt;chr&gt;</code></pre>
 </div>
-<div id="并行下载-1" class="section level2">
+<div id="-1" class="section level2">
 <h2>并行下载</h2>
 <p>具体的说明参照日行情的并行下载说明。这里直接上干货。</p>
 <pre class="r"><code>################################################################################

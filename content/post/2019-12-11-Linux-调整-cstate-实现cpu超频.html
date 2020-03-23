@@ -13,7 +13,7 @@ ToC: true
 
 
 <p>随着技术的发展，现在主流的 Intel CPU 的主频都能达到 3GHz 以上，而且还支持超频技术。为了最大的获取 CPU 的性能，我们可以对 <code>cstate</code> 进行调整。</p>
-<div id="ubuntu-设置" class="section level1">
+<div id="ubuntu-" class="section level1">
 <h1>Ubuntu 设置</h1>
 <p>与开机项有关的参数设置在 <code>/etc/default/grub</code>，可以对其进行调整</p>
 <pre class="bash"><code>cat /etc/default/grub
@@ -135,7 +135,7 @@ analyzing CPU 3:
                   within this range.
   current CPU frequency is 1.05 GHz.</code></pre>
 </div>
-<div id="centos-设置" class="section level1">
+<div id="centos-" class="section level1">
 <h1>CentOS 设置</h1>
 <pre class="bash"><code>sudo vim /etc/default/grub
 
@@ -187,9 +187,9 @@ performance
 ## 设置CPU模式, 分别根据CPU 0-n 的编号进行设置
 echo performance &gt; /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor</code></pre>
 </div>
-<div id="c-state-各种状态表" class="section level1">
+<div id="c-state-" class="section level1">
 <h1>c-state 各种状态表</h1>
-<table>
+<table style="width:100%;">
 <colgroup>
 <col width="4%" />
 <col width="14%" />

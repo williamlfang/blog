@@ -14,24 +14,24 @@ ToC: true
 
 <p>通过下载源文件，使用命令行实现在 <code>CentOS7</code> 操作系统上安装 <code>Sublime Text 3</code>。目前最新版本的是 <strong>3143</strong>，网上已经有该版本的注册码。</p>
 <!--more-->
-<div id="安装步骤" class="section level1">
+<div class="section level1">
 <h1>安装步骤</h1>
-<div id="下载源文件" class="section level2">
+<div class="section level2">
 <h2>下载源文件</h2>
 <pre class="bash"><code>cd /tmp
 wget https://download.sublimetext.com/sublime_text_3_build_3143_x64.tar.bz2</code></pre>
 </div>
-<div id="解压到安装目录" class="section level2">
+<div class="section level2">
 <h2>解压到安装目录</h2>
 <p>一般而言，我们使用 <code>root</code> 安装软件，都是放在 <code>/opt</code> 这个目录文件下面。因此，我把源文件解压到该目录。当然，如果你没有 <code>root</code> 权限的话，也可以放在个人主目录下面。</p>
 <pre class="bash"><code>sudo tar -vxjf sublime_text_3_build_3143_x64.tar.bz2 -C /opt</code></pre>
 </div>
-<div id="测试安装" class="section level2">
+<div class="section level2">
 <h2>测试安装</h2>
 <p>现在，我们已经把 <code>Sublime</code> 的程序安装在了相应的目录文件，现在通过在命令行即可打开该程序。</p>
 <pre class="bash"><code>sublime3</code></pre>
 </div>
-<div id="建立桌面图标" class="section level2">
+<div class="section level2">
 <h2>建立桌面图标</h2>
 <p>我们可以通过两种方式来启动 <code>Sublime</code>：</p>
 <ul>
@@ -58,7 +58,7 @@ TargetEnvironment=Unity</code></pre>
 <p>这样，我们就可以通过鼠标点击 <code>Sublime</code> 的图标来启动程序了。</p>
 </div>
 </div>
-<div id="配置" class="section level1">
+<div class="section level1">
 <h1>配置</h1>
 <p>安装程序结束后，我们只是得到了一个原始的 <code>Sublime</code>，为了增强其功能，我们还需要做相关的设置。</p>
 <ul>
