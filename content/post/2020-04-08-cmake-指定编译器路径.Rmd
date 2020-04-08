@@ -1,0 +1,31 @@
+---
+title: "cmake 指定编译器路径"
+author: William
+date: 2020-04-08
+lastmod: 2020-04-08
+categories: [Programming]
+tags: [cmake,g++]
+description: 通过指定编译器路径，实现不同项目的构建。
+draft: false
+ToC: false
+---
+
+原来是在 `CMakeLists.txt` 里设置编译器路径，但是发现这个没有生效：
+
+```cmake
+set(CMAKE_CXX_COMPILER g++)
+```
+
+后面在 SO 上面找到答案：需要使用 export 指定路径。[How to specify new GCC path for CMake](https://stackoverflow.com/questions/17275348/how-to-specify-new-gcc-path-for-cmake)
+
+```bash
+export CC=/usr/local/bin/gcc
+export CXX=/usr/local/bin/g++
+cmake /path/to/your/project
+make
+```
+
+这里提醒一下，尽量避免使用 `set` 语句。
+
+> 使用set()在CMakeLists.txt 文件中设置CMAKE_FOO_COMPILER 变量值为有效的编译器名称或者全路径。必须在任何语言之前调用set（比如project()或enable_language()）。
+
