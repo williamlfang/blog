@@ -1,0 +1,30 @@
+---
+title: "zsh 无法使用 vim 自动补全: _arguments:451: _vim_files: function definition file not found"
+author: William
+date: 2020-04-08
+lastmod: 2020-04-08
+categories: [Programming]
+tags: [zsh,vim]
+description: 在 zsh 中无法使用 vim 自动补全功能。
+draft: false
+ToC: false
+---
+
+在 zsh 中使用 vim 补全功能时，会出现以下报错：
+
+```bash
+_arguments:451: _vim_files: function definition file not found
+```
+
+参考 SO 的答疑：[zsh fails at path completition when command is vim](https://unix.stackexchange.com/questions/280622/zsh-fails-at-path-completition-when-command-is-vim)。
+
+解决方法是：
+
+```bash
+rm $ZSH_COMPDUMP
+## 一定要执行一次 
+exec zsh
+```
+
+
+
