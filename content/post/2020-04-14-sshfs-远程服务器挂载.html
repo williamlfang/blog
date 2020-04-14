@@ -1,0 +1,43 @@
+---
+title: "sshfs 远程服务器挂载"
+author: William
+date: 2020-04-14
+lastmod: 2020-04-14
+categories: [Programming]
+tags: [ssh,sshfs,remote,服务器,挂载]
+description: 在服务器上面挂载另外一台服务器磁盘，像读取本地文件一样使用远程服务器磁盘。
+draft: false
+ToC: false
+---
+
+
+
+<pre class="bash"><code>## https://unix.stackexchange.com/questions/37168/unable-to-use-o-allow-other-with-sshfs-option-enabled-in-fuse-conf
+
+vim /etc/fuse.conf
+# Set the maximum number of FUSE mounts allowed to non-root users.
+# The default is 1000.
+#
+#mount_max = 1000
+
+# Allow non-root users to specify the &#39;allow_other&#39; or &#39;allow_root&#39;
+# mount options.
+#
+user_allow_other
+chmod a+r /etc/fuse.conf
+
+## ubuntu
+sudo apt install sshfs
+sudo apt install fuse
+
+## CentOS
+sudo yum install sshfs
+sudo yum install fuse
+
+## 
+cd /mnt
+mkdir From135
+chmod -R 777 /mnt/From135
+
+## 
+sshfs trader@192.168.1.135:/ /mnt/From135 -o reconnect,idmap=user,allow_other</code></pre>
