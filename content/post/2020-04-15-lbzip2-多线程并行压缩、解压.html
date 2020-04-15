@@ -1,0 +1,48 @@
+---
+title: "lbzip2 多线程并行压缩、解压"
+author: William
+date: 2020-04-15
+lastmod: 2020-04-15
+categories: [Programming]
+tags: [lbzip2,bz2,压缩,解压,多线程]
+description: lbzip2 实现了多线程进行压缩、解压。
+draft: false
+ToC: true
+---
+
+
+
+<div id="安装" class="section level1">
+<h1>安装</h1>
+<pre class="bash"><code>wget https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/lbzip2/2.5-2/lbzip2_2.5.orig.tar.bz2
+
+tar -xvf lbzip2_2.5.orig.tar.bz2
+cd lbzip2-2.5
+
+sudo ./configure --prefix=/usr
+sudo make -j
+sudo make install</code></pre>
+</div>
+<div id="对比" class="section level1">
+<h1>对比</h1>
+<p>演示文件信息</p>
+<pre class="bash"><code>-rw-r--r--.  1 1001 1001  5.2G Apr 14 15:15 20200414.csv
+-rw-r--r--.  1 root hy   1007M Apr 15 10:58 20200414.tar.bz2</code></pre>
+<div id="lbzip2" class="section level2">
+<h2>lbzip2</h2>
+<pre class="bash"><code>time tar -cvf - 20200414.csv | lbzip2  &gt; 20200414.tar.bz2
+
+real    0m19.618s
+user    9m48.298s
+sys     0m22.568s</code></pre>
+</div>
+<div id="pbzip2" class="section level2">
+<h2>pbzip2</h2>
+<pre class="bash"><code>time tar -cvf - 20200414.csv | pbzip2  &gt; 20200414.tar.bz2
+
+real    0m52.157s
+user    21m41.673s
+sys     0m32.150s
+</code></pre>
+</div>
+</div>

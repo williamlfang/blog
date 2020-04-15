@@ -1,0 +1,59 @@
+---
+title: "lbzip2 多线程并行压缩、解压"
+author: William
+date: 2020-04-15
+lastmod: 2020-04-15
+categories: [Programming]
+tags: [lbzip2,bz2,压缩,解压,多线程]
+description: lbzip2 实现了多线程进行压缩、解压。
+draft: false
+ToC: true
+---
+
+
+
+# 安装
+
+```bash
+wget https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/lbzip2/2.5-2/lbzip2_2.5.orig.tar.bz2
+
+tar -xvf lbzip2_2.5.orig.tar.bz2
+cd lbzip2-2.5
+
+sudo ./configure --prefix=/usr
+sudo make -j
+sudo make install
+```
+
+# 对比
+
+演示文件信息
+
+```bash
+-rw-r--r--.  1 1001 1001  5.2G Apr 14 15:15 20200414.csv
+-rw-r--r--.  1 root hy   1007M Apr 15 10:58 20200414.tar.bz2
+```
+
+
+
+## lbzip2
+
+```bash
+time tar -cvf - 20200414.csv | lbzip2  > 20200414.tar.bz2
+
+real    0m19.618s
+user    9m48.298s
+sys     0m22.568s
+```
+
+## pbzip2
+
+```bash
+time tar -cvf - 20200414.csv | pbzip2  > 20200414.tar.bz2
+
+real    0m52.157s
+user    21m41.673s
+sys     0m32.150s
+
+```
+
