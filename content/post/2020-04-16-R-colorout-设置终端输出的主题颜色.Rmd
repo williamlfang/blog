@@ -1,0 +1,184 @@
+---
+title: "R:colorout 设置终端输出的主题颜色"
+author: William
+date: 2020-04-16
+lastmod: 2020-04-16
+categories: [Programming]
+tags: [R,colorour,terminal,主题]
+description: colorout 提供了自定义的终端输出主题配置。
+draft: false
+ToC: true
+---
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(comment = '',
+                      fig.align = 'center',
+                      eval = FALSE)
+```
+
+项目地址：[colorout](https://github.com/jalvesaq/colorout)
+
+
+
+# 安装
+
+在终端运行
+
+```bash
+cd ~/Documents
+git clone https://github.com/jalvesaq/colorout.git
+R CMD INSTALL colorout
+```
+
+# 配置方案
+
+## 转化函数 to_ansi
+
+```R
+#' Helper for generating ansi color codes with hex color codes.
+#'
+#' After generating ansi color codes, feed input to `colorout::setOutputColors`.
+#'
+#' @param fg Foreground color in hex format (ie '#000000'). Leave blank for default.
+#' @param bg Background color in hex format (ie '#000000'). Leave blank for default.
+#' @param fo Formatting (see details)
+#' 
+#' @details
+#' Value	Formating
+#' 0	No formating
+#' 1	Bold or bright
+#' 2	Faint
+#' 3	Italic or inverse
+#' 4	Underline
+#' 5	Blink slowly
+#' 6	Blink quickly
+#' 7	Invert
+
+to_ansi <- function(col, fg = '', bg = '', fo = '') {
+
+  escape <- '\\x1b['
+  
+  if (fg != '') fg <- {
+    rgb_fg <- col2rgb(fg)
+    paste0("38;2;", rgb_fg[1], ";", rgb_fg[2], ";", rgb_fg[3])
+  }
+  if (bg != '') bg <- {
+    rgb_bg <- col2rgb(bg)
+    paste0(";48;2;", rgb_bg[1], ";", rgb_bg[2], ";", rgb_bg[3])
+  }
+  fo <- if (fo != '') paste0(';', fo)
+
+  # Use `cat`, not `paste0`, for correctly printing escape char '\x1b['
+  cat(col, ': ', escape, fg, bg, fo, 'm', '\n', sep = '')
+}
+```
+
+## 主题配置
+
+```R
+# Fill in color names, foreground colors, background colors and formatting (ie bold/italic). For default, leave it blank.
+theme <- list(
+  colors     = c('white',   'black',   'snow',    'turquoise', 'dark_red', 'dark_green', 'yellow',  'green',   'red',     'yellow_bold'),
+  foreground = c("#ECEFF4", "#4C566A", '#D8DEE9', '#88C0D0',   "#B48EAD",  "#8FBCBB",    "#EBCB8B", "#A3BE8C", "#BF616A", "#EBCB8B"),
+  background = c("",        "",        "",        "",          "",         "",           "",        "",        "",        ""),
+  formatting = c("",        "",        "",        "",          "",         "",           "",        "",        "",        1)
+)
+
+# - Manually copy & paste color codes (in character type) to `colorout::setOutputColors`. It's okay because you only set it once-and-for-all. Otherwise, you can assign the colors to variables and remove them after calling `colorout::setOutputColors`
+# - or assign them to variables AND make sure to remove them after calling `colorout::setOutputColors` because you don't want them to contaminate your environments.
+suppressMessages( {
+    sink( "/tmp/null" )
+    invisible( mapply(to_ansi, theme[[1]], theme[[2]], theme[[3]], theme[[4]]) )
+    # capture.output( 
+    #                invisible( mapply(to_ansi, theme[[1]], theme[[2]], theme[[3]], theme[[4]]) ),
+    #                file='NUL'
+    #                )
+    sink()
+} ))
+
+# white:       \x1b[38;2;236;239;244m
+# black:       \x1b[38;2;76;86;106m
+# snow:        \x1b[38;2;216;222;233m
+# turquoise:   \x1b[38;2;136;192;208m
+# dark_red:    \x1b[38;2;180;142;173m
+# dark_green:  \x1b[38;2;143;188;187m
+# yellow:      \x1b[38;2;235;203;139m
+# green:       \x1b[38;2;163;190;140m
+# red:         \x1b[38;2;191;97;106m
+# yellow_bold: \x1b[38;2;235;203;139;1m
+
+# General ---------------------------------------- 
+
+colorout::setOutputColors(
+  
+  index    = '\x1b[38;2;76;86;106m',
+  normal   = '\x1b[38;2;216;222;233m',
+
+  number   = '\x1b[38;2;236;239;244m',
+  negnum   = '\x1b[38;2;180;142;173m',
+  zero     = '\x1b[38;2;136;192;208m', zero.limit = 0.01,
+  infinite = '\x1b[38;2;236;239;244m',
+
+  string   = '\x1b[38;2;235;203;139m',
+  date     = '\x1b[38;2;236;239;244m',
+  const    = '\x1b[38;2;136;192;208m',
+  
+  true     = '\x1b[38;2;163;190;140m',
+  false    = '\x1b[38;2;191;97;106m',
+
+  warn     = '\x1b[38;2;235;203;139m',
+  stderror = '\x1b[38;2;191;97;106m', error = '\x1b[38;2;191;97;106m',
+
+  verbose  = FALSE
+)
+
+# Custom patterns --------------------------------
+
+# NOTE Do not copy all. Pick what you use/like.
+
+# _ {data.table} ---------------------------------
+
+colorout::addPattern('[0-9]*:',  '\x1b[38;2;143;188;187m')  # Row num
+colorout::addPattern('---',      '\x1b[38;2;76;86;106m')  # Row splitter 
+colorout::addPattern('<[a-z]*>', '\x1b[38;2;143;188;187m')  # Col class 
+
+## Nord
+# colorout::addPattern('[0-9]*:',  '\x1b[38;2;143;188;187m')  # Row num
+# colorout::addPattern('---',      '\x1b[38;2;76;86;106m')  # Row splitter 
+# colorout::addPattern('<[a-z]*>', '\x1b[38;2;143;188;187m')  # Col class 
+
+## Monokai
+# colorout::addPattern('[0-9]*:',  '\x1b[38;2;117;113;94m')  # Row num
+# colorout::addPattern('---',      '\x1b[38;2;117;113;94m')  # Row splitter 
+# colorout::addPattern('<[a-z]*>', '\x1b[38;2;117;113;94m')  # Col class 
+
+
+# _ `str` ----------------------------------------
+
+# Class
+colorout::addPattern(' num ',        '\x1b[38;2;143;188;187m')
+colorout::addPattern(' int ',        '\x1b[38;2;143;188;187m')
+colorout::addPattern(' chr ',        '\x1b[38;2;143;188;187m')
+colorout::addPattern(' Factor ',     '\x1b[38;2;143;188;187m')
+colorout::addPattern(' Ord.factor ', '\x1b[38;2;143;188;187m')
+colorout::addPattern(' logi ',       '\x1b[38;2;143;188;187m')
+colorout::addPattern('function ',    '\x1b[38;2;143;188;187m')
+colorout::addPattern(' dbl ',        '\x1b[38;2;143;188;187m')
+colorout::addPattern(' lgcl ',       '\x1b[38;2;143;188;187m')
+colorout::addPattern(' cplx ',       '\x1b[38;2;143;188;187m')
+# Misc
+colorout::addPattern('$ ',           '\x1b[38;2;76;86;106m')
+
+# _ `str`, {mlr3} --------------------------------
+
+# R6 field name
+colorout::addPattern('* [A-z]*:',                      '\x1b[38;2;235;203;139m')
+colorout::addPattern("* [A-z]* [A-z]*:",               '\x1b[38;2;235;203;139m')
+colorout::addPattern("* [A-z]* [A-z]* [A-z]*:",        '\x1b[38;2;235;203;139m')
+colorout::addPattern("* [A-z]* [A-z]* [A-z]* [A-z]*:", '\x1b[38;2;235;203;139m')
+# So on...
+
+# Clean up
+rm(theme, to_ansi)
+```
+
