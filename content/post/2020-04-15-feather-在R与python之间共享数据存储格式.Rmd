@@ -14,6 +14,30 @@ ToC: true
 
 
 
+# 更新
+
+看新闻报道，`feather` 现在正式升级为 `Apache Arrow` 项目成员，得到业内大佬们的提携，性能上更加优秀。
+
+项目地址：[Apache Arrow](https://github.com/williamlfang/arrow)
+
+- Python 的版本现在改成了 `pyarrow`
+- R 的版本改成了 ``arrrow`
+
+
+
+```bash
+## python 安装
+
+
+## R 安装
+install.packages("arrow")
+arrow::install_arrow()
+```
+
+
+
+
+
 # 使用 R 与 Python 共同的数据存储文件格式：feather
 
 项目的详细介绍在github: https://github.com/wesm/feather
