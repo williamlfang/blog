@@ -1,0 +1,80 @@
+---
+title: "JupyterLab: 配置指南"
+author: William
+date: 2020-04-20
+lastmod: 2020-04-20
+categories: [Programming]
+tags: [python,jupyter,anaconda]
+description: 涵盖基本的 JupyterLab 配置说明。
+draft: false
+ToC: true
+---
+
+jupyterlab 是対 ipython notebook 的全新改良版，提供了一个基于网页的功能套件，集成了多种数据分析工具，如 python、R、Julia 的内核。
+
+# 安装
+
+```bash
+## 使用 conda 安装，解决依赖包问题
+conda install -c conda-forge jupyterlab
+
+## 也可以使用 pip 安装
+pip install jupyterlab
+
+## 安装完成后查看版本信息
+python -c "import jupyterlab; print(jupyterlab.__version__)"
+```
+
+# 设置
+
+## 显示
+
+```bash
+jupyter notebook list
+```
+
+
+
+## 密码
+
+```bash
+cd ~
+jupyter notebook --generate-config
+jupyter-notebook password
+```
+
+## 端口
+
+```bashf
+jupyter notebook --port 9999
+```
+
+# 启动
+
+```bash
+cd ~
+fuser -k 8899/tcp
+nohup jupyter lab --no-browser --port=8899 &
+```
+
+## 杀掉
+
+```bash
+ps aux |grep jupyter  | awk '{print $2}' | xargs kill -9
+```
+
+
+
+# 端口转发
+
+在本地机器上执行
+
+```bash
+## 如果已经占用端口，执行命令
+fuser -k 9001/tcp
+sudo fuser -k 9001/tcp
+## 启动后台服务
+## 9001 是本地， 8899 是远程服务器
+nohup ssh -N -L 9001:localhost:8899 lhg@192.168.1.231 -p 22&
+```
+

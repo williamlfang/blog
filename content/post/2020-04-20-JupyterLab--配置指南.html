@@ -1,0 +1,63 @@
+---
+title: "JupyterLab: 配置指南"
+author: William
+date: 2020-04-20
+lastmod: 2020-04-20
+categories: [Programming]
+tags: [python,jupyter,anaconda]
+description: 涵盖基本的 JupyterLab 配置说明。
+draft: false
+ToC: true
+---
+
+
+
+<p>jupyterlab 是対 ipython notebook 的全新改良版，提供了一个基于网页的功能套件，集成了多种数据分析工具，如 python、R、Julia 的内核。</p>
+<div id="安装" class="section level1">
+<h1>安装</h1>
+<pre class="bash"><code>## 使用 conda 安装，解决依赖包问题
+conda install -c conda-forge jupyterlab
+
+## 也可以使用 pip 安装
+pip install jupyterlab
+
+## 安装完成后查看版本信息
+python -c &quot;import jupyterlab; print(jupyterlab.__version__)&quot;</code></pre>
+</div>
+<div id="设置" class="section level1">
+<h1>设置</h1>
+<div id="显示" class="section level2">
+<h2>显示</h2>
+<pre class="bash"><code>jupyter notebook list</code></pre>
+</div>
+<div id="密码" class="section level2">
+<h2>密码</h2>
+<pre class="bash"><code>cd ~
+jupyter notebook --generate-config
+jupyter-notebook password</code></pre>
+</div>
+<div id="端口" class="section level2">
+<h2>端口</h2>
+<pre class="bashf"><code>jupyter notebook --port 9999</code></pre>
+</div>
+</div>
+<div id="启动" class="section level1">
+<h1>启动</h1>
+<pre class="bash"><code>cd ~
+fuser -k 8899/tcp
+nohup jupyter lab --no-browser --port=8899 &amp;</code></pre>
+<div id="杀掉" class="section level2">
+<h2>杀掉</h2>
+<pre class="bash"><code>ps aux |grep jupyter  | awk &#39;{print $2}&#39; | xargs kill -9</code></pre>
+</div>
+</div>
+<div id="端口转发" class="section level1">
+<h1>端口转发</h1>
+<p>在本地机器上执行</p>
+<pre class="bash"><code>## 如果已经占用端口，执行命令
+fuser -k 9001/tcp
+sudo fuser -k 9001/tcp
+## 启动后台服务
+## 9001 是本地， 8899 是远程服务器
+nohup ssh -N -L 9001:localhost:8899 lhg@192.168.1.231 -p 22&amp;</code></pre>
+</div>
