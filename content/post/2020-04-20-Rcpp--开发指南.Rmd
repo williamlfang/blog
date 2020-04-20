@@ -34,4 +34,5 @@ R 是一门统计编程语言，提供了丰富的统计分析方法，并允许
 
 # 参考链接
 
-1. [Rcpp FAQ]()
+1. [Rcpp FAQ](https://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-FAQ.pdf#page=23)：Dirk Eddelbuettel 亲自编写的关于 `Rcpp` 问题小结，短小精悍，非常值得一读。
+2. [Rcpp for everyone](https://teuder.github.io/rcpp4everyone_en/)：可以说是非常通俗易懂的一个网上电子书，并且还提供实例。对于 `c++` 基础相对薄弱的同学，`Rcpp` 的入门比较高，因此可以先对照着这本书上面的案例，从编写简单的 demo 开始逐步掌握。
