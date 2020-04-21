@@ -25,6 +25,26 @@ ToC: true
 <h2>使用 <code>sourceRcpp</code></h2>
 </div>
 </div>
+<div id="注意" class="section level1">
+<h1>注意</h1>
+<div id="reference-v.s.-copy" class="section level2">
+<h2>Reference v.s. Copy</h2>
+<p>在 <code>Rcpp</code> 中，当我们把一个向量【赋值】给另外一个向量时，如果是使用 <code>=</code> (如 <code>v2=v1</code>)，则 <code>v2</code> 变成了 <code>v1</code> 的引用（<code>reference</code>），是 <code>v1</code> 的一个别名（<code>alias</code>）。也就是说，两者实际上依然指向同一个指针位置，从而修改 <code>v2</code> 会产生副作用：<code>v1</code> 也会跟着变化。</p>
+<p>如果先完全复制一个向量，需要使用 <code>clone</code> 函数，此时两者就变成独立的变量了。</p>
+<pre class="cpp"><code>NumericVector v1 = {1,2,3};   // create a vector v1
+NumericVector v2 = v1;        // v1 is assigned to v2 through shallow copy.
+NumericVector v3 = clone(v1); // v1 is assigned to v3 through deep copy.
+
+v1[0] = 100; // changing value of a element of v1
+
+// Following output shows that
+// the modification of v1 element
+// is also applied to v2 but not to v3
+Rcout &lt;&lt; &quot;v1 = &quot; &lt;&lt; v1 &lt;&lt; endl; // 100 2 3
+Rcout &lt;&lt; &quot;v2 = &quot; &lt;&lt; v2 &lt;&lt; endl; // 100 2 3
+Rcout &lt;&lt; &quot;v3 = &quot; &lt;&lt; v3 &lt;&lt; endl; // 1 2 3</code></pre>
+</div>
+</div>
 <div id="性能优化" class="section level1">
 <h1>性能优化</h1>
 </div>

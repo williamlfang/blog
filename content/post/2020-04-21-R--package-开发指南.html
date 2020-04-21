@@ -1,0 +1,164 @@
+---
+title: "R: package 开发指南"
+author: William
+date: 2020-04-21
+lastmod: 2020-04-21
+categories: [Programming]
+tags: [R,packages,devtools,开发,软件包,hicloud,hicloudR]
+description: 通过 hicloudR 演示如何开发一个　Ｒ 软件包。
+draft: false
+ToC: true
+---
+
+
+
+<div id="开发指南" class="section level2">
+<h2>开发指南</h2>
+<p>假设这个包的名称叫 <code>hicloudR</code></p>
+<div id="目录结构" class="section level3">
+<h3>目录结构</h3>
+<ul>
+<li>需要建立一个 <code>R</code> 目录</li>
+<li>添加 <code>DESCRIPTION</code> 用来说明开发包</li>
+<li>添加 <code>NAMESPACE</code> 提供函数</li>
+</ul>
+<pre class="bash"><code>## 建立一个 R 目录
+mkdir R
+
+## 建立一个描述文档
+touch DESCRIPTION
+
+## 提供函数
+touch NAMESPACE</code></pre>
+<p>在 <code>DESCRIPTION</code> 添加</p>
+<pre><code>Package: hicloudR
+Version: 0.1</code></pre>
+<p>在 `<code>NAMESPACE</code> 添加</p>
+<pre><code>## 暴露所有函数
+exportPattern(&quot;^[[:alpha:]]+&quot;)</code></pre>
+</div>
+<div id="打包" class="section level3">
+<h3>打包</h3>
+<p>打开终端执行</p>
+<pre class="bash"><code>## 需要跳转到上面一层
+cd ..
+R CMD build hicloudR
+
+* checking for file ‘hicloudR/DESCRIPTION’ ... OK
+* preparing ‘hicloudR’:
+* checking DESCRIPTION meta-information ... OK
+* checking for LF line-endings in source and make files and shell scripts
+* checking for empty or unneeded directories
+* building ‘hicloudR_0.1.tar.gz’</code></pre>
+</div>
+<div id="安装" class="section level3">
+<h3>安装</h3>
+<pre class="bash"><code>R CMD INSTALL hicloudR_0.1.tar.gz
+
+* installing to library ‘/home/william/R/x86_64-pc-linux-gnu-library/3.6’
+* installing *source* package ‘hicloudR’ ...
+** using staged installation
+** R
+** byte-compile and prepare package for lazy loading
+这是一个 hicloudR 的软件包，目前基于开源协议 MIT 进行创作。
+所有版权归属汉云投资。
+@williamlfang
+** help
+No man pages found in package  ‘hicloudR’
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded from temporary location
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (hicloudR)</code></pre>
+</div>
+<div id="使用-devtools" class="section level3">
+<h3>使用 <code>devtools</code></h3>
+<p><code>devtools</code> 提供了更加优雅的方式，可以直接在 <code>R</code> 运行环境中进行构建</p>
+<ul>
+<li><code>devtools::build()</code></li>
+<li><code>devtools::install()</code></li>
+</ul>
+<pre class="r"><code>❯ setwd(&#39;/home/william/Documents/hicloudR&#39;)
+
+✔ 95.6 MiB master*
+❯ devtools::build()
+✔  checking for file ‘/home/william/Documents/hicloudR/DESCRIPTION’ ...
+─  preparing ‘hicloudR’:
+✔  checking DESCRIPTION meta-information
+─  checking for LF line-endings in source and make files and shell scripts
+─  checking for empty or unneeded directories
+─  building ‘hicloudR_0.1.tar.gz’
+
+[1] &quot;/home/william/Documents/hicloudR_0.1.tar.gz&quot;
+
+❯ devtools::install()
+✔  checking for file ‘/home/william/Documents/hicloudR/DESCRIPTION’ ...
+─  preparing ‘hicloudR’:
+✔  checking DESCRIPTION meta-information
+─  checking for LF line-endings in source and make files and shell scripts
+─  checking for empty or unneeded directories
+─  building ‘hicloudR_0.1.tar.gz’
+
+Running /usr/lib/R/bin/R CMD INSTALL /tmp/RtmpDbpRnz/hicloudR_0.1.tar.gz --install-tests
+* installing to library ‘/home/william/R/x86_64-pc-linux-gnu-library/3.6’
+* installing *source* package ‘hicloudR’ ...
+** using staged installation
+** R
+** byte-compile and prepare package for lazy loading
+这是一个 hicloudR 的软件包，目前基于开源协议 MIT 进行创作。
+所有版权归属汉云投资。
+@williamlfang
+** help
+No man pages found in package  ‘hicloudR’
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded from temporary location
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (hicloudR)</code></pre>
+</div>
+</div>
+<div id="托管到-github" class="section level2">
+<h2>托管到 <code>github</code></h2>
+<div id="添加-repo" class="section level3">
+<h3>添加 <code>repo</code></h3>
+<pre class="bash"><code>git add ./*
+git commit -m &#39;init&#39;
+git push</code></pre>
+</div>
+<div id="安装-1" class="section level3">
+<h3>安装</h3>
+<p>然后就可以直接安装了</p>
+<ul>
+<li><code>devtools::install_github(&quot;williamlfang/hicloudR&quot;)</code></li>
+</ul>
+<pre class="bash"><code>❯ devtools::install_github(&quot;williamlfang/hicloudR&quot;)
+Downloading GitHub repo williamlfang/hicloudR@master
+✔  checking for file ‘/tmp/RtmpDbpRnz/remotes41d42dcbca76/williamlfang-hicloudR-20b2dbf/DESCRIPTION’ ...
+─  preparing ‘hicloudR’:
+✔  checking DESCRIPTION meta-information
+─  checking for LF line-endings in source and make files and shell scripts
+─  checking for empty or unneeded directories
+─  building ‘hicloudR_0.1.tar.gz’
+
+Installing package into &#39;/home/william/R/x86_64-pc-linux-gnu-library/3.6&#39;
+(as &#39;lib&#39; is unspecified)
+* installing *source* package ‘hicloudR’ ...
+** using staged installation
+** R
+** byte-compile and prepare package for lazy loading
+这是一个 hicloudR 的软件包，目前基于开源协议 MIT 进行创作。
+所有版权归属汉云投资。
+@williamlfang
+** help
+No man pages found in package  ‘hicloudR’
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded from temporary location
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (hicloudR)
+</code></pre>
+</div>
+</div>
