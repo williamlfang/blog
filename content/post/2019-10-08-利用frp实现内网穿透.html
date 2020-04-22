@@ -69,7 +69,16 @@ firewall-cmd --zone=public --add-port=7066/tcp --permanent
 firewall-cmd --zone=public --add-port=7099/tcp --permanent
 
 # 2.重启防火墙
-systemctl restart firewalld.service</code></pre></li>
+systemctl restart firewalld.service
+
+
+## CentOS6 使用以下命令
+## 开放 8899 端口
+/sbin/iptables -I INPUT -p tcp --dport 8899 -j ACCEPT
+## 然后保存
+/etc/rc.d/init.d/iptables save
+## 查看打开的端口
+/etc/init.d/iptables status</code></pre></li>
 <li><p>开启后台服务，通过 <code>nohup</code> 实现不间断的运行服务，记得在服务器是启动 <code>frps</code> 服务：</p>
 <pre class="bash"><code>nohup ./frps -c frps.ini &amp;</code></pre></li>
 </ul>

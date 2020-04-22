@@ -85,6 +85,15 @@ ToC: true
     
     # 2.重启防火墙
     systemctl restart firewalld.service
+    
+    
+    ## CentOS6 使用以下命令
+    ## 开放 8899 端口
+    /sbin/iptables -I INPUT -p tcp --dport 8899 -j ACCEPT
+    ## 然后保存
+    /etc/rc.d/init.d/iptables save
+    ## 查看打开的端口
+    /etc/init.d/iptables status
     ```
 
 - 开启后台服务，通过 `nohup` 实现不间断的运行服务，记得在服务器是启动 `frps` 服务：
