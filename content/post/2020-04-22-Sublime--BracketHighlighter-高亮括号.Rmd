@@ -23,7 +23,9 @@ ToC: true
 
 项目地址：[BracketHighlighter Documentation](https://facelessuser.github.io/BracketHighlighter/)
 
- # 安装
+
+
+# 安装
 
 打开 `Sublime`，使用 `Shift+Ctrl+P` 开始搜索软件名 `BracketHighlighter`，然后安装就可以了。
 
