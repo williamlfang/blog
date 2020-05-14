@@ -12,6 +12,8 @@ ToC: true
 
 `R4.0` 正式发布上线了。新版本的代码在性能和编程方面均有出色的提升。本文将介绍如何通过源代码的方式安装程序，并在 `Rstudio` 当中指定可执行路径。
 
+
+
 # 获取最新本 R
 
 
@@ -133,11 +135,4 @@ make install
 install.packages("https://github.com/jeroen/curl/archive/master.tar.gz", repos = NULL)
 ```
 
-
-
-
-
-# Rstudio 设置
-
-
-
+![](/images/2020-05-14-R-4.0-源代码安装/R4.0.png)
