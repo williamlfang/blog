@@ -41,7 +41,10 @@ mkdir From135
 chmod -R 777 /mnt/From135
 
 ## 
-sshfs trader@192.168.1.135:/ /mnt/From135 -o reconnect,idmap=user,allow_other
+sshfs trader@192.168.1.135:/ /mnt/From135 -o reconnect,idmap=user,allow_other -o ro
+
+alias mount.135='sshfs trader@192.168.1.135:/data /mnt/From135 -o reconnect,idmap=user,allow_other -o ro'
+alias unmount.135='fusermount -u /mnt/From135 && umount -l /mnt/From135'
 ```
 
 

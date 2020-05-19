@@ -1,0 +1,27 @@
+---
+title: "R: 安装 tensorflow"
+author: William
+date: 2020-05-16
+lastmod: 2020-05-16
+categories: [Programming]
+tags: [R,tensorflow]
+description: 安装 tensorflow。
+draft: false
+ToC: true
+---
+
+```R
+Sys.setenv(TENSORFLOW_PYTHON="/home/fl/anaconda3/bin")
+devtools::install_github("rstudio/tensorflow")
+devtools::install_github("rstudio/keras")
+
+library(tensorflow)
+
+hello <- tf$constant("Hello")
+print(hello)
+```
+
+
+
+
+
