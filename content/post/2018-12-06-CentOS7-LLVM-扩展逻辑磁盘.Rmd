@@ -169,6 +169,8 @@ tmpfs                    6.3G     0  6.3G   0% /run/user/1005
 
 ```bash
 [root@localhost ~]# xfs_growfs /dev/mapper/centos-data
+## CentOS6 使用命令 resize2fs
+
 meta-data=/dev/mapper/centos-data isize=256    agcount=7, agsize=196608000 blks
          =                       sectsz=512   attr=2, projid32bit=1
          =                       crc=0        finobt=0 spinodes=0
