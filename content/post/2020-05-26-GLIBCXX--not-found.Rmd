@@ -1,0 +1,29 @@
+---
+title: "GLIBCXX: not found"
+author: William
+date: 2020-05-26
+lastmod: 2020-05-26
+categories: [Programming]
+tags: [Linux,c++,gnu,glib,cxx]
+description: 
+draft: 无法找到 GLIBCXX 的解决方法。
+ToC: false
+---
+
+
+
+```bash
+cd /usr/lib/x86_64-linux-gnu/
+ll |grep libstd
+strings libstdc++.so.6 | grep GLIBCXX
+## 有可能找不到 GLIBCXX_3.2.26
+
+locate libstdc++.so.6
+
+strings /usr/local/gcc/lib64/libstdc++.so.6 | grep GLIBCXX
+cp /usr/local/gcc/lib64/libstdc++.so.6 /usr/lib/x86_64-linux-gnu
+strings /usr/lib/x86_64-linux-gnu/libstdc++.so.6 | grep GLIBCXX
+```
+
+
+
