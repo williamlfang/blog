@@ -14,6 +14,8 @@ ToC: true
 
 <div id="安装" class="section level1">
 <h1>安装</h1>
+<div id="安装-cgdb" class="section level2">
+<h2>安装 cgdb</h2>
 <pre class="bash"><code>git clone git://github.com/cgdb/cgdb.git
 cd cgdb
 
@@ -36,6 +38,16 @@ sudo apt-get install flex
 ./configure --prefix=/usr/local
 make -j
 sudo make install</code></pre>
+</div>
+<div id="中文显示" class="section level2">
+<h2>中文显示</h2>
+<p>打印变量时可能出现中文字符乱码，可以根据以下步骤解决这个问题。</p>
+<pre class="bash"><code>cd /lib/x86_64-linux-gnu 
+ls -al libncurse* 
+sudo rm -rf libncurses.so.5
+sudo ln -s libncursesw.so.5.9 libncurses.so.5</code></pre>
+<p>试着打印中文字符变量，这时候就能正确显示了。</p>
+</div>
 </div>
 <div id="使用" class="section level1">
 <h1>使用</h1>
