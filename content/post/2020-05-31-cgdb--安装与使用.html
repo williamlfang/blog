@@ -41,14 +41,22 @@ sudo make install</code></pre>
 </div>
 <div id="配置" class="section level2">
 <h2>配置</h2>
+<p>参考官方说明：<a href="https://www.bookstack.cn/read/cgdb-manual-in-chinese/4.0.md">CGDB 中文手册</a>。</p>
 <pre class="bash"><code>vim ~/.cgdb/cgdbrc
 
-
+## 忽略大小写
 set ignorecase
-set ts=4
+## 高亮调试对应的代码行
+set arrowstyle=highlight
+## tab = 4
+set tabstop==4
+## 显示发送的命令
+set showtgdbcommands
+## 重新加载
+set autosourcereload
 set wso=vertical
 #set eld=shortarrow
-set hls
+set autosourcereload
 ## 加了一个 F9 的快捷键，用于跳出循环
 map &lt;F9&gt; :until&lt;cr&gt;</code></pre>
 </div>
