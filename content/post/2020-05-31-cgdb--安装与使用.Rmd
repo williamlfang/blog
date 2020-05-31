@@ -1,0 +1,38 @@
+---
+title: "cgdb: 安装与使用"
+author: William
+date: 2020-05-31
+lastmod: 2020-05-31
+categories: [Programming]
+tags: [linux,gdb,cgdb,c++,调试,debug]
+description: 使用 cgdb 进行代码调试。
+draft: false
+ToC: true
+---
+
+# 安装
+
+```bash
+git clone git://github.com/cgdb/cgdb.git
+cd cgdb
+
+./autogen.sh
+
+## 安装依赖包
+## CentOS
+yum install ncurses-devel
+yum install texinfo
+## 如果是 CentOS8
+yum config-manager --set-enabled PowerTools
+yum install help2man
+yum install readline-devel
+yum install flex
+
+./configure --prefix=/usr/local
+make -j
+sudo make install
+```
+
+# 使用
+安装好了以后，输入“cgdb 要调试的程序名”即可以进行调试。
+
