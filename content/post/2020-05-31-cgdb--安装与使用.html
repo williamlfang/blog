@@ -39,6 +39,19 @@ sudo apt-get install flex
 make -j
 sudo make install</code></pre>
 </div>
+<div id="配置" class="section level2">
+<h2>配置</h2>
+<pre class="bash"><code>vim ~/.cgdb/cgdbrc
+
+
+set ignorecase
+set ts=4
+set wso=vertical
+#set eld=shortarrow
+set hls
+## 加了一个 F9 的快捷键，用于跳出循环
+map &lt;F9&gt; :until&lt;cr&gt;</code></pre>
+</div>
 <div id="中文显示" class="section level2">
 <h2>中文显示</h2>
 <p>打印变量时可能出现中文字符乱码，可以根据以下步骤解决这个问题。</p>

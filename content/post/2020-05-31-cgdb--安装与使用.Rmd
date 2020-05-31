@@ -39,6 +39,21 @@ make -j
 sudo make install
 ```
 
+## 配置
+
+```bash
+vim ~/.cgdb/cgdbrc
+
+
+set ignorecase
+set ts=4
+set wso=vertical
+#set eld=shortarrow
+set hls
+## 加了一个 F9 的快捷键，用于跳出循环
+map <F9> :until<cr>
+```
+
 ## 中文显示
 打印变量时可能出现中文字符乱码，可以根据以下步骤解决这个问题。
 
