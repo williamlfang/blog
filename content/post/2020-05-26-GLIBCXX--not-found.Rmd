@@ -13,7 +13,11 @@ ToC: false
 
 
 ```bash
+## Ubuntu
 cd /usr/lib/x86_64-linux-gnu/
+## CentOS
+cd /usr/lib64
+
 ll |grep libstd
 strings libstdc++.so.6 | grep GLIBCXX
 ## 有可能找不到 GLIBCXX_3.2.26
