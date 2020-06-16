@@ -1,5 +1,5 @@
 ---
-title: "zsh 报错: _arguments:451: _vim_files: function definition file not found"
+title: "zsh 报错: arguments:451: vim-files: function definition file not found"
 author: William
 date: 2020-06-15
 lastmod: 2020-06-15
