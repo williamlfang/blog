@@ -133,6 +133,40 @@ ToC: true
     https://docs.docker.com/get-started/
    ```
 
+   如果还有出现以下的报错，需要修改权限
+
+   ```bash
+   WARNING: Error loading config file: /home/william/.docker/config.json: stat /home/william/.docker/config.json: permission denied
+   
+   sudo chown william:william /home/william/.docker -R
+   ```
+
+   
+
+8. 由于某些原因，国内访问 `Docker` 的软件源速度是比较慢的。幸好，我们可以更改指定的源，使用国内阿里云或者网易可以大大的加速访问速度。
+
+   ```bash
+   ## 修改 docker 配置文件
+   sudo vim /etc/docker/daemon.json
+   
+   {
+     "registry-mirrors" : [
+       "http://ovfftd6p.mirror.aliyuncs.com",
+       "http://registry.docker-cn.com",
+       "http://docker.mirrors.ustc.edu.cn",
+       "http://hub-mirror.c.163.com"
+     ],
+     "insecure-registries" : [
+       "registry.docker-cn.com",
+       "docker.mirrors.ustc.edu.cn"
+     ],
+     "debug" : true,
+     "experimental" : true
+   }
+   
+   sudo systemctl restart docker.service
+   ```
+
    
 
 ## CentOS
@@ -142,6 +176,89 @@ ToC: true
 # 基础概念
 
 # 编写 Dockerfile
+
+可以使用一下的模板来编写一个测试使用的 `CentOS7` 开发环境
+
+```dockerfile
+FROM centos:7
+
+MAINTAINER WilliamFang
+LABEL Remarks="CentOS7.5 Develop&Testing Environment"
+
+RUN yum -y install vim git sudo && yum -y install make && \
+    yum -y install gcc gcc-c++ kernel-devel && \
+    yum -y install cmake bzip2 htop tldr pigz pbzip2 && \
+    yum -y install bzip2-devel.x86_64 && \
+    yum -y install libxslt-devel libffi-devel openssl-devel libcurl-devel
+
+ENV PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
+ENV LANG=en_US.UTF-8
+ENV BASH_ENV=~/.bashrc  \
+    ENV=~/.bashrc  \
+    PROMPT_COMMAND="source ~/.bashrc"
+```
+
+然后使用命令开始搭建
+
+```bash
+sudo docker build -t myctp:v1.0 .
+```
+
+然后就可以看到
+
+```bash
+docker image ls
+
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+myctp               v1.0                91b0c32f2935        2 minutes ago       564MB
+centos              7                   b5b4d78bc90c        7 weeks ago         203MB
+```
+
+现在，我们就可以愉快的使用 `Docker` 进行测试了
+
+```bash
+## 查看当前运行的 docker container
+docker ps -a
+
+CONTAINER ID    IMAGE    COMMAND    CREATED    STATUS    PORTS    NAMES
+```
+
+说明当前还没有生成相应的实例。我们可以启动使用命令启动
+
+```bash
+## 使用 REPOSITORY:TAG
+docker run -dit myctp:v1.0 /bin/bash
+
+CONTAINER ID    IMAGE       COMMAND         CREATED         STATUS          PORTS   NAMES
+2b40845d0309    myctp:v1.0  "/bin/bash"     4 seconds ago   Up 3 seconds            upbeat_montalcini
+```
+
+然后开始启动
+
+```bash
+## 挂载到实例
+docker exec -it b3c220b3c9c6 /bin/bash
+
+[root@b3c220b3c9c6 /]# whoami
+root
+
+[root@b3c220b3c9c6 /]# gcc -v
+Using built-in specs.
+COLLECT_GCC=gcc
+COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-redhat-linux/4.8.5/lto-wrapper
+Target: x86_64-redhat-linux
+Configured with: ../configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=http://bugzilla.redhat.com/bugzilla --enable-bootstrap --enable-shared --enable-threads=posix --enable-checking=release --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-gnu-unique-object --enable-linker-build-id --with-linker-hash-style=gnu --enable-languages=c,c++,objc,obj-c++,java,fortran,ada,go,lto --enable-plugin --enable-initfini-array --disable-libgcj --with-isl=/builddir/build/BUILD/gcc-4.8.5-20150702/obj-x86_64-redhat-linux/isl-install --with-cloog=/builddir/build/BUILD/gcc-4.8.5-20150702/obj-x86_64-redhat-linux/cloog-install --enable-gnu-indirect-function --with-tune=generic --with-arch_32=x86-64 --build=x86_64-redhat-linux
+Thread model: posix
+gcc version 4.8.5 20150623 (Red Hat 4.8.5-39) (GCC) 
+[root@b3c220b3c9c6 /]# 
+```
+
+退出会依然可以看到程序在运行中
+
+```bash
+CONTAINER ID    IMAGE       COMMAND         CREATED         STATUS          PORTS   NAMES
+b3c220b3c9c6    myctp:v1.0  "/bin/bash"     2 minutes ago   Up 2 minutes            gallant_bell
+```
 
 # 发布 docker
 
