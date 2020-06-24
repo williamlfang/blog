@@ -18,62 +18,113 @@ ToC: true
 <h2>Ubuntu</h2>
 <p><code>Ubuntu</code> 操作系统的安装步骤可以参考<a href="https://docs.docker.com/engine/install/ubuntu/">官网说明</a></p>
 <ol style="list-style-type: decimal">
-<li>卸载旧版本</li>
-</ol>
-<p>```bash sudo apt-get remove docker docker-engine docker.io containerd runc</p>
-<p>Reading package lists… Done Building dependency tree Reading state information… Done Package ‘docker-engine’ is not installed, so not removed Package ‘docker’ is not installed, so not removed Package ‘containerd’ is not installed, so not removed Package ‘docker.io’ is not installed, so not removed Package ‘runc’ is not installed, so not removed 0 upgraded, 0 newly installed, 0 to remove and 43 not upgraded. ```</p>
-<ol start="2" style="list-style-type: decimal">
-<li>添加软件源</li>
-</ol>
-<p>```bash sudo apt-get update</p>
-<p>sudo apt-get install<br />
-apt-transport-https<br />
-ca-certificates<br />
-curl<br />
-gnupg-agent<br />
-software-properties-common</p>
-<p>curl -fsSL <a href="https://download.docker.com/linux/ubuntu/gpg" class="uri">https://download.docker.com/linux/ubuntu/gpg</a> | sudo apt-key add -</p>
-<p>echo $(lsb_release -cs) Linux Mint Releases Version Codename Package base 19.1 Tessa Ubuntu Bionic 19 Tara Ubuntu Bionic 18.3 Sylvia Ubuntu Xenial 18.2 Sonya Ubuntu Xenial</p>
-<p># sudo add-apt-repository “deb [arch=amd64] <a href="https://download.docker.com/linux/ubuntu" class="uri">https://download.docker.com/linux/ubuntu</a> $(lsb_release -cs) stable” sudo add-apt-repository “deb [arch=amd64] <a href="https://download.docker.com/linux/ubuntu" class="uri">https://download.docker.com/linux/ubuntu</a> Bionic stable” ```</p>
-<ol start="3" style="list-style-type: decimal">
-<li>开始安装</li>
-</ol>
-<p><code>bash    sudo apt-get update    sudo apt install docker.io</code></p>
-<ol start="4" style="list-style-type: decimal">
-<li>设置启动服务</li>
-</ol>
-<p>```bash sudo systemctl start docker</p>
-<p>## 添加开机启动 sudo systemctl enable docker ```</p>
-<ol start="5" style="list-style-type: decimal">
-<li>查看 <code>Docker</code> 版本</li>
-</ol>
-<p>```bash docker –version</p>
-<p>Docker version 19.03.6, build 369ce74a3c ```</p>
-<ol start="6" style="list-style-type: decimal">
-<li><code>Docker</code> 后台服务需要具有 <code>sudo</code> 权限。为了避免每次命令都输入<code>sudo</code>，可以把用户加入 Docker 用户组（<a href="https://docs.docker.com/install/linux/linux-postinstall/#manage-docker-as-a-non-root-user">官方文档</a>）。</li>
-</ol>
-<p><code>bash    ## 建立 docker 组    sudo groupadd docker    ## 把当前用户添加到 docker 组    sudo usermod -aG docker $USER</code></p>
-<p>然后先退出账户(logout)，再次登录(login)即可使用 <code>docker</code> 命令了</p>
-<ol start="7" style="list-style-type: decimal">
-<li>运行试试看</li>
-</ol>
-<p>```bash docker run hello-world</p>
-<p>Unable to find image ‘hello-world:latest’ locally</p>
-<p>latest: Pulling from library/hello-world 0e03bdcc26d7: Pull complete Digest: sha256:d58e752213a51785838f9eed2b7a498ffa1cb3aa7f946dda11af39286c3db9a9 Status: Downloaded newer image for hello-world:latest</p>
-<p>Hello from Docker! This message shows that your installation appears to be working correctly.</p>
-<p>To generate this message, Docker took the following steps: 1. The Docker client contacted the Docker daemon. 2. The Docker daemon pulled the “hello-world” image from the Docker Hub. (amd64) 3. The Docker daemon created a new container from that image which runs the executable that produces the output you are currently reading. 4. The Docker daemon streamed that output to the Docker client, which sent it to your terminal.</p>
-<p>To try something more ambitious, you can run an Ubuntu container with: $ docker run -it ubuntu bash</p>
-<p>Share images, automate workflows, and more with a free Docker ID: <a href="https://hub.docker.com/" class="uri">https://hub.docker.com/</a></p>
-<p>For more examples and ideas, visit: <a href="https://docs.docker.com/get-started/" class="uri">https://docs.docker.com/get-started/</a> ```</p>
+<li><p>卸载旧版本</p>
+<pre class="bash"><code>sudo apt-get remove docker docker-engine docker.io containerd runc
+
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+Package &#39;docker-engine&#39; is not installed, so not removed
+Package &#39;docker&#39; is not installed, so not removed
+Package &#39;containerd&#39; is not installed, so not removed
+Package &#39;docker.io&#39; is not installed, so not removed
+Package &#39;runc&#39; is not installed, so not removed
+0 upgraded, 0 newly installed, 0 to remove and 43 not upgraded.</code></pre></li>
+<li><p>添加软件源</p>
+<pre class="bash"><code>sudo apt-get update
+
+sudo apt-get install \
+   apt-transport-https \
+   ca-certificates \
+   curl \
+   gnupg-agent \
+   software-properties-common
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+echo $(lsb_release -cs)
+Linux Mint Releases
+Version Codename    Package base
+19.1    Tessa   Ubuntu Bionic
+19  Tara    Ubuntu Bionic
+18.3    Sylvia  Ubuntu Xenial
+18.2    Sonya   Ubuntu Xenial
+
+# sudo add-apt-repository &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable&quot;
+sudo add-apt-repository &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu Bionic stable&quot;</code></pre></li>
+<li><p>开始安装</p>
+<pre class="bash"><code>sudo apt-get update
+sudo apt install docker.io</code></pre></li>
+<li><p>设置启动服务</p>
+<pre class="bash"><code>sudo systemctl start docker
+
+## 添加开机启动
+sudo systemctl enable docker</code></pre></li>
+<li><p>查看 <code>Docker</code> 版本</p>
+<pre class="bash"><code>docker --version
+
+Docker version 19.03.6, build 369ce74a3c</code></pre></li>
+<li><p><code>Docker</code> 后台服务需要具有 <code>sudo</code> 权限。为了避免每次命令都输入<code>sudo</code>，可以把用户加入 Docker 用户组（<a href="https://docs.docker.com/install/linux/linux-postinstall/#manage-docker-as-a-non-root-user">官方文档</a>）。</p>
+<pre class="bash"><code>## 建立 docker 组
+sudo groupadd docker
+## 把当前用户添加到 docker 组
+sudo usermod -aG docker $USER</code></pre>
+<p>然后先退出账户(logout)，再次登录(login)即可使用 <code>docker</code> 命令了</p></li>
+<li><p>运行试试看</p>
+<pre class="bash"><code>docker run hello-world
+
+Unable to find image &#39;hello-world:latest&#39; locally
+
+latest: Pulling from library/hello-world
+0e03bdcc26d7: Pull complete
+Digest: sha256:d58e752213a51785838f9eed2b7a498ffa1cb3aa7f946dda11af39286c3db9a9
+Status: Downloaded newer image for hello-world:latest
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+1. The Docker client contacted the Docker daemon.
+2. The Docker daemon pulled the &quot;hello-world&quot; image from the Docker Hub.
+   (amd64)
+3. The Docker daemon created a new container from that image which runs the
+   executable that produces the output you are currently reading.
+4. The Docker daemon streamed that output to the Docker client, which sent it
+   to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+$ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+https://hub.docker.com/
+
+For more examples and ideas, visit:
+https://docs.docker.com/get-started/</code></pre>
 <p>如果还有出现以下的报错，需要修改权限</p>
-<p>```bash WARNING: Error loading config file: /home/william/.docker/config.json: stat /home/william/.docker/config.json: permission denied</p>
-<p>sudo chown william:william /home/william/.docker -R ```</p>
-<ol start="8" style="list-style-type: decimal">
-<li>由于某些原因，国内访问 <code>Docker</code> 的软件源速度是比较慢的。幸好，我们可以更改指定的源，使用国内阿里云或者网易可以大大的加速访问速度。</li>
+<pre class="bash"><code>WARNING: Error loading config file: /home/william/.docker/config.json: stat /home/william/.docker/config.json: permission denied
+
+sudo chown william:william /home/william/.docker -R</code></pre></li>
+<li><p>由于某些原因，国内访问 <code>Docker</code> 的软件源速度是比较慢的。幸好，我们可以更改指定的源，使用国内阿里云或者网易可以大大的加速访问速度。</p>
+<pre class="bash"><code>## 修改 docker 配置文件
+sudo vim /etc/docker/daemon.json
+
+{
+ &quot;registry-mirrors&quot; : [
+   &quot;http://ovfftd6p.mirror.aliyuncs.com&quot;,
+   &quot;http://registry.docker-cn.com&quot;,
+   &quot;http://docker.mirrors.ustc.edu.cn&quot;,
+   &quot;http://hub-mirror.c.163.com&quot;
+ ],
+ &quot;insecure-registries&quot; : [
+   &quot;registry.docker-cn.com&quot;,
+   &quot;docker.mirrors.ustc.edu.cn&quot;
+ ],
+ &quot;debug&quot; : true,
+ &quot;experimental&quot; : true
+}
+
+sudo systemctl restart docker.service</code></pre></li>
 </ol>
-<p>```bash ## 修改 docker 配置文件 sudo vim /etc/docker/daemon.json</p>
-<p>{ “registry-mirrors” : [ “<a href="http://ovfftd6p.mirror.aliyuncs.com" class="uri">http://ovfftd6p.mirror.aliyuncs.com</a>”, “<a href="http://registry.docker-cn.com" class="uri">http://registry.docker-cn.com</a>”, “<a href="http://docker.mirrors.ustc.edu.cn" class="uri">http://docker.mirrors.ustc.edu.cn</a>”, “<a href="http://hub-mirror.c.163.com" class="uri">http://hub-mirror.c.163.com</a>” ], “insecure-registries” : [ “registry.docker-cn.com”, “docker.mirrors.ustc.edu.cn” ], “debug” : true, “experimental” : true }</p>
-<p>sudo systemctl restart docker.service ```</p>
 </div>
 <div id="centos" class="section level2">
 <h2>CentOS</h2>
@@ -116,7 +167,8 @@ docker ps -a
 CONTAINER ID    IMAGE    COMMAND    CREATED    STATUS    PORTS    NAMES</code></pre>
 <p>说明当前还没有生成相应的实例。我们可以启动使用命令启动</p>
 <pre class="bash"><code>## 使用 REPOSITORY:TAG
-docker run -dit myctp:v1.0 /bin/bash
+## 使用 -v 可以挂载主机文件
+docker run -dit -v /home/william:/mnt myctp:v1.0 /bin/bash
 
 CONTAINER ID    IMAGE       COMMAND         CREATED         STATUS          PORTS   NAMES
 2b40845d0309    myctp:v1.0  &quot;/bin/bash&quot;     4 seconds ago   Up 3 seconds            upbeat_montalcini</code></pre>
