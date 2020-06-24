@@ -20,42 +20,27 @@ ToC: true
 <p>See steps below:</p>
 <p>Installing MySQL 5.5.51 on Ubuntu 16.06</p>
 <ol style="list-style-type: decimal">
-<li>Uninstall any existing version of MySQL</li>
-</ol>
-<p><code>sudo rm /var/lib/mysql/ -R</code></p>
-<ol start="2" style="list-style-type: decimal">
-<li>Delete the MySQL profile</li>
-</ol>
-<p><code>sudo rm /etc/mysql/ -R</code></p>
-<ol start="3" style="list-style-type: decimal">
-<li>Automatically uninstall mysql</li>
-</ol>
-<p><code>sudo apt-get autoremove mysql* --purge    sudo apt-get remove apparmor</code></p>
-<ol start="4" style="list-style-type: decimal">
-<li>Download version 5.5.51 from MySQL site</li>
-</ol>
-<p><code>wget https://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.56-linux-glibc2.5-x86_64.tar.gz</code></p>
-<ol start="5" style="list-style-type: decimal">
-<li>Add <code>mysql</code> user group</li>
-</ol>
-<p><code>sudo groupadd mysql</code></p>
-<ol start="6" style="list-style-type: decimal">
-<li>Add <code>mysql</code> (not the current user) to <code>mysql</code> user group</li>
-</ol>
-<p><code>sudo useradd -g  mysql mysql</code></p>
-<ol start="7" style="list-style-type: decimal">
-<li>Extract <code>mysql-5.5.51-linux2.6-x86_64.tar.gz</code> to <code>/usr/local</code></li>
-</ol>
-<p><code>cd /usr/local    sudo tar -xvf mysql-5.5.49-linux2.6-x86_64.tar.gz</code></p>
-<ol start="8" style="list-style-type: decimal">
-<li>Create <code>mysql</code> folder in <code>/usr/local</code></li>
-</ol>
-<p><code>sudo mv mysql-5.5.49-linux2.6-x86_64 mysql</code></p>
-<ol start="9" style="list-style-type: decimal">
-<li>Set <code>mysql</code> directory owner and user group</li>
-</ol>
-<p><code>cd mysql    sudo chown -R mysql:mysql *</code></p>
-<ol start="10" style="list-style-type: decimal">
+<li><p>Uninstall any existing version of MySQL</p>
+<pre><code>sudo rm /var/lib/mysql/ -R</code></pre></li>
+<li><p>Delete the MySQL profile</p>
+<pre><code>sudo rm /etc/mysql/ -R</code></pre></li>
+<li><p>Automatically uninstall mysql</p>
+<pre><code>sudo apt-get autoremove mysql* --purge
+sudo apt-get remove apparmor</code></pre></li>
+<li><p>Download version 5.5.51 from MySQL site</p>
+<pre><code>wget https://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.56-linux-glibc2.5-x86_64.tar.gz</code></pre></li>
+<li><p>Add <code>mysql</code> user group</p>
+<pre><code>sudo groupadd mysql</code></pre></li>
+<li><p>Add <code>mysql</code> (not the current user) to <code>mysql</code> user group</p>
+<pre><code>sudo useradd -g  mysql mysql</code></pre></li>
+<li><p>Extract <code>mysql-5.5.51-linux2.6-x86_64.tar.gz</code> to <code>/usr/local</code></p>
+<pre><code>cd /usr/local
+sudo tar -xvf mysql-5.5.49-linux2.6-x86_64.tar.gz</code></pre></li>
+<li><p>Create <code>mysql</code> folder in <code>/usr/local</code></p>
+<pre><code>sudo mv mysql-5.5.49-linux2.6-x86_64 mysql</code></pre></li>
+<li><p>Set <code>mysql</code> directory owner and user group</p>
+<pre><code>cd mysql
+sudo chown -R mysql:mysql *</code></pre></li>
 <li><p>Install the required lib package</p>
 <pre><code>sudo apt-get install libaio1</code></pre></li>
 <li><p>Execute mysql installation script</p>

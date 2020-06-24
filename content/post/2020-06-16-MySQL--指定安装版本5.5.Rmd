@@ -24,60 +24,60 @@ Installing MySQL 5.5.51 on Ubuntu 16.06
 
 1. Uninstall any existing version of MySQL
 
-   ```
-   sudo rm /var/lib/mysql/ -R
-   ```
+    ```
+    sudo rm /var/lib/mysql/ -R
+    ```
 
 2. Delete the MySQL profile
 
-   ```
-   sudo rm /etc/mysql/ -R
-   ```
+    ```
+    sudo rm /etc/mysql/ -R
+    ```
 
 3. Automatically uninstall mysql
 
-   ```
-   sudo apt-get autoremove mysql* --purge
-   sudo apt-get remove apparmor
-   ```
+    ```
+    sudo apt-get autoremove mysql* --purge
+    sudo apt-get remove apparmor
+    ```
 
 4. Download version 5.5.51 from MySQL site
 
-   ```
-   wget https://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.56-linux-glibc2.5-x86_64.tar.gz
-   ```
+    ```
+    wget https://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.56-linux-glibc2.5-x86_64.tar.gz
+    ```
 
 5. Add `mysql` user group
 
-   ```
-   sudo groupadd mysql
-   ```
+    ```
+    sudo groupadd mysql
+    ```
 
 6. Add `mysql` (not the current user) to `mysql` user group
 
-   ```
-   sudo useradd -g  mysql mysql
-   ```
+    ```
+    sudo useradd -g  mysql mysql
+    ```
 
 7. Extract `mysql-5.5.51-linux2.6-x86_64.tar.gz` to `/usr/local`
 
-   ```
-   cd /usr/local
-   sudo tar -xvf mysql-5.5.49-linux2.6-x86_64.tar.gz
-   ```
+    ```
+    cd /usr/local
+    sudo tar -xvf mysql-5.5.49-linux2.6-x86_64.tar.gz
+    ```
 
 8. Create `mysql` folder in `/usr/local`
 
-   ```
-   sudo mv mysql-5.5.49-linux2.6-x86_64 mysql
-   ```
+    ```
+    sudo mv mysql-5.5.49-linux2.6-x86_64 mysql
+    ```
 
 9. Set `mysql` directory owner and user group
 
-   ```
-   cd mysql
-   sudo chown -R mysql:mysql *
-   ```
+    ```
+    cd mysql
+    sudo chown -R mysql:mysql *
+    ```
 
 10. Install the required lib package
 
