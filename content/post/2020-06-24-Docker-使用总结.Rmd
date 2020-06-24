@@ -262,5 +262,10 @@ b3c220b3c9c6    myctp:v1.0  "/bin/bash"     2 minutes ago   Up 2 minutes        
 
 # 发布 docker
 
- 
+为了方便移植，`Docker` 允许我们通过两个方式来分享配置好的运行环境。
 
+## Docker Hub
+
+通过使用 `Docker Hub` 来发布。
+
+## 导出
