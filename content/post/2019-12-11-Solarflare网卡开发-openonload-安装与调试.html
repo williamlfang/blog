@@ -64,9 +64,7 @@ supports-test: yes
 supports-eeprom-access: no
 supports-register-dump: yes
 supports-priv-flags: yes</code></pre>
-</div>
-<div id="下载驱动" class="section level2">
-<h2>下载驱动</h2>
+<p>##下载驱动</p>
 <p><code>OpenOnload</code> 原先是作为一个独立的开发项目存在，在<a href="https://www.openonload.org/download.html">官网</a>可以获取相关的资讯，或者直接进入<a href="https://www.openonload.org/download/">下载网页</a>获取指定版本的驱动。</p>
 <pre class="bash"><code>https://www.openonload.org/download/
 
@@ -335,19 +333,13 @@ total 5304
 </div>
 <div id="主要应用" class="section level2">
 <h2>主要应用</h2>
-<div class="figure">
-<img src="/images/2019-12-11-Solarflare网卡开发-openonload-安装与调试/ef_apps.png" />
-
-</div>
+<p><img src="/images/2019-12-11-Solarflare网卡开发-openonload-安装与调试/ef_apps.png" /></p>
 </div>
 <div id="测试" class="section level2">
 <h2>测试</h2>
 <div id="服务器与客户端" class="section level3">
 <h3>服务器与客户端</h3>
-<div class="figure">
-<img src="/images/2019-12-11-Solarflare网卡开发-openonload-安装与调试/ef_latency_eg.png" />
-
-</div>
+<p><img src="/images/2019-12-11-Solarflare网卡开发-openonload-安装与调试/ef_latency_eg.png" /></p>
 </div>
 <div id="延时测试" class="section level3">
 <h3>延时测试</h3>
@@ -420,7 +412,7 @@ tuned-adm profile network-latency
 <li><code>--profile=latency</code>：测试延时模式</li>
 <li><code>taskset -c 1</code>：绑定 cpu core 的号码 1</li>
 <li><code>--maxms=10000</code> 指发送的最大数据包大小</li>
-<li><code>--affinity &quot;1;1&quot;</code> 指使用 <code>core 1</code> 发送，使用 <code>core 1</code> 接收（可以选不同的core）</li>
+<li><code>--affinity "1;1"</code> 指使用 <code>core 1</code> 发送，使用 <code>core 1</code> 接收（可以选不同的core）</li>
 </ul>
 </div>
 <div id="服务器" class="section level5">

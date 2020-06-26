@@ -13,7 +13,7 @@ ToC: true
 
 
 <p>“The C Programming Language” 是计算机编程的经典之作，别名 <code>K&amp;R</code>。</p>
-<p>这是一本简短精悍的书籍，介绍了 <code>C</code> 语言的编程核心、ANSI 规范、编译原理等诸多方面的内容。现在很难想象这本不足 200 页的小书<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>尽然能够放得下这么多的内容，可以说是提纲挈领、言简意垓。尤其是附录A部分，只是简要介绍了 <code>C</code> 的编译原理，区区几页纸张就足以为后人编写各式不同的编译器提供指引<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>。</p>
+<p>这是一本简短精悍的书籍，介绍了 <code>C</code> 语言的编程核心、ANSI 规范、编译原理等诸多方面的内容。现在很难想象这本不足 200 页的小书<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>尽然能够放得下这么多的内容，可以说是提纲挈领、言简意垓。尤其是附录A部分，只是简要介绍了 <code>C</code> 的编译原理，区区几页纸张就足以为后人编写各式不同的编译器提供指引<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>。</p>
 <!--more-->
 <div id="概览" class="section level1">
 <h1>概览</h1>
@@ -311,7 +311,7 @@ int main() {
 <img src="/images/2019-02-24-K&amp;R-读书笔记/chap.1/scope.png" alt="Build As Project" />
 <p class="caption">Build As Project</p>
 </div>
-<p>从函数调用的角度看这个问题，每次调用一个函数，<code>C</code> 是默认使用 <code>pass-by-value</code> 把常量复制后再传入到函数主体，因此，在函数里面対参数的修改，实际上不会影响原来传递的参数值。如果想要对其进行修改，则需要 <code>pass-by-reference</code> 或则 <code>pass-by-pointer</code>。<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a></p>
+<p>从函数调用的角度看这个问题，每次调用一个函数，<code>C</code> 是默认使用 <code>pass-by-value</code> 把常量复制后再传入到函数主体，因此，在函数里面対参数的修改，实际上不会影响原来传递的参数值。如果想要对其进行修改，则需要 <code>pass-by-reference</code> 或则 <code>pass-by-pointer</code>。<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></p>
 </div>
 <div id="c编程工程项目" class="section level3">
 <h3><code>C</code>编程工程项目</h3>
@@ -634,7 +634,7 @@ int main() {
 <p>可以控制循环逻辑的执行：</p>
 <ul>
 <li><code>break</code> 提前退出整个循环</li>
-<li><code>continue</code> 不执行本次循环，但需要继续执行省下的循环<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a></li>
+<li><code>continue</code> 不执行本次循环，但需要继续执行省下的循环<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></li>
 </ul>
 </div>
 </div>
@@ -660,9 +660,9 @@ int main() {
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>可以参考这个链接看看现在有哪些优秀的 C 编程数据：<a href="https://stackoverflow.com/questions/562303/the-definitive-c-book-guide-and-list">The Definitive C Book Guide and List - Stack Overflow</a><a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>关于 <code>C</code> 的历史，这里有一篇 Dennis Ritchie 写的文章可供参考：<a href="https://www.bell-labs.com/usr/dmr/www/chist.html">The Development of the C Language</a><a href="#fnref2">↩</a></p></li>
-<li id="fn3"><p>从内存地址的角度看，二者是同一个东西，都是变量的一种「映射」，只不过 <code>reference</code> 是别名，而 <code>pointer</code> 是内存实实在在的地址。<a href="#fnref3">↩</a></p></li>
-<li id="fn4"><p><code>R</code> 使用 <code>next</code>， <code>python</code> 使用 <code>continue</code><a href="#fnref4">↩</a></p></li>
+<li id="fn1"><p>可以参考这个链接看看现在有哪些优秀的 C 编程数据：<a href="https://stackoverflow.com/questions/562303/the-definitive-c-book-guide-and-list">The Definitive C Book Guide and List - Stack Overflow</a><a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>关于 <code>C</code> 的历史，这里有一篇 Dennis Ritchie 写的文章可供参考：<a href="https://www.bell-labs.com/usr/dmr/www/chist.html">The Development of the C Language</a><a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>从内存地址的角度看，二者是同一个东西，都是变量的一种「映射」，只不过 <code>reference</code> 是别名，而 <code>pointer</code> 是内存实实在在的地址。<a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p><code>R</code> 使用 <code>next</code>， <code>python</code> 使用 <code>continue</code><a href="#fnref4" class="footnote-back">↩</a></p></li>
 </ol>
 </div>

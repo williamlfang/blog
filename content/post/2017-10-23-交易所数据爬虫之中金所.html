@@ -83,7 +83,7 @@ sapply(pkgs, require, character.only = TRUE)</code></pre>
 </div>
 <p>对于链接地址，一般有两种形式</p>
 <ul>
-<li>静态链接：即链接指向一个相对路径，这个路径是显式的。比如我们在上面看到的链接，显示一个相对根目录的相对路径，<code>href=&quot;./201710/17/20171017_1.csv&quot;</code>，文件路径是显式、具体的。我们可以直接在浏览器打开这个文件来查看，或者使用 <code>R</code> 直接读取文件数据。</li>
+<li>静态链接：即链接指向一个相对路径，这个路径是显式的。比如我们在上面看到的链接，显示一个相对根目录的相对路径，<code>href="./201710/17/20171017_1.csv"</code>，文件路径是显式、具体的。我们可以直接在浏览器打开这个文件来查看，或者使用 <code>R</code> 直接读取文件数据。</li>
 <li>动态链接：即由一段 <code>Javascript</code> 来控制操作，只有鼠标点击才能进行下一步的操作如下载。对于这类链接的解析，我们需要使用脚本解析或者模拟鼠标操作（我会在另外一篇博客讨论如何使用 <code>Selenium</code> 模拟鼠标下载大商所的数据）。</li>
 </ul>
 <p>如此一来，我们便知道需要下载的文件链接全称是</p>
@@ -101,7 +101,7 @@ sapply(pkgs, require, character.only = TRUE)</code></pre>
 <h2>行情数据</h2>
 <p>我们先来看看现实是不是真是如我们所预想的，包含所有的行情数据。首先来读取某一天的数据文件看看</p>
 <pre class="r"><code>Sys.setlocale(&quot;LC_ALL&quot;, &#39;en_US.UTF-8&#39;)</code></pre>
-<pre><code>[1] &quot;LC_CTYPE=en_US.UTF-8;LC_NUMERIC=C;LC_TIME=en_US.UTF-8;LC_COLLATE=en_US.UTF-8;LC_MONETARY=en_US.UTF-8;LC_MESSAGES=en_US.UTF-8;LC_PAPER=en_US.UTF-8;LC_NAME=C;LC_ADDRESS=C;LC_TELEPHONE=C;LC_MEASUREMENT=en_US.UTF-8;LC_IDENTIFICATION=C&quot;</code></pre>
+<pre><code>[1] &quot;en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/C&quot;</code></pre>
 <pre class="r"><code>library(magrittr)
 library(readr)
 
@@ -128,19 +128,20 @@ cols(
 )</code></pre>
 <pre class="r"><code>print(dt)</code></pre>
 <pre><code># A tibble: 24 x 13
-   合约代码 今开盘 最高价 最低价 成交量 成交金额 持仓量 今收盘 今结算 涨跌1 涨跌2 `隐含波动率(%)` Delta
-   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;           &lt;chr&gt;
- 1 IC1710    6600   6653.  6584.  10644 1407964.  13681  6592.  6604. -35.8 -23.4 --              --   
- 2 IC1711    6568.  6618   6553.   3270  430422.   6064  6561.  6571. -36.6 -26   --              --   
- 3 IC1712    6544   6597.  6523.   1041  136429.   7769  6531   6542  -41.2 -30.2 --              --   
- 4 IC1803    6489   6525.  6463.    277   35942.   2124  6470   6480. -40.8 -30.4 --              --   
- 5 小计        NA     NA     NA   15232 2010756.  29638    NA     NA   NA    NA   &lt;NA&gt;            &lt;NA&gt; 
- 6 IF1710    3914   3928.  3909.  10887 1279659.  16859  3911   3917. -13    -7.4 --              --   
- 7 IF1711    3913   3925   3906    3723  437320.   7226  3906   3913  -15.6  -8.6 --              --   
- 8 IF1712    3911   3923.  3904    1293  151760.  12518  3906   3910. -13.2  -8.8 --              --   
- 9 IF1803    3918.  3923   3904.    298   34976.   3509  3907.  3911  -13.2  -8.8 --              --   
-10 小计        NA     NA     NA   16201 1903714.  40112    NA     NA   NA    NA   &lt;NA&gt;            &lt;NA&gt; 
-# … with 14 more rows</code></pre>
+   合约代码 今开盘 最高价 最低价 成交量 成交金额 持仓量 今收盘 今结算 涨跌1
+   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1 IC1710    6600   6653.  6584.  10644 1407964.  13681  6592.  6604. -35.8
+ 2 IC1711    6568.  6618   6553.   3270  430422.   6064  6561.  6571. -36.6
+ 3 IC1712    6544   6597.  6523.   1041  136429.   7769  6531   6542  -41.2
+ 4 IC1803    6489   6525.  6463.    277   35942.   2124  6470   6480. -40.8
+ 5 小计        NA     NA     NA   15232 2010756.  29638    NA     NA   NA  
+ 6 IF1710    3914   3928.  3909.  10887 1279659.  16859  3911   3917. -13  
+ 7 IF1711    3913   3925   3906    3723  437320.   7226  3906   3913  -15.6
+ 8 IF1712    3911   3923.  3904    1293  151760.  12518  3906   3910. -13.2
+ 9 IF1803    3918.  3923   3904.    298   34976.   3509  3907.  3911  -13.2
+10 小计        NA     NA     NA   16201 1903714.  40112    NA     NA   NA  
+# … with 14 more rows, and 3 more variables: 涨跌2 &lt;dbl&gt;,
+#   `隐含波动率(%)` &lt;chr&gt;, Delta &lt;chr&gt;</code></pre>
 </div>
 <div id="并行下载" class="section level2">
 <h2>并行下载</h2>
@@ -248,19 +249,20 @@ dt &lt;- dataFile %&gt;% read_csv(., locale = locale(encoding = &quot;GB18030&qu
 
 print(dt)</code></pre>
 <pre><code># A tibble: 46 x 9
-   交易日   合约   会员类别   总成交量   比上交易日增减 总持买单量       比上交易日增减_1 总持卖单量 比上一交易日增减
-   &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;      &lt;chr&gt;           
- 1 20171017 IF1710 期货公司   21774      -1166          16859            -3096            16859      -3096           
- 2 20171017 IF1710 非期货公司 0          0              0                0                0          0               
- 3 20171017 IF1712 期货公司   2586       -530           12518            170              12518      170             
- 4 20171017 IF1712 非期货公司 0          0              0                0                0          0               
- 5 交易日   合约   排名       成交量排名 &lt;NA&gt;           &lt;NA&gt;             持买单量排名     &lt;NA&gt;       &lt;NA&gt;            
- 6 &lt;NA&gt;     &lt;NA&gt;   &lt;NA&gt;       会员简称   成交量         比上一交易日增减 会员简称         持买单量   比上一交易日增减
- 7 20171017 IF1710 1          中信期货   2670           19               中信期货         1704       -444            
- 8 20171017 IF1710 2          国泰君安   1269           -100             五矿经易         1595       -73             
- 9 20171017 IF1710 3          银河期货   1163           172              国泰君安         1448       -63             
-10 20171017 IF1710 4          海通期货   1055           -6               申银万国         721        -197            
-# … with 36 more rows</code></pre>
+   交易日 合约  会员类别 总成交量 比上交易日增减 总持买单量 比上交易日增减_1
+   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;           
+ 1 20171… IF17… 期货公司 21774    -1166          16859      -3096           
+ 2 20171… IF17… 非期货公司… 0        0              0          0               
+ 3 20171… IF17… 期货公司 2586     -530           12518      170             
+ 4 20171… IF17… 非期货公司… 0        0              0          0               
+ 5 交易日 合约  排名     成交量排名… &lt;NA&gt;           &lt;NA&gt;       持买单量排名    
+ 6 &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;     会员简称 成交量         比上一交易日增减… 会员简称        
+ 7 20171… IF17… 1        中信期货 2670           19         中信期货        
+ 8 20171… IF17… 2        国泰君安 1269           -100       五矿经易        
+ 9 20171… IF17… 3        银河期货 1163           172        国泰君安        
+10 20171… IF17… 4        海通期货 1055           -6         申银万国        
+# … with 36 more rows, and 2 more variables: 总持卖单量 &lt;chr&gt;,
+#   比上一交易日增减 &lt;chr&gt;</code></pre>
 </div>
 <div id="并行下载-1" class="section level2">
 <h2>并行下载</h2>

@@ -71,11 +71,13 @@ importFrom(Rcpp, sourceCpp)</code></pre></li>
 │   └── RcppExports.cpp
 └── tests
 
-Rscript -e &quot;Rcpp::compileAttributes()&quot;</code></pre></li>
-</ul>
+Rscript -e &quot;Rcpp::compileAttributes()&quot;</code></pre>
 <p>这样会生成两个文件</p>
-<pre><code>- `R/RcppExports.R`
-- `src/RcppExports.cpp`</code></pre>
+<ul>
+<li><code>R/RcppExports.R</code></li>
+<li><code>src/RcppExports.cpp</code></li>
+</ul></li>
+</ul>
 <div id="打包" class="section level3">
 <h3>打包</h3>
 <p>打开终端执行</p>
@@ -170,7 +172,7 @@ git push</code></pre>
 <h3>安装</h3>
 <p>然后就可以直接安装了</p>
 <ul>
-<li><code>devtools::install_github(&quot;williamlfang/hicloudR&quot;)</code></li>
+<li><code>devtools::install_github("williamlfang/hicloudR")</code></li>
 </ul>
 <pre class="bash"><code>❯ devtools::install_github(&quot;williamlfang/hicloudR&quot;)
 Downloading GitHub repo williamlfang/hicloudR@master
