@@ -45,6 +45,22 @@ ToC: true
 
 
 
+# 类设计的 6 大金刚
+
+-   构造函数
+-   析构函数
+-   拷贝构造
+-   拷贝赋值
+-   移动构造
+-   移动赋值
+
+两大比较常见的类模式：
+
+-   Class with no pointer member
+-   Class with pointer member
+
+
+
 # 构造函数
 
 ## 初始化列表
