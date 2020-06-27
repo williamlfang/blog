@@ -185,8 +185,16 @@ delete[] p;</code></pre></li>
 <pre class="cpp"><code>class A
 {
 public:
-  
-}</code></pre>
+  static double m_data;
+  static double get_data() { return m_data; }
+};
+
+double A::mdata = 10; // 变量定义，所有实例共同使用</code></pre>
+<p>调用 <code>static</code> 函数的方式有两种：</p>
+<ul>
+<li>通过类调用：<code>A::get_data()</code>，需要指定类作用域</li>
+<li>通过实例调用：<code>a.get_data()</code></li>
+</ul>
 <p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/static.png" /></p>
 </div>
 <div id="类模板" class="section level1">
