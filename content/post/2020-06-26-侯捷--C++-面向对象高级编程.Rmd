@@ -85,3 +85,15 @@ ToC: true
 >   另外，我们需要注意，相同类之间生成的实例、父类与之类之间，互为`friend`。
 
 ![](/images/2020-06-26-侯捷--C++-面向对象高级编程/friend2.png)
+
+## operator overloading 
+
+在 `c++` 里，有两种 `overloading`:
+
+-   `operator overloading`
+-   `function overloading`
+
+所谓的 `overloading`，就是对原来语义的重新定义，使之能够作用于新的对象。
+
+![](/images/2020-06-26-侯捷--C++-面向对象高级编程/operator-overloading-1.png)
+
