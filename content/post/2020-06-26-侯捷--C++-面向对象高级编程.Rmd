@@ -32,6 +32,19 @@ ToC: true
 
 # 头文件
 
+需要提供「头文件保护」(header guard)
+
+```c++
+#ifndef __CLASS_NAME__H__
+#define __CLASS_NAME__H__
+
+...
+  
+#endif // __CLASS_NAME__H__
+```
+
+
+
 # 构造函数
 
 ## 构造函数放在 `private`
