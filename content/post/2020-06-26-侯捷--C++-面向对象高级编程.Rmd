@@ -68,12 +68,25 @@ ToC: true
 
 ## composition
 
-## 构造与析构顺序
+`composition` 模式下，`container` 与 `component` 的生命周期是一样的。
+
+### 构造与析构顺序
 
 -   构造由内向外
 -   析构由外向内
 
 ![](/images/2020-06-26-侯捷--C++-面向对象高级编程/composition-1.png)
+
+## delegation(pImpl)
+
+-   Body-handle
+-   pImpl
+
+-   composition by reference
+
+在 `delegation` 模式下，`body` 与 `handle` 的生命周期是不一样的，`handle` 是一个指针，独立于 `body` 之外。
+
+![](/images/2020-06-26-侯捷--C++-面向对象高级编程/delegation-1.png)
 
 
 
