@@ -60,13 +60,20 @@ ToC: true
     -   class with pointer member
     -   Class without pointer member
 -   「object-oriented」：即有不同的类构成的层次体系:
-    -   `inheritance`
-    -   `composition`
-    -   `delegation`
+    -   `inheritance`：表示 「is-a」
+    -   `composition`：表示 「has-a」
+    -   `delegation`：
 
 ![](/images/2020-06-26-侯捷--C++-面向对象高级编程/oop.png)
 
+## composition
 
+## 构造与析构顺序
+
+-   构造由内向外
+-   析构由外向内
+
+![](/images/2020-06-26-侯捷--C++-面向对象高级编程/composition-1.png)
 
 
 
