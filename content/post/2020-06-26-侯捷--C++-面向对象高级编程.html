@@ -64,4 +64,14 @@ ToC: true
 </ul>
 <p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/pass-by-value-vs-pass-by-reference.png" /></p>
 </div>
+<div id="return-by-value-vs-return-by-reference" class="section level2">
+<h2>return-by-value vs return-by-reference</h2>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/return-by-value-vs-return-by-reference.png" /></p>
+<p>需要注意的是，<code>return-by-reference</code> 要求变量在函数调用结束后，<strong>不会被销毁</strong>，是在堆栈中仍然存在的变量。</p>
+</div>
+<div id="friend-友元函数" class="section level2">
+<h2>friend 友元函数</h2>
+<p>对于类声明的<strong>私有变量</strong>，一般规定外部函数时无法获取的，所以我们需要编写<code>getter</code>函数。但是，如果把一个函数声明为这个类的<code>friend</code>，则允许直接获取类的私有变量。这样做有一定的方便性，但也是有一定的危险，毕竟我们把类私有变量封装起来的目的，就是不想让外部函数直接伸手进来操作。</p>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/friend.png" /></p>
+</div>
 </div>

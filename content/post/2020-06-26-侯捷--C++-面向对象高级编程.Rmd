@@ -70,3 +70,14 @@ ToC: true
 
 ![](/images/2020-06-26-侯捷--C++-面向对象高级编程/pass-by-value-vs-pass-by-reference.png)
 
+## return-by-value vs return-by-reference
+
+![](/images/2020-06-26-侯捷--C++-面向对象高级编程/return-by-value-vs-return-by-reference.png)
+
+需要注意的是，`return-by-reference` 要求变量在函数调用结束后，**不会被销毁**，是在堆栈中仍然存在的变量。
+
+## friend 友元函数
+
+对于类声明的**私有变量**，一般规定外部函数时无法获取的，所以我们需要编写`getter`函数。但是，如果把一个函数声明为这个类的`friend`，则允许直接获取类的私有变量。这样做有一定的方便性，但也是有一定的危险，毕竟我们把类私有变量封装起来的目的，就是不想让外部函数直接伸手进来操作。
+
+![](/images/2020-06-26-侯捷--C++-面向对象高级编程/friend.png)
