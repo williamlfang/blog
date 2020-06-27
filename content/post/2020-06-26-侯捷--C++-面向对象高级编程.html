@@ -125,7 +125,9 @@ ToC: true
 <blockquote>
 <p>先分配内存大小，然后调用构造函数</p>
 </blockquote>
-<pre class="cpp"><code></code></pre>
+<pre class="cpp"><code>void *mem = operator new( sizeof(Complex) );  // 分配内存
+Complex *p = static_cast&lt;Complex*&gt;mem;              // 类型转化
+p-&gt;Complex();                                                                   // 调用构造函数</code></pre>
 <p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/new.png" /></p>
 </div>
 <div id="delete" class="section level2">

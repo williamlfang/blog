@@ -143,7 +143,9 @@ ToC: true
 >   先分配内存大小，然后调用构造函数
 
 ```c++
-
+void *mem = operator new( sizeof(Complex) );  // 分配内存
+Complex *p = static_cast<Complex*>mem;				// 类型转化
+p->Complex();																	// 调用构造函数
 ```
 
 
