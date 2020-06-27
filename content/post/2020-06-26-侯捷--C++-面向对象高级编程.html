@@ -33,6 +33,11 @@ ToC: true
 </div>
 <div id="构造函数" class="section level1">
 <h1>构造函数</h1>
+<div id="构造函数放在-private" class="section level2">
+<h2>构造函数放在 <code>private</code></h2>
+<p>一般来说，我们会把各种形式的构造函数(ctor)放在 <code>public</code> 声明范围内，表示外部可以调用构造函数。但是，也一种设计模式叫做 <code>Singleton</code>，只允许通过函数调用来实现构造函数，这时，要求我们把构造函数放在 <code>private</code> 范围内。</p>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/ctor-singleton.png" /></p>
+</div>
 </div>
 <div id="析构函数" class="section level1">
 <h1>析构函数</h1>
