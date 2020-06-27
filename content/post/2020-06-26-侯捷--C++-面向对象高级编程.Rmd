@@ -157,3 +157,20 @@ p->Complex();																	// 调用构造函数
 >   先调用析构函数，然后删除内存大小
 
 ![](/images/2020-06-26-侯捷--C++-面向对象高级编程/delete.png)
+
+## array: new, delete
+
+`new` 和 `delete` 一定要配对出现
+
+-   单个 `new` 对应单个 `delete`
+
+-   `array new` 对应 `array-delete`，否则会出现只是析构了第一个类，而后面的对象没有完全析构，导致内存泄露。
+
+    ````c++
+    auto p = new Complex[3];
+    delete[] p;
+    ````
+
+    
+
+![](/images/2020-06-26-侯捷--C++-面向对象高级编程/array-new-delete.png)
