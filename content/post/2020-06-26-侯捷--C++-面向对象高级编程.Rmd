@@ -200,6 +200,33 @@ public:
 
 
 
+## converion function
+
+-   不需要指定返回类型，因为 `operator` 已经知道了
+-   类型可以是任意的，包括 `build-in` 、`user-defined-type`
+
+![](/images/2020-06-26-侯捷--C++-面向对象高级编程/conversion-function.png)
+
+
+
+## explicit
+
+
+
+## pointer-like-class
+
+类对象可以像操作指针一样进行运算符重载。
+
+![](/images/2020-06-26-侯捷--C++-面向对象高级编程/pointer-like-class.png)
+
+## function-like-class
+
+## member template
+
+在类模板里面，成员函数也是一个模板函数。
+
+![](/images/2020-06-26-侯捷--C++-面向对象高级编程/member-template.png)
+
 # 内存分配与管理
 
 ![](/images/2020-06-26-侯捷--C++-面向对象高级编程/stack-heap.png)
