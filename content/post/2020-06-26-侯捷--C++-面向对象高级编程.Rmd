@@ -47,6 +47,24 @@ ToC: true
 
 # 构造函数
 
+## 初始化列表
+
+`initializer-list` 先于其他构造，能够保证构造函数的实现，这尤其对于类继承，可能保证基类初始化。
+
+```c++
+class Strategy
+{
+public:
+  Strategy(std::string id):
+  	strategyid(id)				// 初始化列表
+    {
+      
+    }
+};
+```
+
+
+
 ## 构造函数放在 `private`
 
 一般来说，我们会把各种形式的构造函数(ctor)放在 `public` 声明范围内，表示外部可以调用构造函数。但是，也一种设计模式叫做 `Singleton`，只允许通过函数调用来实现构造函数，这时，要求我们把构造函数放在 `private` 范围内。
@@ -144,8 +162,8 @@ ToC: true
 
 ```c++
 void *mem = operator new( sizeof(Complex) );  // 分配内存
-Complex *p = static_cast<Complex*>mem;				// 类型转化
-p->Complex();																	// 调用构造函数
+Complex *p = static_cast<Complex*>mem;        // 类型转化
+p->Complex();                                 // 调用构造函数
 ```
 
 在底层实现机制上，`new` 也是调用了 `malloc`。但是与当初的 `malloc` 只分配内存、不调用构造函数不同，`new` 同时还保证了类的构造函数会被调用，以进行初始化操作。
