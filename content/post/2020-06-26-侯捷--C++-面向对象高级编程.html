@@ -28,3 +28,24 @@ ToC: true
 <p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/c-vs-c++.png" /></p>
 </div>
 </div>
+<div id="头文件" class="section level1">
+<h1>头文件</h1>
+</div>
+<div id="构造函数" class="section level1">
+<h1>构造函数</h1>
+</div>
+<div id="析构函数" class="section level1">
+<h1>析构函数</h1>
+</div>
+<div id="成员函数" class="section level1">
+<h1>成员函数</h1>
+<div id="const-成员函数" class="section level2">
+<h2>const 成员函数</h2>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/const-member-function.png" /></p>
+<p><code>const</code> 用在类的成员函数时，表示该成员函数<strong>调用时不会改变类成员变量的值</strong>。从编译器的角度来看，其实是做了一次「承诺」。因此，如果是对于 <code>const</code> 类对象的实例，其实是约定了整个类不会改变成员变量，这时去调用没有添加<code>const</code>限定的成员函数时，编译器会报错，因为我们在声明类实例的时候，明明说好了不会改变，但是调用非<code>const</code>成员函数，则有可能破坏这个约定，因此编译器不会通过。</p>
+<p>总结一下，就是：</p>
+<blockquote>
+<p>如果成员函数肯定不会修改成员变量的，尽量添加 <code>const</code> 限定。</p>
+</blockquote>
+</div>
+</div>
