@@ -80,13 +80,17 @@ ToC: true
 ## delegation(pImpl)
 
 -   Body-handle
--   pImpl
+-   pImpl：`pointer-to-implementation`
 
 -   composition by reference
 
 在 `delegation` 模式下，`body` 与 `handle` 的生命周期是不一样的，`handle` 是一个指针，独立于 `body` 之外。
 
 ![](/images/2020-06-26-侯捷--C++-面向对象高级编程/delegation-1.png)
+
+## inheritance
+
+![](/images/2020-06-26-侯捷--C++-面向对象高级编程/inheritance-1.png)
 
 
 
