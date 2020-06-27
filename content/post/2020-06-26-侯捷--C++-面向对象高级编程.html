@@ -73,5 +73,9 @@ ToC: true
 <h2>friend 友元函数</h2>
 <p>对于类声明的<strong>私有变量</strong>，一般规定外部函数时无法获取的，所以我们需要编写<code>getter</code>函数。但是，如果把一个函数声明为这个类的<code>friend</code>，则允许直接获取类的私有变量。这样做有一定的方便性，但也是有一定的危险，毕竟我们把类私有变量封装起来的目的，就是不想让外部函数直接伸手进来操作。</p>
 <p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/friend.png" /></p>
+<blockquote>
+<p>另外，我们需要注意，相同类之间生成的实例、父类与之类之间，互为<code>friend</code>。</p>
+</blockquote>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/friend2.png" /></p>
 </div>
 </div>
