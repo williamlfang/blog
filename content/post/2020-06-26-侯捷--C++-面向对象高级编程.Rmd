@@ -53,3 +53,20 @@ ToC: true
 总结一下，就是：
 
 >   如果成员函数肯定不会修改成员变量的，尽量添加 `const` 限定。
+
+## pass-by-value vs pass-by-reference
+
+两种传递参数的方式：
+
+-   `pass-by-value`：需要把参数压入 `heap`，即复制后传递给函数
+
+-   `pass-by-reference`：直接传入引用，不需要额外的开销。如果需要限定不会修改参数，最好增加 `pass-by-reference-to-const`，即
+
+    ```c++
+    void func(const int &arg); // 传入常量引用
+    ```
+
+    可以这样理解，「传入引用相当于传入指针」，因为在底层引用是指针。
+
+![](/images/2020-06-26-侯捷--C++-面向对象高级编程/pass-by-value-vs-pass-by-reference.png)
+
