@@ -242,3 +242,30 @@ double A::mdata = 10; // 变量定义，所有实例共同使用
 
 ![](/images/2020-06-26-侯捷--C++-面向对象高级编程/class-template.png)
 
+# namespace
+
+-   using directive
+
+    ```c++
+    using namespace std;
+    ```
+
+    
+
+-   using declaration
+
+    ```c++
+    using std::cout;
+    ```
+
+    
+
+-   using alias：
+
+    ```c++
+    using hiorder =  hicloud::OrderData;
+    ```
+
+    
+
+![](/images/2020-06-26-侯捷--C++-面向对象高级编程/namespace.png)
