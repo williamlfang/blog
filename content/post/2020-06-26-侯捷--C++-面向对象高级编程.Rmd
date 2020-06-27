@@ -1,5 +1,5 @@
 ---
-title: "侯捷: C++ 面向对象高级编程"
+#title: "侯捷: C++ 面向对象高级编程"
 author: William
 date: 2020-06-26
 lastmod: 2020-06-26
@@ -126,3 +126,14 @@ ToC: true
 
 ## Heap
 
+## 变量的生命周期
+
+-   全局变量
+-   静态变量
+-   局部变量
+
+![](/images/2020-06-26-侯捷--C++-面向对象高级编程/global-object.png)
+
+ ![](/images/2020-06-26-侯捷--C++-面向对象高级编程/static-object.png)
+
+![](/images/2020-06-26-侯捷--C++-面向对象高级编程/heap-object.png)
