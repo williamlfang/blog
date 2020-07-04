@@ -167,8 +167,58 @@ ToC: true
     sudo systemctl restart docker.service
     ```
 
-
 ## CentOS
+
+
+
+1. 删除旧版本
+
+   ```bash
+   sudo yum remove docker \
+                     docker-client \
+                     docker-client-latest \
+                     docker-common \
+                     docker-latest \
+                     docker-latest-logrotate \
+                     docker-logrotate \
+                     docker-engine
+   ```
+
+2. 添加软件源
+
+   ```bash
+   sudo yum install -y yum-utils
+   sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+   
+   sudo yum update
+   ```
+
+3. 安装
+
+   ```bash
+   sudo yum install docker.io
+   ```
+
+4. 加入 docker 用户组命令
+
+   ```bash
+   sudo usermod -aG docker trader
+   ```
+
+5. 添加启动
+
+   ```bash
+   sudo systemctl enable docker
+   sudo systemctl start docker
+   ```
+
+6. 运行测试
+
+   ```bash
+   sudo docker run hello-world
+   ```
+
+   
 
 
 
@@ -260,6 +310,110 @@ CONTAINER ID    IMAGE       COMMAND         CREATED         STATUS          PORT
 b3c220b3c9c6    myctp:v1.0  "/bin/bash"     2 minutes ago   Up 2 minutes            gallant_bell
 ```
 
+## 删除
+
+```bash
+## 列出所有
+docker ps -aq
+#＃ 删除指定 id
+docker rm
+## 删除 image
+docker rmi
+```
+
+
+
+列出所有容器 ID
+
+```
+docker ps -aq
+```
+
+查看所有运行或者不运行容器
+
+```
+docker ps -a
+```
+
+停止所有的 container（容器），这样才能够删除其中的 images：
+
+```
+docker stop $(docker ps -a -q) 或者 docker stop $(docker ps -aq)
+```
+
+如果想要删除所有 container（容器）的话再加一个指令：
+
+```
+docker rm $(docker ps -a -q) 或者 docker rm $(docker ps -aq)
+```
+
+查看当前有些什么 images
+
+```
+docker images
+```
+
+删除 images（镜像），通过 image 的 id 来指定删除谁
+
+```
+docker rmi <image id>
+```
+
+想要删除 untagged images，也就是那些 id 为的 image 的话可以用
+
+```
+docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
+```
+
+要删除全部 image（镜像）的话
+
+```
+docker rmi $(docker images -q)
+```
+
+强制删除全部 image 的话
+
+```
+docker rmi -f $(docker images -q)
+```
+
+从容器到宿主机复制
+
+```
+docker cp tomcat：/webapps/js/text.js /home/admin
+ docker  cp 容器名:  容器路径       宿主机路径
+```
+
+从宿主机到容器复制
+
+```
+docker cp /home/admin/text.js tomcat：/webapps/js
+ docker cp 宿主路径中文件      容器名  容器路径
+```
+
+删除所有停止的容器
+
+```
+docker container prune
+```
+
+删除所有不使用的镜像
+
+```
+docker image prune --force --all或者docker image prune -f -a
+```
+
+停止、启动、杀死、重启一个容器
+
+```
+docker stop Name或者ID  
+docker start Name或者ID  
+docker kill Name或者ID  
+docker restart name或者ID
+```
+
+
+
 # 发布 docker
 
 为了方便移植，`Docker` 允许我们通过两个方式来分享配置好的运行环境。
@@ -268,4 +422,52 @@ b3c220b3c9c6    myctp:v1.0  "/bin/bash"     2 minutes ago   Up 2 minutes        
 
 通过使用 `Docker Hub` 来发布。
 
+## 提交
+
+```bash
+docker commit -a "william" -m "myctp:v0.1" -p myctp.new myctp:v0.1
+```
+
 ## 导出
+
+```bash
+docker save -o myctp.v0.1.tar myctp:v0.1
+```
+
+## 导入
+
+```bash
+docker run -d --name myctp -it -v /home/william:/mnt myctp:v0.1 /bin/zsh
+```
+
+
+
+## 运行
+
+````bash
+docker exec -it myctp.new /bin/zsh
+````
+
+## 提交 Docker Hub
+
+```bash
+docker login
+UserName: williamlfnag
+Password: ************
+
+## 标记需要处理的image
+docker tag myctp:v0.1.2 williamlfang/myctp
+
+
+REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE
+myctp                v0.1.2              9c41f991a440        13 minutes ago      4.57GB
+williamlfang/myctp   latest              9c41f991a440        13 minutes ago      4.57GB
+myctp                v0.1.1              59c7bc923b02        3 days ago          4.02GB
+myctp                v0.1                e8a31774a8c6        4 days ago          2.49GB
+centos               7                   b5b4d78bc90c        8 weeks ago         203MB
+
+docker push williamlfang/myctp
+
+docker pull williamlfang/myctp
+```
+

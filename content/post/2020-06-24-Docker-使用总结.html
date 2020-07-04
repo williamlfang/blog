@@ -128,6 +128,31 @@ sudo systemctl restart docker.service</code></pre></li>
 </div>
 <div id="centos" class="section level2">
 <h2>CentOS</h2>
+<ol style="list-style-type: decimal">
+<li>删除旧版本</li>
+</ol>
+<p><code>bash    sudo yum remove docker \                      docker-client \                      docker-client-latest \                      docker-common \                      docker-latest \                      docker-latest-logrotate \                      docker-logrotate \                      docker-engine</code></p>
+<ol start="2" style="list-style-type: decimal">
+<li>添加软件源</li>
+</ol>
+<p>```bash sudo yum install -y yum-utils sudo yum-config-manager –add-repo <a href="https://download.docker.com/linux/centos/docker-ce.repo" class="uri">https://download.docker.com/linux/centos/docker-ce.repo</a></p>
+<p>sudo yum update ```</p>
+<ol start="3" style="list-style-type: decimal">
+<li>安装</li>
+</ol>
+<p><code>bash    sudo yum install docker.io</code></p>
+<ol start="4" style="list-style-type: decimal">
+<li>加入 docker 用户组命令</li>
+</ol>
+<p><code>bash    sudo usermod -aG docker trader</code></p>
+<ol start="5" style="list-style-type: decimal">
+<li>添加启动</li>
+</ol>
+<p><code>bash    sudo systemctl enable docker    sudo systemctl start docker</code></p>
+<ol start="6" style="list-style-type: decimal">
+<li>运行测试</li>
+</ol>
+<p><code>bash    sudo docker run hello-world</code></p>
 </div>
 </div>
 <div id="基础概念" class="section level1">
@@ -191,6 +216,48 @@ gcc version 4.8.5 20150623 (Red Hat 4.8.5-39) (GCC)
 <p>退出会依然可以看到程序在运行中</p>
 <pre class="bash"><code>CONTAINER ID    IMAGE       COMMAND         CREATED         STATUS          PORTS   NAMES
 b3c220b3c9c6    myctp:v1.0  &quot;/bin/bash&quot;     2 minutes ago   Up 2 minutes            gallant_bell</code></pre>
+<div id="删除" class="section level2">
+<h2>删除</h2>
+<pre class="bash"><code>## 列出所有
+docker ps -aq
+#＃ 删除指定 id
+docker rm
+## 删除 image
+docker rmi</code></pre>
+<p>列出所有容器 ID</p>
+<pre><code>docker ps -aq</code></pre>
+<p>查看所有运行或者不运行容器</p>
+<pre><code>docker ps -a</code></pre>
+<p>停止所有的 container（容器），这样才能够删除其中的 images：</p>
+<pre><code>docker stop $(docker ps -a -q) 或者 docker stop $(docker ps -aq)</code></pre>
+<p>如果想要删除所有 container（容器）的话再加一个指令：</p>
+<pre><code>docker rm $(docker ps -a -q) 或者 docker rm $(docker ps -aq)</code></pre>
+<p>查看当前有些什么 images</p>
+<pre><code>docker images</code></pre>
+<p>删除 images（镜像），通过 image 的 id 来指定删除谁</p>
+<pre><code>docker rmi &lt;image id&gt;</code></pre>
+<p>想要删除 untagged images，也就是那些 id 为的 image 的话可以用</p>
+<pre><code>docker rmi $(docker images | grep &quot;^&lt;none&gt;&quot; | awk &quot;{print $3}&quot;)</code></pre>
+<p>要删除全部 image（镜像）的话</p>
+<pre><code>docker rmi $(docker images -q)</code></pre>
+<p>强制删除全部 image 的话</p>
+<pre><code>docker rmi -f $(docker images -q)</code></pre>
+<p>从容器到宿主机复制</p>
+<pre><code>docker cp tomcat：/webapps/js/text.js /home/admin
+ docker  cp 容器名:  容器路径       宿主机路径</code></pre>
+<p>从宿主机到容器复制</p>
+<pre><code>docker cp /home/admin/text.js tomcat：/webapps/js
+ docker cp 宿主路径中文件      容器名  容器路径</code></pre>
+<p>删除所有停止的容器</p>
+<pre><code>docker container prune</code></pre>
+<p>删除所有不使用的镜像</p>
+<pre><code>docker image prune --force --all或者docker image prune -f -a</code></pre>
+<p>停止、启动、杀死、重启一个容器</p>
+<pre><code>docker stop Name或者ID  
+docker start Name或者ID  
+docker kill Name或者ID  
+docker restart name或者ID</code></pre>
+</div>
 </div>
 <div id="发布-docker" class="section level1">
 <h1>发布 docker</h1>
@@ -199,7 +266,41 @@ b3c220b3c9c6    myctp:v1.0  &quot;/bin/bash&quot;     2 minutes ago   Up 2 minut
 <h2>Docker Hub</h2>
 <p>通过使用 <code>Docker Hub</code> 来发布。</p>
 </div>
+<div id="提交" class="section level2">
+<h2>提交</h2>
+<pre class="bash"><code>docker commit -a &quot;william&quot; -m &quot;myctp:v0.1&quot; -p myctp.new myctp:v0.1</code></pre>
+</div>
 <div id="导出" class="section level2">
 <h2>导出</h2>
+<pre class="bash"><code>docker save -o myctp.v0.1.tar myctp:v0.1</code></pre>
+</div>
+<div id="导入" class="section level2">
+<h2>导入</h2>
+<pre class="bash"><code>docker run -d --name myctp -it -v /home/william:/mnt myctp:v0.1 /bin/zsh</code></pre>
+</div>
+<div id="运行" class="section level2">
+<h2>运行</h2>
+<pre class="bash"><code>docker exec -it myctp.new /bin/zsh</code></pre>
+</div>
+<div id="提交-docker-hub" class="section level2">
+<h2>提交 Docker Hub</h2>
+<pre class="bash"><code>docker login
+UserName: williamlfnag
+Password: ************
+
+## 标记需要处理的image
+docker tag myctp:v0.1.2 williamlfang/myctp
+
+
+REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE
+myctp                v0.1.2              9c41f991a440        13 minutes ago      4.57GB
+williamlfang/myctp   latest              9c41f991a440        13 minutes ago      4.57GB
+myctp                v0.1.1              59c7bc923b02        3 days ago          4.02GB
+myctp                v0.1                e8a31774a8c6        4 days ago          2.49GB
+centos               7                   b5b4d78bc90c        8 weeks ago         203MB
+
+docker push williamlfang/myctp
+
+docker pull williamlfang/myctp</code></pre>
 </div>
 </div>

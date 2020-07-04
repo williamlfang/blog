@@ -12,8 +12,7 @@ ToC: true
 
 
 
-<p><code>Unix</code>/<code>Linux</code> 编程实践，主要为实际生产过程中经常使用的<strong>命令行以及简单的执行任务的程序脚本</strong>。
-<!--more--></p>
+<p><code>Unix</code>/<code>Linux</code> 编程实践，主要为实际生产过程中经常使用的<strong>命令行以及简单的执行任务的程序脚本</strong>。 <!--more--></p>
 <div class="figure">
 <img src="/images/UNIX%20HD%20Wallpaper.png" alt="Unix" />
 <p class="caption">Unix</p>
@@ -279,7 +278,7 @@ echo -e &quot;\n Hello, world! \n&quot;</code></pre>
 <h2>日期格式命名的文件</h2>
 <ul>
 <li>使用 <code>+</code> 来拼接</li>
-<li>使用 <code>-d "1 days"</code> 来增加或者 <code>-d "-1 days"</code>减少日期</li>
+<li>使用 <code>-d &quot;1 days&quot;</code> 来增加或者 <code>-d &quot;-1 days&quot;</code>减少日期</li>
 </ul>
 <pre class="bash"><code>dataFile=$(date -d &quot;-$i days&quot; +&quot;%Y%m%d&quot;)
 

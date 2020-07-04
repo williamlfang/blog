@@ -14,20 +14,17 @@ ToC: true
 
 <p>总结：</p>
 <ul>
-<li><p>如果使用 <code>fmtlib</code>，则需要在编译静态库的时候，设置 <code>include</code> 之前添加</p>
-<pre class="cpp"><code>#define LOGURU_USE_FMTLIB 1
-#include &quot;loguru.hpp&quot;</code></pre></li>
-<li><p>编译可执行的时候，需要确保先链接 <code>loguru</code>，然后在链接 <code>fmt</code></p>
-<pre class="cmake"><code>target_link_libraries(ctpmd PRIVATE 
-    thostmduserapi_se
-    # NanoLog
-    # fmt
-    loguru
-    fmt  ## 确定 fmt 是在后面
-    yaml-cpp
-)</code></pre></li>
+<li>如果使用 <code>fmtlib</code>，则需要在编译静态库的时候，设置 <code>include</code> 之前添加</li>
 </ul>
-<p><img src="/images/2020-03-23-C++日志模块-loguru/loguru.png" /></p>
+<p><code>c++   #define LOGURU_USE_FMTLIB 1   #include &quot;loguru.hpp&quot;</code></p>
+<ul>
+<li>编译可执行的时候，需要确保先链接 <code>loguru</code>，然后在链接 <code>fmt</code></li>
+</ul>
+<p><code>cmake   target_link_libraries(ctpmd PRIVATE        thostmduserapi_se       # NanoLog       # fmt       loguru       fmt  ## 确定 fmt 是在后面       yaml-cpp   )</code></p>
+<div class="figure">
+<img src="/images/2020-03-23-C++日志模块-loguru/loguru.png" />
+
+</div>
 <div id="安装" class="section level1">
 <h1>安装</h1>
 <p>由于我们后面需要使用 <code>fmtlib</code> 模块用于更好的输出日志，所以需要先进行安装。</p>
