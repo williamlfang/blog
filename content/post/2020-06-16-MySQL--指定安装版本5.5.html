@@ -151,3 +151,52 @@ sudo cp support-files/mysql.server /etc/init.d/mysql.server</code></pre>
 <pre class="bash"><code>dpkg -l |grep ^rc|awk &#39;{print $2}&#39; |sudo xargs dpkg -P</code></pre>
 <p>就可以了</p>
 </div>
+<div id="centos7安装-mysql5.5" class="section level1">
+<h1>CentOS7：安装 MySQL5.5</h1>
+<pre class="bash"><code>## 有可能报错：myriadb-libs
+## 需要删除
+rpm -qa | grep mariadb
+sudo rpm -ev --nodeps mariadb-libs-5.5.65-1.el7.x86_64
+rpm -ev --nodeps mariadb-5.5.65-1.el7.x86_64
+rpm -ev --nodeps mariadb-devel-5.5.65-1.el7.x86_64
+
+rm /usr/lib64/mysql/libmysqlclient.so.18
+rm -rf /var/lib/mysql/
+rm -rf /usr/mysql/
+rm -rf /usr/share/mysql
+rm -rf /etc/my.cnf
+rm -rf /var/log/mysqld.log  ## 如果不删除，会影响新安装的 MySQL 无法写入密码
+
+## 安装 net-tools
+yum install net-tools
+
+## 1. 先安装 MySQL-shared-compat
+sudo rpm -ivh MySQL-shared-compat-5.5.60-1.el7.x86_64.rpm
+
+## 2. 接着安装
+rpm -ivh MySQL-server-5.5.60-1.el7.x86_64.rpm
+
+## 3. 然后安装
+rpm -ivh MySQL-client-5.5.60-1.el7.x86_64.rpm
+
+## 4. 继续安装
+rpm -ivh MySQL-devel-5.5.60-1.el7.x86_64.rpm
+
+## 5. 最后安装依赖包
+rpm -ivh MySQL-shared-5.5.60-1.el7.x86_64.rpm
+rpm -ivh MySQL-shared-compat-5.5.60-1.el7.x86_64.rpm
+
+## 启动
+/etc/init.d/mysql start
+## 修改密码
+/usr/bin/mysqladmin -u root password &#39;******&#39;
+sudo mysql_install_db --datadir=/var/lib/mysql
+sudo chown mysql:mysql /var/lib/mysql -R
+## 安全设置
+/usr/bin/mysql_secure_installation
+## 帮助
+/usr/sbin/mysqld --help
+service mysql start
+mysql -uroot -p</code></pre>
+<p><a href="https://www.jianshu.com/p/fbd2686e3acb" class="uri">https://www.jianshu.com/p/fbd2686e3acb</a></p>
+</div>
