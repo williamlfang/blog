@@ -1,0 +1,152 @@
+---
+title: "RabbitMQ: 安装与使用"
+author: William
+date: 2020-07-09
+lastmod: 2020-07-09
+categories: [Programming]
+tags: [RabbitMQ,消息队列,c++,Linux]
+description: 使用 RabbitMQ 消息队列。
+draft: false
+ToC: true
+---
+
+
+
+<div id="安装" class="section level1">
+<h1>安装</h1>
+<div id="ubuntu" class="section level2">
+<h2>Ubuntu</h2>
+<p>为了安装新版本，建议到<a href="https://www.rabbitmq.com/install-debian.html#manual-installation">官网</a></p>
+<pre class="bash"><code>## 安装依赖包　socat
+sudo apt install socat
+wget https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.8.5/rabbitmq-server_3.8.5-1_all.deb
+sudo dpkg -i rabbitmq-server_3.8.5-1_all.deb</code></pre>
+</div>
+<div id="centos7" class="section level2">
+<h2>CentOS7</h2>
+<pre class="bash"><code>sudo yum install -y socat
+
+# 下载
+$ wget https://github.com/rabbitmq/erlang-rpm/releases/download/v22.3/erlang-22.3-1.el7.x86_64.rpm
+
+# 安装
+
+$ rpm -ivh erlang-22.3-1.el7.x86_64.rpm</code></pre>
+</div>
+</div>
+<div id="使用" class="section level1">
+<h1>使用</h1>
+<div id="启动服务" class="section level2">
+<h2>启动服务</h2>
+<p>使用命令启动服务</p>
+<pre class="bash"><code># 直接启动
+sudo rabbitmq-server
+
+# -detached为可选参数，表示后台开启
+sudo rabbitmq-server -detached
+
+#关闭RabbitMQ服务：  
+sudo rabbitmqctl stop</code></pre>
+<p>启动成功后显示</p>
+<pre class="bash"><code>  ##  ##      RabbitMQ 3.8.5
+  ##  ##
+  ##########  Copyright (c) 2007-2020 VMware, Inc. or its affiliates.
+  ######  ##
+  ##########  Licensed under the MPL 1.1. Website: https://rabbitmq.com
+
+  Doc guides: https://rabbitmq.com/documentation.html
+  Support:    https://rabbitmq.com/contact.html
+  Tutorials:  https://rabbitmq.com/getstarted.html
+  Monitoring: https://rabbitmq.com/monitoring.html
+
+  Logs: /var/log/rabbitmq/rabbit@william-pc.log
+        /var/log/rabbitmq/rabbit@william-pc_upgrade.log
+
+  Config file(s): (none)
+
+  Starting broker... completed with 0 plugins.</code></pre>
+</div>
+<div id="插件管理" class="section level2">
+<h2>插件管理</h2>
+<blockquote>
+<p>需要先启动插件，然后在启动 rabbitmq 服务</p>
+</blockquote>
+<pre class="bash"><code>sudo rabbitmq-plugins enable rabbitmq_management</code></pre>
+<p>启动成功后</p>
+<pre class="bash"><code>Enabling plugins on node rabbit@william-pc:
+rabbitmq_management
+The following plugins have been configured:
+  rabbitmq_management
+  rabbitmq_management_agent
+  rabbitmq_web_dispatch
+Applying plugin configuration to rabbit@william-pc...
+The following plugins have been enabled:
+  rabbitmq_management
+  rabbitmq_management_agent
+  rabbitmq_web_dispatch
+
+started 3 plugins.</code></pre>
+<p>这样</p>
+<ol style="list-style-type: decimal">
+<li><p>先启动插件管理</p></li>
+<li><p>然后启动服务</p></li>
+<li><p>产生以下结果</p></li>
+</ol>
+<p>```bash ## ## RabbitMQ 3.8.5 ## ## ########## Copyright (c) 2007-2020 VMware, Inc. or its affiliates. ###### ## ########## Licensed under the MPL 1.1. Website: <a href="https://rabbitmq.com" class="uri">https://rabbitmq.com</a></p>
+<pre><code> Doc guides: https://rabbitmq.com/documentation.html
+ Support:    https://rabbitmq.com/contact.html
+ Tutorials:  https://rabbitmq.com/getstarted.html
+ Monitoring: https://rabbitmq.com/monitoring.html
+
+ Logs: /var/log/rabbitmq/rabbit@william-pc.log
+       /var/log/rabbitmq/rabbit@william-pc_upgrade.log
+
+ Config file(s): (none)
+
+ Starting broker... completed with 3 plugins.</code></pre>
+<p>```</p>
+<ol start="4" style="list-style-type: decimal">
+<li>说明使用了 3 个插件：</li>
+</ol>
+<p><code>bash    Starting broker... completed with 3 plugins.</code></p>
+</div>
+<div id="web-访问" class="section level2">
+<h2>Web 访问</h2>
+<p>Web 管理程序的端口号是 15672，在浏览器中输入 <a href="https://link.zhihu.com/?target=http%3A//localhost%3A15672/">http://localhost:15672</a>，即可以访问。</p>
+</div>
+<div id="用户管理" class="section level2">
+<h2>用户管理</h2>
+<p>登录以上 Web 管理界面后，需要我们输入账户和密码。</p>
+<ol style="list-style-type: decimal">
+<li>增加用户</li>
+</ol>
+<p><code>bash    ## 增加用户，并配置密码    sudo rabbitmqctl add_user william &lt;Password&gt;</code></p>
+<ol start="2" style="list-style-type: decimal">
+<li>删除用户</li>
+</ol>
+<p><code>bash    sudo rabbitmqctl delete_user william</code></p>
+<ol start="3" style="list-style-type: decimal">
+<li>修改用户密码</li>
+</ol>
+<p><code>bash    sudo rabbitmqctl change_password william &lt;Password&gt;</code></p>
+<ol start="4" style="list-style-type: decimal">
+<li>列出用户</li>
+</ol>
+<p><code>bash    sudo rabbitmqctl list_users</code></p>
+<ol start="5" style="list-style-type: decimal">
+<li>设置用户权限</li>
+</ol>
+<p>用户的角色可以分为5种:</p>
+<ul>
+<li>超级管理员 (administrator)：可登陆管理控制台 (启用 management plugin 的情况下)，可查看所有的信息，并且可以对用户，策略(policy) 进行操作。</li>
+<li>监控者 (monitoring)：可登陆管理控制台 (启用 management plugin 的情况下)，同时可以查看 rabbitmq 节点的相关信息 (进程数，内存使用情况，磁盘使用情况等)</li>
+<li>策略制定者 (policymaker)：可登陆管理控制台 (启用 management plugin 的情况下), 同时可以对 policy 进行管理。但无法查看节点的相关信息 (上图红框标识的部分)。</li>
+<li>普通管理者 (management)：仅可登陆管理控制台 (启用 management plugin 的情况下)，无法看到节点信息，也无法对策略进行管理。</li>
+<li>其他</li>
+</ul>
+<p>设置用户角色的命令为：</p>
+<p>```bash ## 设置用户角色 sudo rabbitmqctl set_user_tags william administrator</p>
+<p>## 也可以给同一用户设置多个角色，例如</p>
+<p>sudo rabbitmqctl set_user_tags william administrator monitoring policymaker ```</p>
+</div>
+</div>

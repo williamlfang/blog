@@ -1,0 +1,200 @@
+---
+title: "RabbitMQ: 安装与使用"
+author: William
+date: 2020-07-09
+lastmod: 2020-07-09
+categories: [Programming]
+tags: [RabbitMQ,消息队列,c++,Linux]
+description: 使用 RabbitMQ 消息队列。
+draft: false
+ToC: true
+---
+
+# 安装
+
+## Ubuntu
+
+为了安装新版本，建议到[官网](https://www.rabbitmq.com/install-debian.html#manual-installation)
+
+```bash
+## 安装依赖包　socat
+sudo apt install socat
+wget https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.8.5/rabbitmq-server_3.8.5-1_all.deb
+sudo dpkg -i rabbitmq-server_3.8.5-1_all.deb
+```
+
+
+
+## CentOS7
+
+```bash
+sudo yum install -y socat
+
+# 下载
+$ wget https://github.com/rabbitmq/erlang-rpm/releases/download/v22.3/erlang-22.3-1.el7.x86_64.rpm
+
+# 安装
+
+$ rpm -ivh erlang-22.3-1.el7.x86_64.rpm
+```
+
+# 使用
+
+## 启动服务
+
+使用命令启动服务
+
+```bash
+# 直接启动
+sudo rabbitmq-server
+
+# -detached为可选参数，表示后台开启
+sudo rabbitmq-server -detached
+
+#关闭RabbitMQ服务：  
+sudo rabbitmqctl stop
+```
+
+启动成功后显示
+
+```bash
+  ##  ##      RabbitMQ 3.8.5
+  ##  ##
+  ##########  Copyright (c) 2007-2020 VMware, Inc. or its affiliates.
+  ######  ##
+  ##########  Licensed under the MPL 1.1. Website: https://rabbitmq.com
+
+  Doc guides: https://rabbitmq.com/documentation.html
+  Support:    https://rabbitmq.com/contact.html
+  Tutorials:  https://rabbitmq.com/getstarted.html
+  Monitoring: https://rabbitmq.com/monitoring.html
+
+  Logs: /var/log/rabbitmq/rabbit@william-pc.log
+        /var/log/rabbitmq/rabbit@william-pc_upgrade.log
+
+  Config file(s): (none)
+
+  Starting broker... completed with 0 plugins.
+```
+
+## 插件管理
+
+> 需要先启动插件，然后在启动 rabbitmq 服务
+
+```bash
+sudo rabbitmq-plugins enable rabbitmq_management
+```
+
+启动成功后
+
+```bash
+Enabling plugins on node rabbit@william-pc:
+rabbitmq_management
+The following plugins have been configured:
+  rabbitmq_management
+  rabbitmq_management_agent
+  rabbitmq_web_dispatch
+Applying plugin configuration to rabbit@william-pc...
+The following plugins have been enabled:
+  rabbitmq_management
+  rabbitmq_management_agent
+  rabbitmq_web_dispatch
+
+started 3 plugins.
+```
+
+这样
+
+1. 先启动插件管理
+
+2. 然后启动服务
+
+3. 产生以下结果
+
+   ```bash
+     ##  ##      RabbitMQ 3.8.5
+     ##  ##
+     ##########  Copyright (c) 2007-2020 VMware, Inc. or its affiliates.
+     ######  ##
+     ##########  Licensed under the MPL 1.1. Website: https://rabbitmq.com
+   
+     Doc guides: https://rabbitmq.com/documentation.html
+     Support:    https://rabbitmq.com/contact.html
+     Tutorials:  https://rabbitmq.com/getstarted.html
+     Monitoring: https://rabbitmq.com/monitoring.html
+   
+     Logs: /var/log/rabbitmq/rabbit@william-pc.log
+           /var/log/rabbitmq/rabbit@william-pc_upgrade.log
+   
+     Config file(s): (none)
+   
+     Starting broker... completed with 3 plugins.
+   ```
+
+4. 说明使用了 3 个插件：
+
+   ```bash
+   Starting broker... completed with 3 plugins.
+   ```
+
+   
+
+## Web 访问
+
+Web 管理程序的端口号是 15672，在浏览器中输入 [http://localhost:15672](https://link.zhihu.com/?target=http%3A//localhost%3A15672/)，即可以访问。
+
+## 用户管理
+
+登录以上 Web 管理界面后，需要我们输入账户和密码。
+
+1. 增加用户
+
+   ```bash
+   ## 增加用户，并配置密码
+   sudo rabbitmqctl add_user william <Password>
+   ```
+
+   
+
+2. 删除用户
+
+   ```bash
+   sudo rabbitmqctl delete_user william
+   ```
+
+3. 修改用户密码
+
+   ```bash
+   sudo rabbitmqctl change_password william <Password>
+   ```
+
+   
+
+4. 列出用户
+
+   ```bash
+   sudo rabbitmqctl list_users
+   ```
+
+   
+
+5. 设置用户权限
+
+   用户的角色可以分为5种:
+
+   - 超级管理员 (administrator)：可登陆管理控制台 (启用 management plugin 的情况下)，可查看所有的信息，并且可以对用户，策略(policy) 进行操作。
+   - 监控者 (monitoring)：可登陆管理控制台 (启用 management plugin 的情况下)，同时可以查看 rabbitmq 节点的相关信息 (进程数，内存使用情况，磁盘使用情况等)
+   - 策略制定者 (policymaker)：可登陆管理控制台 (启用 management plugin 的情况下), 同时可以对 policy 进行管理。但无法查看节点的相关信息 (上图红框标识的部分)。
+   - 普通管理者 (management)：仅可登陆管理控制台 (启用 management plugin 的情况下)，无法看到节点信息，也无法对策略进行管理。
+   - 其他
+
+   设置用户角色的命令为：
+
+   ```bash
+   ## 设置用户角色
+   sudo rabbitmqctl set_user_tags william administrator
+   
+   ## 也可以给同一用户设置多个角色，例如
+   
+   sudo rabbitmqctl set_user_tags william administrator monitoring policymaker
+   ```
