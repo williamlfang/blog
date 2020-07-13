@@ -230,6 +230,22 @@ Web 管理程序的端口号是 15672，在浏览器中输入 [http://localhost:
 
 # 应用
 
+## 连接过程
+
+消息队列的使用过程大概如下：
+
+1. 客户端连接到消息队列服务器(broker)，打开一个 channel。
+
+2. 客户端声明一个 exchange，并设置相关属性。
+
+3. 客户端声明一个 queue，并设置相关属性。
+
+4. 客户端使用 routing key，在 exchange 和 queue 之间建立好绑定关系。
+
+5. 客户端投递消息到 exchange。
+
+   
+
 ## Python
 
 ### `server.py`
@@ -240,11 +256,23 @@ import pika
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
 channel = connection.channel()
 
-channel.exchange_declare(exchange='logs',
-                         exchange_type='fanout')
+
+try:
+    channel.exchange_declare(exchange='logs',
+                             exchange_type='fanout', 
+                             durable=True)
+except:
+    channel = connection.channel()
+    channel.exchange_delete( exchange='logs' )
+    channel.exchange_declare(exchange='logs',
+                             exchange_type='fanout', 
+                             durable=True)
+    
 
 from time import sleep
 counter = 0
+
+channel.basic_qos(prefetch_count=1)
 while 1:
     counter += 1
     message = "[{}] info: Hello World!".format(counter)
@@ -266,9 +294,9 @@ connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost')
 channel = connection.channel()
 
 channel.exchange_declare(exchange='logs',
-                         exchange_type='fanout')
+                         exchange_type='fanout', durable=True)
 
-result = channel.queue_declare(queue = "", exclusive=True)
+result = channel.queue_declare(queue = "", exclusive=True, durable=True)
 queue_name = result.method.queue
 
 channel.queue_bind(exchange='logs',
@@ -280,7 +308,7 @@ print(' [*] Waiting for logs. To exit press CTRL+C')
 def callback(ch, method, properties, body):
     print(" [x] %r" % body)
 
-
+channel.basic_qos(prefetch_count=1)
 channel.basic_consume(on_message_callback = callback,
                       queue = queue_name,
                       auto_ack = True)

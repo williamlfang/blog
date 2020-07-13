@@ -129,30 +129,30 @@ sudo systemctl restart docker.service</code></pre></li>
 <div id="centos" class="section level2">
 <h2>CentOS</h2>
 <ol style="list-style-type: decimal">
-<li>删除旧版本</li>
+<li><p>删除旧版本</p>
+<pre class="bash"><code>sudo yum remove docker \
+                 docker-client \
+                 docker-client-latest \
+                 docker-common \
+                 docker-latest \
+                 docker-latest-logrotate \
+                 docker-logrotate \
+                 docker-engine</code></pre></li>
+<li><p>添加软件源</p>
+<pre class="bash"><code>sudo yum install -y yum-utils
+sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+sudo yum update</code></pre></li>
+<li><p>安装</p>
+<pre class="bash"><code>sudo yum install docker.io</code></pre></li>
+<li><p>加入 docker 用户组命令</p>
+<pre class="bash"><code>sudo usermod -aG docker trader</code></pre></li>
+<li><p>添加启动</p>
+<pre class="bash"><code>sudo systemctl enable docker
+sudo systemctl start docker</code></pre></li>
+<li><p>运行测试</p>
+<pre class="bash"><code>sudo docker run hello-world</code></pre></li>
 </ol>
-<p><code>bash    sudo yum remove docker \                      docker-client \                      docker-client-latest \                      docker-common \                      docker-latest \                      docker-latest-logrotate \                      docker-logrotate \                      docker-engine</code></p>
-<ol start="2" style="list-style-type: decimal">
-<li>添加软件源</li>
-</ol>
-<p>```bash sudo yum install -y yum-utils sudo yum-config-manager –add-repo <a href="https://download.docker.com/linux/centos/docker-ce.repo" class="uri">https://download.docker.com/linux/centos/docker-ce.repo</a></p>
-<p>sudo yum update ```</p>
-<ol start="3" style="list-style-type: decimal">
-<li>安装</li>
-</ol>
-<p><code>bash    sudo yum install docker.io</code></p>
-<ol start="4" style="list-style-type: decimal">
-<li>加入 docker 用户组命令</li>
-</ol>
-<p><code>bash    sudo usermod -aG docker trader</code></p>
-<ol start="5" style="list-style-type: decimal">
-<li>添加启动</li>
-</ol>
-<p><code>bash    sudo systemctl enable docker    sudo systemctl start docker</code></p>
-<ol start="6" style="list-style-type: decimal">
-<li>运行测试</li>
-</ol>
-<p><code>bash    sudo docker run hello-world</code></p>
 </div>
 </div>
 <div id="基础概念" class="section level1">
@@ -303,4 +303,54 @@ docker push williamlfang/myctp
 
 docker pull williamlfang/myctp</code></pre>
 </div>
+</div>
+<div id="使用-williamlfang" class="section level1">
+<h1>使用 <code>williamlfang</code></h1>
+<pre class="bash"><code>## 显示当前可用镜像
+docker image ls
+
+## 如果没有 williamlfang/myctp
+docker pull williamlfang/myctp
+
+## 再次确认已经下载到本地
+docker image ls
+
+## 基于此镜像生成 container
+docker run -d --name myctp.dockerhub -it williamlfang/myctp /bin/zsh
+## 查看 docker 目前的所有 container
+docker ps -a
+
+
+CONTAINER ID        IMAGE                COMMAND             CREATED             STATUS                       PORTS               NAMES
+dcc7924f4c1a        williamlfang/myctp   &quot;/bin/zsh&quot;          4 seconds ago       Up 3 seconds                                     myctp.dockerhub
+c57d4de5205b        f03a8c4cf617         &quot;/bin/zsh&quot;          12 days ago         Exited (255) 4 minutes ago                       myctp
+b50399b23d5b        myctp:v0.1           &quot;/bin/zsh&quot;          13 days ago         Exited (137) 13 days ago                         myctp.test
+11953e12a6b5        e2c0099752c8         &quot;/bin/zsh&quot;          13 days ago         Exited (137) 13 days ago                         myctp.new
+
+## 进入 container 操作
+docker exec -it myctp.dockerhub /bin/zsh</code></pre>
+<p>以下就是进入我们的操作系统后的截图显示</p>
+<pre class="bash"><code>⚡ root@centos7  /  j myctp
+anaconda-post.log  bin  data  dev  etc  home  lib  lib64  log  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+
+/root/myCTP
+build  CMakeLists.txt  config  CTP踩坑记.md  data  deps  include  libs  log  scripts  src
+
+⚡ root@centos7  myCTP  ll
+build  CMakeLists.txt  config  CTP踩坑记.md  data  deps  include  libs  log  scripts  src
+
+total 64K
+drwxr-xr-x 11 root root 4.0K Jul  4 17:06 .
+dr-xr-x---  1 root root 4.0K Jul 13 17:27 ..
+drwxr-xr-x  4 root root 4.0K Jul  4 16:59 build
+-rw-r--r--  1 root root 5.6K Jul  4 16:51 CMakeLists.txt
+drwxr-xr-x  2 root root 4.0K Jul  4 16:37 config
+-rw-r--r--  1 root root 5.0K Jul  4 16:37 CTP踩坑记.md
+drwx------  3 root root 4.0K Jul  4 17:06 data
+drwxr-xr-x  5 root root 4.0K Jul  4 16:42 deps
+drwxr-xr-x 10 root root 4.0K Jul  4 16:37 include
+drwxr-xr-x 11 root root 4.0K Jul  4 16:59 libs
+drwx------  4 root root 4.0K Jul  4 17:06 log
+drwxr-xr-x  2 root root 4.0K Jul  4 16:39 scripts
+drwxr-xr-x 10 root root 4.0K Jul  4 16:37 src</code></pre>
 </div>

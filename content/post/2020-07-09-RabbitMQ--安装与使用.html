@@ -175,6 +175,17 @@ sudo rabbitmqctl set_user_tags william administrator monitoring policymaker</cod
 </div>
 <div id="应用" class="section level1">
 <h1>应用</h1>
+<div id="连接过程" class="section level2">
+<h2>连接过程</h2>
+<p>消息队列的使用过程大概如下：</p>
+<ol style="list-style-type: decimal">
+<li><p>客户端连接到消息队列服务器(broker)，打开一个 channel。</p></li>
+<li><p>客户端声明一个 exchange，并设置相关属性。</p></li>
+<li><p>客户端声明一个 queue，并设置相关属性。</p></li>
+<li><p>客户端使用 routing key，在 exchange 和 queue 之间建立好绑定关系。</p></li>
+<li><p>客户端投递消息到 exchange。</p></li>
+</ol>
+</div>
 <div id="python" class="section level2">
 <h2>Python</h2>
 <div id="server.py" class="section level3">
@@ -184,11 +195,23 @@ sudo rabbitmqctl set_user_tags william administrator monitoring policymaker</cod
 connection = pika.BlockingConnection(pika.ConnectionParameters(host=&#39;localhost&#39;))
 channel = connection.channel()
 
-channel.exchange_declare(exchange=&#39;logs&#39;,
-                         exchange_type=&#39;fanout&#39;)
+
+try:
+    channel.exchange_declare(exchange=&#39;logs&#39;,
+                             exchange_type=&#39;fanout&#39;, 
+                             durable=True)
+except:
+    channel = connection.channel()
+    channel.exchange_delete( exchange=&#39;logs&#39; )
+    channel.exchange_declare(exchange=&#39;logs&#39;,
+                             exchange_type=&#39;fanout&#39;, 
+                             durable=True)
+    
 
 from time import sleep
 counter = 0
+
+channel.basic_qos(prefetch_count=1)
 while 1:
     counter += 1
     message = &quot;[{}] info: Hello World!&quot;.format(counter)
@@ -208,9 +231,9 @@ connection = pika.BlockingConnection(pika.ConnectionParameters(host=&#39;localho
 channel = connection.channel()
 
 channel.exchange_declare(exchange=&#39;logs&#39;,
-                         exchange_type=&#39;fanout&#39;)
+                         exchange_type=&#39;fanout&#39;, durable=True)
 
-result = channel.queue_declare(queue = &quot;&quot;, exclusive=True)
+result = channel.queue_declare(queue = &quot;&quot;, exclusive=True, durable=True)
 queue_name = result.method.queue
 
 channel.queue_bind(exchange=&#39;logs&#39;,
@@ -222,7 +245,7 @@ print(&#39; [*] Waiting for logs. To exit press CTRL+C&#39;)
 def callback(ch, method, properties, body):
     print(&quot; [x] %r&quot; % body)
 
-
+channel.basic_qos(prefetch_count=1)
 channel.basic_consume(on_message_callback = callback,
                       queue = queue_name,
                       auto_ack = True)
