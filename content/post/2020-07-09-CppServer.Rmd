@@ -1,0 +1,39 @@
+---
+title: "CppServer"
+author: William
+date: 2020-07-09
+lastmod: 2020-07-09
+categories: [Programming]
+tags: [c++,server,tcp,udp,http,client,通信]
+description: 使用 CppServer 实现 TCP/UDP 通信。
+draft: false
+ToC: true
+---
+
+
+
+# 安装
+
+```bash
+apt-get install uuid-dev
+
+pip3 install gil
+
+git clone https://github.com/chronoxor/CppServer.git
+cd CppServer
+gil update
+
+cd modules
+rm -rf asio
+pc git clone git@github.com:chriskohlhoff/asio.git
+```
+
+
+
+# 编译
+
+```bash
+cd build
+./unix.sh
+```
+
