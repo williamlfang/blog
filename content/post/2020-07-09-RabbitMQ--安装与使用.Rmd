@@ -250,6 +250,13 @@ Web 管理程序的端口号是 15672，在浏览器中输入 [http://localhost:
 
 ## Python
 
+Python 环境下可以使用 `pika` 软件包
+
+```bash
+python -m pip install pika
+```
+
+
 ### `server.py`
 
 ```python
@@ -318,3 +325,37 @@ channel.basic_consume(on_message_callback = callback,
 channel.start_consuming()
 ```
 
+## C++
+
+### AMQP-CPP
+
+这个项目相对比较活跃，而且支持 C++11 标准。
+
+> [AMQP-CPP](https://github.com/CopernicaMarketingSoftware/AMQP-CPP) is a C++ library for communicating with a RabbitMQ message broker. The library can be used to parse incoming data from a RabbitMQ server, and to generate frames that can be sent to a RabbitMQ server.
+> 
+> AMQP-CPP is fully asynchronous and does not do any blocking (system) calls, so it can be used in high performance applications without the need for threads.
+
+```bash
+git clone git@github.com:CopernicaMarketingSoftware/AMQP-CPP.git
+
+mkdir build
+cd build
+## cmake .. [-DAMQP-CPP_BUILD_SHARED] [-DAMQP-CPP_LINUX_TCP]
+cmake .. -DAMQP-CPP_BUILD_SHARED=ON -DAMQP-CPP_LINUX_TCP=ON
+sudo cmake --build . --target install
+```
+
+### Demo
+
+```bash
+git clone git@github.com:hoxnox/examples.amqp-cpp.git
+cd examples.amqp-cpp
+mkdir build
+cd build
+cmake ..
+make -j
+
+./receive
+
+./send
+```
