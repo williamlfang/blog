@@ -38,6 +38,8 @@ ToC: true
 6. 提供了 Web 可视化管理和监控
 
 
+![RabbitMQ 工作原理](/images/2020-07-09-RabbitMQ--安装与使用/工作原理.jpg)
+
 
 # 安装
 
