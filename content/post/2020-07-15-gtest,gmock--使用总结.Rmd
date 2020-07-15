@@ -1,0 +1,79 @@
+---
+title: "gtest,gmock: 使用总结"
+author: William
+date: 2020-07-15
+lastmod: 2020-07-15
+categories: [Programming]
+tags: [gtest,gmock,C++,单元测试,Linux]
+description: 使用 gtest/gmock 进行 C++ 单元测试。
+draft: false
+ToC: true
+---
+
+项目地址：[googletest](https://github.com/google/googletest)
+
+# GoogleTest
+
+考虑到 `gtest` 和 `gmock` 两个项目均是针对单元测试，ynsdfsdfsdsdfsdfsdf
+
+> This repository is a merger of the formerly separate GoogleTest and GoogleMock projects. These were so closely related that it makes sense to maintain and release them together.
+
+## 安装
+
+### Ubuntu
+
+```bash
+git clone git@github.com:google/googletest.git
+cd googletest
+cmake -DBUILD_SHARED_LIBS=ON ..
+make -j
+
+## install: YES
+sudo make install
+
+## install: NO
+cp -r ../include/gtest ~/usr/gtest/include/
+cp ./lib/*.so ~/usr/gtest/lib
+
+## check
+sudo ldconfig -v | grep gtest
+sudo ldconfig -v | grep gmock
+```
+
+### CentOS7
+
+
+## Demo
+
+vim `test.cpp`:
+
+```C++
+#include <gtest/gtest.h>
+TEST(MathTest, TwoPlusTwoEqualsFour) {
+    EXPECT_EQ(2 + 2, 4);
+}
+
+int main(int argc, char **argv) {
+    ::testing::InitGoogleTest( &argc, argv );
+    return RUN_ALL_TESTS();
+}
+```
+
+Compile:
+
+```bash
+g++ test.cpp -lgtest -o test
+
+./test
+
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from MathTest
+[ RUN      ] MathTest.TwoPlusTwoEqualsFour
+[       OK ] MathTest.TwoPlusTwoEqualsFour (0 ms)
+[----------] 1 test from MathTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+```

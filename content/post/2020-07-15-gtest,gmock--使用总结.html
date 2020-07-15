@@ -1,0 +1,74 @@
+---
+title: "gtest,gmock: 使用总结"
+author: William
+date: 2020-07-15
+lastmod: 2020-07-15
+categories: [Programming]
+tags: [gtest,gmock,C++,单元测试,Linux]
+description: 使用 gtest/gmock 进行 C++ 单元测试。
+draft: false
+ToC: true
+---
+
+
+
+<p>项目地址：<a href="https://github.com/google/googletest">googletest</a></p>
+<div id="googletest" class="section level1">
+<h1>GoogleTest</h1>
+<p>考虑到 <code>gtest</code> 和 <code>gmock</code> 两个项目均是针对单元测试，ynsdfsdfsdsdfsdfsdf</p>
+<blockquote>
+<p>This repository is a merger of the formerly separate GoogleTest and GoogleMock projects. These were so closely related that it makes sense to maintain and release them together.</p>
+</blockquote>
+<div id="安装" class="section level2">
+<h2>安装</h2>
+<div id="ubuntu" class="section level3">
+<h3>Ubuntu</h3>
+<pre class="bash"><code>git clone git@github.com:google/googletest.git
+cd googletest
+cmake -DBUILD_SHARED_LIBS=ON ..
+make -j
+
+## install: YES
+sudo make install
+
+## install: NO
+cp -r ../include/gtest ~/usr/gtest/include/
+cp ./lib/*.so ~/usr/gtest/lib
+
+## check
+sudo ldconfig -v | grep gtest
+sudo ldconfig -v | grep gmock</code></pre>
+</div>
+<div id="centos7" class="section level3">
+<h3>CentOS7</h3>
+</div>
+</div>
+<div id="demo" class="section level2">
+<h2>Demo</h2>
+<p>vim <code>test.cpp</code>:</p>
+<pre class="c++"><code>#include &lt;gtest/gtest.h&gt;
+TEST(MathTest, TwoPlusTwoEqualsFour) {
+    EXPECT_EQ(2 + 2, 4);
+}
+
+int main(int argc, char **argv) {
+    ::testing::InitGoogleTest( &amp;argc, argv );
+    return RUN_ALL_TESTS();
+}</code></pre>
+<p>Compile:</p>
+<pre class="bash"><code>g++ test.cpp -lgtest -o test
+
+./test
+
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from MathTest
+[ RUN      ] MathTest.TwoPlusTwoEqualsFour
+[       OK ] MathTest.TwoPlusTwoEqualsFour (0 ms)
+[----------] 1 test from MathTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.</code></pre>
+</div>
+</div>
