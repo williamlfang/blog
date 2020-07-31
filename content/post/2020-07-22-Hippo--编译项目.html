@@ -47,6 +47,8 @@ sudo apt install autoconf automake libtool shtool
 git clone --recurse-submodules -b v1.20.0 https://github.com/grpc/grpc
 cd grpc
 
+mkdir -p ./cmake/build
+cd ./cmake/build
 cmake -DgRPC_INSTALL=ON \
       -DgRPC_BUILD_TESTS=OFF \
       -DgRPC_PROTOBUF_PROVIDER=package \
@@ -64,8 +66,9 @@ sudo make install</code></pre>
 <pre class="bash"><code>git clone https://github.com/curl/curl.git
 cd curl
 ./buildconf
-./configure
-make
+./configure --without-ssl --without-libidn2 --without-zlib
+make -j
+sudo make install
 cd include # ONLY install the include folder (with curl.h, etc)
 make install</code></pre>
 </div>

@@ -42,8 +42,9 @@ sudo ldconfig -v | grep gmock
 
 ### CentOS7
 
-
 ## Demo
+
+### 单独文件
 
 vim `test.cpp`:
 
@@ -77,3 +78,113 @@ g++ test.cpp -lgtest -o test
 [==========] 1 test from 1 test suite ran. (0 ms total)
 [  PASSED  ] 1 test.
 ```
+
+ ### 使用 Cmake
+
+#### 测试文件
+
+可以使用类，注意这里使用 `TEST_F`
+
+```c++
+#include <gtest/gtest.h>
+#include <vector>
+
+// 使用共享数据
+class VectorTest : public testing::Test
+{
+protected:
+    virtual void SetUp() override
+    {
+        vec.push_back(1);
+        vec.push_back(2);
+        vec.push_back(3);
+    }
+    std::vector<int> vec;
+};
+
+// 注意这里使用 TEST_F，而不是 TEST
+TEST_F(VectorTest, PushBack)
+{
+    // 虽然这里修改了 vec，但对其它测试函数来说是不可见的
+    vec.push_back(4);
+    EXPECT_EQ(vec.size(), 4);
+    EXPECT_EQ(vec.back(), 4);
+}
+
+TEST_F(VectorTest, Size)
+{
+    EXPECT_EQ(vec.size(), 3);
+}
+
+int main(int argc, char *argv[])
+{
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
+```
+
+#### CMakeLists.txt
+
+```cmake
+cmake_minimum_required(VERSION 3.15)
+project(mytest)
+
+find_package(GTest REQUIRED)
+
+add_executable(mytest main.cpp)
+
+target_include_directories(mytest PRIVATE ${GTEST_INCLUDE_DIRS})
+target_link_libraries(mytest PRIVATE ${GTEST_BOTH_LIBRARIES})
+
+add_test(Test mytest)
+enable_testing()
+```
+
+#### 构建
+
+```bash
+
+$ cmake ..
+
+-- The C compiler identification is GNU 7.5.0
+-- The CXX compiler identification is GNU 9.2.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found GTest: /usr/local/lib/libgtest.so
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/william/Desktop/mycpp/build
+
+$ make -j
+
+Scanning dependencies of target mytest
+[ 50%] Building CXX object CMakeFiles/mytest.dir/main.cpp.o
+[100%] Linking CXX executable mytest
+[100%] Built target mytest
+
+$./mytest
+
+[==========] Running 2 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 2 tests from VectorTest
+[ RUN      ] VectorTest.PushBack
+[       OK ] VectorTest.PushBack (0 ms)
+[ RUN      ] VectorTest.Size
+[       OK ] VectorTest.Size (0 ms)
+[----------] 2 tests from VectorTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 2 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 2 tests.
+```
+
