@@ -188,3 +188,9 @@ $./mytest
 [  PASSED  ] 2 tests.
 ```
 
+当然，可以直接使用命令运行测试
+
+```bash
+make test
+```
+

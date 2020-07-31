@@ -1,0 +1,20 @@
+---
+title: "Planner: 项目进度管理"
+author: William
+date: 2020-07-31
+lastmod: 2020-07-31
+categories: [Programming]
+tags: [Linux,项目,时间,管理,timing,plan,planner]
+description: 使用 planner 进行项目进度管理。
+draft: false
+ToC: true
+---
+
+# 安装
+
+```bash
+sudo apt instal planner
+```
+
+
+
