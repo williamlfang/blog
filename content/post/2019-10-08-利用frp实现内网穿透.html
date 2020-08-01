@@ -139,11 +139,9 @@ local_ip = 192.168.1.199
 local_port = 8787
 remote_port = 7099</code></pre></li>
 <li><p>客户机开启后台服务命令，配置文件是 <code>frpc.init</code></p>
-<pre class="bash"><code>nohup ./frpc -c frpc.ini &amp;</code></pre></li>
-</ul>
+<pre class="bash"><code>nohup ./frpc -c frpc.ini &amp;</code></pre>
 <p>提示连接成功：</p>
-<pre><code>```bash
-2019/10/08 20:11:19 [I] [proxy_manager.go:300] proxy removed: []
+<pre class="bash"><code>2019/10/08 20:11:19 [I] [proxy_manager.go:300] proxy removed: []
 2019/10/08 20:11:19 [I] [proxy_manager.go:310] proxy added: [ssh199 ssh166_rstudio ssh199_rstudio sshlocal ssh135 ssh166 ssh188]
 2019/10/08 20:11:19 [I] [proxy_manager.go:333] visitor removed: []
 2019/10/08 20:11:19 [I] [proxy_manager.go:342] visitor added: []
@@ -154,11 +152,9 @@ remote_port = 7099</code></pre></li>
 2019/10/08 20:11:19 [I] [control.go:169] [60429e396343771b] [ssh199] start proxy success
 2019/10/08 20:11:19 [I] [control.go:169] [60429e396343771b] [ssh166_rstudio] start proxy success
 2019/10/08 20:11:19 [I] [control.go:169] [60429e396343771b] [ssh199_rstudio] start proxy success
-2019/10/08 20:11:19 [I] [control.go:169] [60429e396343771b] [sshlocal] start proxy success
-```</code></pre>
+2019/10/08 20:11:19 [I] [control.go:169] [60429e396343771b] [sshlocal] start proxy success</code></pre>
 <p>并且我们可以在服务器端看到端口已经开启转发功能：</p>
-<pre><code>```bash
-[root@JD ~]# netstat -ntlp
+<pre class="bash"><code>[root@JD ~]# netstat -ntlp
 Active Internet connections (only servers)
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
 tcp        0      0 0.0.0.0:3306            0.0.0.0:*               LISTEN      24860/mysqld        
@@ -173,8 +169,8 @@ tcp6       0      0 :::22                   :::*                    LISTEN      
 tcp6       0      0 :::7000                 :::*                    LISTEN      22623/./frps        
 tcp6       0      0 :::7066                 :::*                    LISTEN      22623/./frps        
 tcp6       0      0 :::6011                 :::*                    LISTEN      22623/./frps        
-tcp6       0      0 :::7099                 :::*                    LISTEN      22623/./frps
-```</code></pre>
+tcp6       0      0 :::7099                 :::*                    LISTEN      22623/./frps</code></pre></li>
+</ul>
 </div>
 <div id="使用-ssh-连接" class="section level1">
 <h1>使用 <code>ssh</code> 连接</h1>

@@ -157,21 +157,12 @@ ADD_EXECUTABLE(main ${SRC_LIST})</code></pre>
 <p>FIND_系列指令主要包含一下指令：</p>
 <ul>
 <li><code>FIND_FILE(&lt;VAR&gt; name1 path1 path2 ...)</code>：VAR变量代表找到的文件全路径，包含文件名</li>
-<li><p><code>FIND_LIBRARY(&lt;VAR&gt; name1 path1 path2 ...)</code>：VAR变量表示找到的库全路径，包含库文件名</p>
-<pre class="cmake"><code>## FIND_LIBRARY示例：
-FIND_LIBRARY(libX X11 /usr/lib)
-IF(NOT libX)
-MESSAGE(FATAL_ERROR “libX not found”)
-ENDIF(NOT libX)</code></pre></li>
+<li><code>FIND_LIBRARY(&lt;VAR&gt; name1 path1 path2 ...)</code>：VAR变量表示找到的库全路径，包含库文件名
+<code>cmake   ## FIND_LIBRARY示例：   FIND_LIBRARY(libX X11 /usr/lib)   IF(NOT libX)   MESSAGE(FATAL_ERROR “libX not found”)   ENDIF(NOT libX)</code></li>
 <li><code>FIND_PATH(&lt;VAR&gt; name1 path1 path2 ...)</code>：VAR变量代表包含这个文件的路径。</li>
 <li><code>FIND_PROGRAM(&lt;VAR&gt; name1 path1 path2 ...)</code>：VAR变量代表包含这个程序的全路径。</li>
-<li><p><code>FIND_PACKAGE(&lt;name&gt; [major.minor] [QUIET] [NO_MODULE][[REQUIRED|COMPONENTS] [componets...]])</code></p>
-<pre class="cmake"><code>FIND_PACKAGE(HELLO)
-IF(HELLO_FOUND)
-    ADD_EXECUTABLE(hello main.c)
-    INCLUDE_DIRECTORIES(${HELLO_INCLUDE_DIR})
-    TARGET_LINK_LIBRARIES(hello ${HELLO_LIBRARY})
-ENDIF(HELLO_FOUND)</code></pre></li>
+<li><code>FIND_PACKAGE(&lt;name&gt; [major.minor] [QUIET] [NO_MODULE][[REQUIRED|COMPONENTS] [componets...]])</code>
+<code>cmake   FIND_PACKAGE(HELLO)   IF(HELLO_FOUND)       ADD_EXECUTABLE(hello main.c)       INCLUDE_DIRECTORIES(${HELLO_INCLUDE_DIR})       TARGET_LINK_LIBRARIES(hello ${HELLO_LIBRARY})   ENDIF(HELLO_FOUND)</code></li>
 </ul>
 </div>
 <div id="if" class="section level2">

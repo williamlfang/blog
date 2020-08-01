@@ -16,25 +16,16 @@ ToC: true
 <h1>介绍</h1>
 <div id="课程目标" class="section level2">
 <h2>课程目标</h2>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/课程目标.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/课程目标.png" /></p>
 <p>侯捷老师在整个课程的讲授过程中，一直都非常强调「大气的编程习惯」，即从宏观设计、全局把握，然后再从微观编写、认真调试的编程风格。这一点非常重要，尤其对于大型的软件工程，我们往往需要在大局上进行深度的思考与设计，并且在细节上注重品质，才能编写出稳健而持续运行的程序。</p>
 </div>
 <div id="现代-c" class="section level2">
 <h2>现代 C++</h2>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/现代c++.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/现代c++.png" /></p>
 <p>从 <code>C++11</code> 开始，人们开始认识到这个古老的编程语言似乎焕发出新的生命，既注重程序的运行效率（不妥协）、也开始关注程序猿的编程效率，提供了更多的、更加灵活的编程语言内容的特征，如 <code>auto</code>、<code>lambda</code>、<code>thread</code> 多线程等，旨在为程序猿提供更加友好的编程环境。因此，我们常常说，<code>C++11</code> 是现代化的 <code>C++</code> 升级版。</p>
 <p>我原来的大学本科学习的是 <code>c</code> 编程语言，后面使用的主要也是面向过程的编程语言，如 <code>R</code>、<code>Matlab</code>。从思维方式来看，这种面向过程的编程语言，思维的逻辑性更强，要求使用者能够实现把解决问题的思路想清楚，然后安装一定的逻辑流程进行编写相应的程序处理过程。相反，对于面向对象的编程语言，如 <code>C++</code>、<code>Java</code>，则是<strong>思维的抽象性更强</strong>，需要把具体的问题抽象成可处理的对象，然后再赋予对象一定的可操作的逻辑。</p>
 <p>我们无法说到底是面向过程的编程语言、还是面向对象的编程语言，哪种更好。我们只能说，不同的应用场景下，不同的编程语言各有利弊。从这几年 <code>C++</code> 语言的发展轨迹上看，我们更发现其不仅仅是作为一门编程语言工具使用，更是为程序员提供了一种理解计算机的思维方式，那就是从底层硬件映射抽象的对象、以编译器的思考方式来理解程序的运行方式，这样，我们能够更好的理解我们所写的程序是如何在计算机内部工作，是如何一步一步的执行我们设计的算法步骤。因此， <code>C++11</code> 也成为了我目前主要的开发语言。</p>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/c-vs-c++.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/c-vs-c++.png" /></p>
 </div>
 </div>
 <div id="头文件" class="section level1">
@@ -71,10 +62,7 @@ ToC: true
 <li><code>delegation</code>：</li>
 </ul></li>
 </ul>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/oop.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/oop.png" /></p>
 <div id="composition" class="section level2">
 <h2>composition</h2>
 <p><code>composition</code> 模式下，<code>container</code> 与 <code>component</code> 的生命周期是一样的。</p>
@@ -84,10 +72,7 @@ ToC: true
 <li>构造由内向外</li>
 <li>析构由外向内</li>
 </ul>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/composition-1.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/composition-1.png" /></p>
 </div>
 </div>
 <div id="delegationpimpl" class="section level2">
@@ -98,27 +83,18 @@ ToC: true
 <li><p>composition by reference</p></li>
 </ul>
 <p>在 <code>delegation</code> 模式下，<code>body</code> 与 <code>handle</code> 的生命周期是不一样的，<code>handle</code> 是一个指针，独立于 <code>body</code> 之外。</p>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/delegation-1.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/delegation-1.png" /></p>
 </div>
 <div id="inheritance" class="section level2">
 <h2>inheritance</h2>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/inheritance-1.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/inheritance-1.png" /></p>
 <div id="构造与析构顺序-1" class="section level3">
 <h3>构造与析构顺序</h3>
 <ul>
 <li>构造由内向外</li>
 <li>析构由外向内</li>
 </ul>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/inheritance-2.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/inheritance-2.png" /></p>
 </div>
 </div>
 </div>
@@ -140,28 +116,19 @@ public:
 <div id="构造函数放在-private" class="section level2">
 <h2>构造函数放在 <code>private</code></h2>
 <p>一般来说，我们会把各种形式的构造函数(ctor)放在 <code>public</code> 声明范围内，表示外部可以调用构造函数。但是，也一种设计模式叫做 <code>Singleton</code>，只允许通过函数调用来实现构造函数，这时，要求我们把构造函数放在 <code>private</code> 范围内。</p>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/ctor-singleton.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/ctor-singleton.png" /></p>
 </div>
 </div>
 <div id="析构函数" class="section level1">
 <h1>析构函数</h1>
 <p><strong>对于动态内存分配的成员变量，需要在析构函数中进行释放</strong>。</p>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/dtor-string.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/dtor-string.png" /></p>
 </div>
 <div id="成员函数" class="section level1">
 <h1>成员函数</h1>
 <div id="const-成员函数" class="section level2">
 <h2>const 成员函数</h2>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/const-member-function.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/const-member-function.png" /></p>
 <p><code>const</code> 用在类的成员函数时，表示该成员函数<strong>调用时不会改变类成员变量的值</strong>。从编译器的角度来看，其实是做了一次「承诺」。因此，如果是对于 <code>const</code> 类对象的实例，其实是约定了整个类不会改变成员变量，这时去调用没有添加<code>const</code>限定的成员函数时，编译器会报错，因为我们在声明类实例的时候，明明说好了不会改变，但是调用非<code>const</code>成员函数，则有可能破坏这个约定，因此编译器不会通过。</p>
 <p>总结一下，就是：</p>
 <blockquote>
@@ -177,37 +144,22 @@ public:
 <pre class="cpp"><code>void func(const int &amp;arg); // 传入常量引用</code></pre>
 <p>可以这样理解，「传入引用相当于传入指针」，因为在底层引用是指针。</p></li>
 </ul>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/pass-by-value-vs-pass-by-reference.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/pass-by-value-vs-pass-by-reference.png" /></p>
 </div>
 <div id="return-by-value-vs-return-by-reference" class="section level2">
 <h2>return-by-value vs return-by-reference</h2>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/return-by-value-vs-return-by-reference.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/return-by-value-vs-return-by-reference.png" /></p>
 <p>需要注意的是，<code>return-by-reference</code> 要求变量在函数调用结束后，<strong>不会被销毁</strong>，是在堆栈中仍然存在的变量。</p>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/return-by-value-vs-return-by-reference-2.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/return-by-value-vs-return-by-reference-2.png" /></p>
 </div>
 <div id="friend-友元函数" class="section level2">
 <h2>friend 友元函数</h2>
 <p>对于类声明的<strong>私有变量</strong>，一般规定外部函数时无法获取的，所以我们需要编写<code>getter</code>函数。但是，如果把一个函数声明为这个类的<code>friend</code>，则允许直接获取类的私有变量。这样做有一定的方便性，但也是有一定的危险，毕竟我们把类私有变量封装起来的目的，就是不想让外部函数直接伸手进来操作。</p>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/friend.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/friend.png" /></p>
 <blockquote>
 <p>另外，我们需要注意，相同类之间生成的实例、父类与之类之间，互为<code>friend</code>。</p>
 </blockquote>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/friend2.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/friend2.png" /></p>
 </div>
 <div id="operator-overloading" class="section level2">
 <h2>operator overloading</h2>
@@ -217,22 +169,13 @@ public:
 <li><code>function overloading</code></li>
 </ul>
 <p>所谓的 <code>overloading</code>，就是对原来语义的重新定义，使之能够作用于新的对象。</p>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/operator-overloading-1.png" />
-
-</div>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/operator-overloading-2.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/operator-overloading-1.png" /></p>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/operator-overloading-2.png" /></p>
 </div>
 <div id="virtual-函数" class="section level2">
 <h2>virtual 函数</h2>
 <p>在 <code>c++</code> 中，子类继承父类的函数，实际上是<strong>继承了函数的调用权</strong>。</p>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/puer-1.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/puer-1.png" /></p>
 </div>
 <div id="converion-function" class="section level2">
 <h2>converion function</h2>
@@ -240,10 +183,7 @@ public:
 <li>不需要指定返回类型，因为 <code>operator</code> 已经知道了</li>
 <li>类型可以是任意的，包括 <code>build-in</code> 、<code>user-defined-type</code></li>
 </ul>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/conversion-function.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/conversion-function.png" /></p>
 </div>
 <div id="explicit" class="section level2">
 <h2>explicit</h2>
@@ -251,10 +191,7 @@ public:
 <div id="pointer-like-class" class="section level2">
 <h2>pointer-like-class</h2>
 <p>类对象可以像操作指针一样进行运算符重载。</p>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/pointer-like-class.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/pointer-like-class.png" /></p>
 </div>
 <div id="function-like-class" class="section level2">
 <h2>function-like-class</h2>
@@ -262,18 +199,12 @@ public:
 <div id="member-template" class="section level2">
 <h2>member template</h2>
 <p>在类模板里面，成员函数也是一个模板函数。</p>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/member-template.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/member-template.png" /></p>
 </div>
 </div>
 <div id="内存分配与管理" class="section level1">
 <h1>内存分配与管理</h1>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/stack-heap.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/stack-heap.png" /></p>
 <div id="stack" class="section level2">
 <h2>Stack</h2>
 </div>
@@ -287,18 +218,9 @@ public:
 <li>静态变量</li>
 <li>局部变量</li>
 </ul>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/global-object.png" />
-
-</div>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/static-object.png" />
-
-</div>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/heap-object.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/global-object.png" /></p>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/static-object.png" /></p>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/heap-object.png" /></p>
 </div>
 <div id="new" class="section level2">
 <h2>new</h2>
@@ -309,20 +231,14 @@ public:
 Complex *p = static_cast&lt;Complex*&gt;mem;        // 类型转化
 p-&gt;Complex();                                 // 调用构造函数</code></pre>
 <p>在底层实现机制上，<code>new</code> 也是调用了 <code>malloc</code>。但是与当初的 <code>malloc</code> 只分配内存、不调用构造函数不同，<code>new</code> 同时还保证了类的构造函数会被调用，以进行初始化操作。</p>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/new.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/new.png" /></p>
 </div>
 <div id="delete" class="section level2">
 <h2>delete</h2>
 <blockquote>
 <p>先调用析构函数，然后删除内存大小</p>
 </blockquote>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/delete.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/delete.png" /></p>
 </div>
 <div id="array-new-delete" class="section level2">
 <h2>array: new, delete</h2>
@@ -333,10 +249,7 @@ p-&gt;Complex();                                 // 调用构造函数</code></p
 <pre class="cpp"><code>auto p = new Complex[3];
 delete[] p;</code></pre></li>
 </ul>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/array-new-delete.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/array-new-delete.png" /></p>
 </div>
 </div>
 <div id="static" class="section level1">
@@ -355,10 +268,7 @@ double A::mdata = 10; // 变量定义，所有实例共同使用</code></pre>
 <li>通过类调用：<code>A::get_data()</code>，需要指定类作用域</li>
 <li>通过实例调用：<code>a.get_data()</code></li>
 </ul>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/static.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/static.png" /></p>
 </div>
 <div id="类模板" class="section level1">
 <h1>类模板</h1>
@@ -367,10 +277,7 @@ double A::mdata = 10; // 变量定义，所有实例共同使用</code></pre>
 <li>先按照某个特定版本的类进行设计、编写、调试</li>
 <li>待以上特定版本的类完成后，使用 <code>template</code> 类型进行替代</li>
 </ul>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/class-template.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/class-template.png" /></p>
 </div>
 <div id="namespace" class="section level1">
 <h1>namespace</h1>
@@ -382,10 +289,7 @@ double A::mdata = 10; // 变量定义，所有实例共同使用</code></pre>
 <li><p>using alias：</p>
 <pre class="cpp"><code>using hiorder =  hicloud::OrderData;</code></pre></li>
 </ul>
-<div class="figure">
-<img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/namespace.png" />
-
-</div>
+<p><img src="/images/2020-06-26-侯捷--C++-面向对象高级编程/namespace.png" /></p>
 </div>
 <div id="标准库std" class="section level1">
 <h1>标准库:std</h1>
