@@ -23,17 +23,17 @@ ToC: true
 <h2>功能介绍</h2>
 <p>目前我主要还是使用<code>readr</code>当中的函数，<code>read_csv</code>。具体的函数说明，可以通过帮助来获得。</p>
 <pre class="r"><code>Sys.setlocale(&quot;LC_ALL&quot;, &#39;en_US.UTF-8&#39;)</code></pre>
-<pre><code>[1] &quot;en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/C&quot;</code></pre>
+<pre><code>[1] &quot;LC_CTYPE=en_US.UTF-8;LC_NUMERIC=C;LC_TIME=en_US.UTF-8;LC_COLLATE=en_US.UTF-8;LC_MONETARY=en_US.UTF-8;LC_MESSAGES=en_US.UTF-8;LC_PAPER=en_US.UTF-8;LC_NAME=C;LC_ADDRESS=C;LC_TELEPHONE=C;LC_MEASUREMENT=en_US.UTF-8;LC_IDENTIFICATION=C&quot;</code></pre>
 <pre class="r"><code>library(readr)
 library(magrittr)
 
 ?read_csv</code></pre>
 <blockquote>
-<p>read_csv(file, col_names = TRUE, col_types = NULL,locale = default_locale(), na = c("“,”NA“), quoted_na = TRUE, quote =”"“, comment =”", trim_ws = TRUE, skip = 0, n_max = Inf, guess_max = min(1000, n_max), progress = show_progress())</p>
+<p>read_csv(file, col_names = TRUE, col_types = NULL,locale = default_locale(), na = c(“”, “NA”), quoted_na = TRUE, quote = “&quot;”, comment = “”, trim_ws = TRUE, skip = 0, n_max = Inf, guess_max = min(1000, n_max), progress = show_progress())</p>
 </blockquote>
 <p>这里有几个参数需要设置：</p>
 <ul>
-<li>首先设置系统的默认编码格式，<code>Sys.setlocale("LC_ALL", 'en_US.UTF-8')</code></li>
+<li>首先设置系统的默认编码格式，<code>Sys.setlocale(&quot;LC_ALL&quot;, 'en_US.UTF-8')</code></li>
 <li>使用 <code>guess_encodng(file)</code> 来获取文件的编码格式</li>
 <li>利用 <code>locale=locale(encoding = 'GB18030'))</code> 来解码中文字段</li>
 <li>同时，我们还可以使用 <code>iconv(x, from, to)</code> 来转码</li>

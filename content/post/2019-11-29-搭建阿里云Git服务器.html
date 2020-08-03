@@ -120,8 +120,7 @@ git:x:1000:1000::/home/git:/bin/sh</code></pre>
 </div>
 <div id="增加管理员" class="section level3">
 <h3>增加管理员</h3>
-<p><code>gitosis</code> 默认会搭建一个 <code>gitosis-admin.git</code> 的仓库用来管理所有的用户权限。因此，我们需要增加一个<strong>代码管理员</strong>来管理这个<code>repo</code>，即只有这个用户才有权限修改项目的权限归属。
-比如，我(<code>william</code>)的本地机器作为 <code>gitosis-admin.git</code> 的所有者，需要把本地的 <code>id_rsa.pub</code> 加入到 <code>gitosis-admin.git</code>，然后开始初始化仓库</p>
+<p><code>gitosis</code> 默认会搭建一个 <code>gitosis-admin.git</code> 的仓库用来管理所有的用户权限。因此，我们需要增加一个<strong>代码管理员</strong>来管理这个<code>repo</code>，即只有这个用户才有权限修改项目的权限归属。 比如，我(<code>william</code>)的本地机器作为 <code>gitosis-admin.git</code> 的所有者，需要把本地的 <code>id_rsa.pub</code> 加入到 <code>gitosis-admin.git</code>，然后开始初始化仓库</p>
 <pre class="bash"><code>scp ~/.ssh/id_rsa.pub root@47.98.117.71:/tmp 
 
 sudo -H -u git gitosis-init &lt; /tmp/id_rsa.pub</code></pre>
@@ -152,9 +151,7 @@ drwxr-xr-x 50 william william 4.0K Nov 30 12:57 ../
 drwxrwxr-x  8 william william 4.0K Nov 30 15:29 .git/
 -rw-rw-r--  1 william william  399 Nov 30 13:22 gitosis.conf
 drwxrwxr-x  2 william william 4.0K Nov 30 13:10 keydir/</code></pre>
-<p>其中
-1. <code>gitosis.conf</code>是配置文件
-2. <code>keydir</code>存放公钥<code>.pub</code></p>
+<p>其中 1. <code>gitosis.conf</code>是配置文件 2. <code>keydir</code>存放公钥<code>.pub</code></p>
 <pre class="bash"><code>cat gitosis.conf 
 
 [gitosis]
@@ -190,13 +187,12 @@ drwxrwxr-x 4 william william 4.0K Nov 30 13:22  ../
 <p>我们可以看出</p>
 <ol style="list-style-type: decimal">
 <li>对于 <code>test.git</code>, <code>william.lian.fang@gmail.com</code>和<code>fl166</code> 拥有 <code>writable</code> 的可读可写权限。</li>
-<li><p>而对于 <code>test2.git</code>, <code>william.lian.fang@gmail.com</code> 拥有 <code>writable</code> 的可读可写权限, 而 <code>fl166</code> 只有读的权限，即不可参与项目代码修改，如果推送修改会报错
-```bash
-ERROR:gitosis.serve.main:Repository write access denied
-fatal: Could not read from remote repository.</p>
-<p>Please make sure you have the correct access rights
-and the repository exists.
-```</p></li>
+<li><p>而对于 <code>test2.git</code>, <code>william.lian.fang@gmail.com</code> 拥有 <code>writable</code> 的可读可写权限, 而 <code>fl166</code> 只有读的权限，即不可参与项目代码修改，如果推送修改会报错</p>
+<pre class="bash"><code>ERROR:gitosis.serve.main:Repository write access denied 
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights 
+and the repository exists.</code></pre></li>
 </ol>
 </div>
 </div>
@@ -296,14 +292,14 @@ repo test1
 repo test2
     RW+          =      git_admin_william
     R   master   =      fl166
-    RW+ from166  =      fl166</code></pre>
+    RW+ from166  =      fl166</code></pre></li>
+</ol>
 <p>这里，以 <code>test2</code> 为例，说明各个用户的权限</p>
 <ul>
 <li><code>git_admin_william</code> 拥有顶级的可读（<code>R</code>）、可写（<code>W</code>）、以及强制更新（<code>+</code>）权限</li>
 <li><code>fl166</code> 只拥有对 <code>master</code> 分支的读取权限，没有其他（写）权限</li>
 <li><code>fl166</code> 还拥有对的分支 <code>from166</code> 的可读（<code>R</code>）、可写（<code>W</code>）、以及强制更新（<code>+</code>）权限</li>
-</ul></li>
-</ol>
+</ul>
 </div>
 </div>
 <div id="开发项目结构" class="section level2">
