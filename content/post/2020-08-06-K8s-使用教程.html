@@ -1,0 +1,56 @@
+---
+title: "K8s 使用教程"
+author: William
+date: 2020-08-06
+lastmod: 2020-08-06
+categories: [Programming]
+tags: [k8s,Docker,虚拟化,集群]
+description: 使用 k8s 管理容器。 
+draft: false
+ToC: true
+---
+
+
+
+<p>参考链接：</p>
+<ul>
+<li><a href="https://www.cnblogs.com/xiao987334176/p/11317844.html">ubuntu 使用阿里云镜像源快速搭建 kubernetes 1.15.2 集群</a></li>
+</ul>
+<div id="安装" class="section level1">
+<h1>安装</h1>
+<pre class="bash"><code>sudo apt-get update &amp;&amp; sudo apt-get install -y apt-transport-https curl
+echo &quot;deb https://apt.kubernetes.io/ kubernetes-xenial main&quot; | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+
+## 安装最新版
+sudo apt install -y kubelet=1.18.5-00 kubeadm=1.18.5-00 kubectl=1.18.5-00
+sudo apt-mark hold kubelet=1.18.5-00 kubeadm=1.18.5-00 kubectl=1.18.5-00
+
+# sudo apt-get install -y kubelet kubeadm kubectl
+# sudo apt-mark hold kubelet kubeadm kubectl</code></pre>
+<div id="更新-kubeadm" class="section level2">
+<h2>更新 kubeadm</h2>
+<p>参考：<a href="https://kubernetes.io/zh/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/">升级 kubeadm 集群</a></p>
+</div>
+</div>
+<div id="设置" class="section level1">
+<h1>设置</h1>
+<div id="禁用-swap" class="section level2">
+<h2>禁用 swap</h2>
+<p>所有主机禁用 <code>swap</code></p>
+<pre class="bash"><code>sudo sed -i &#39;/swap/ s/^/#/&#39; /etc/fstab
+sudo swapoff -a</code></pre>
+</div>
+<div id="安装-docker" class="section level2">
+<h2>安装 Docker</h2>
+<p>所有主机均需要安装 <code>Docker</code></p>
+</div>
+<div id="安装-kubelet-kubeadm-kubectl" class="section level2">
+<h2>安装 kubelet, kubeadm, kubectl</h2>
+<p>所有主机需要安装</p>
+</div>
+<div id="主机安装-kubernetes-集群" class="section level2">
+<h2>主机安装 kubernetes 集群</h2>
+<pre class="bash"><code>sudo kubeadm init --image-repository registry.aliyuncs.com/google_containers --kubernetes-version v1.18.5 --pod-network-cidr=192.169.0.0/16 | tee /etc/kube-server-key</code></pre>
+</div>
+</div>
