@@ -14,7 +14,7 @@ ToC: true
 
 # GoogleTest
 
-考虑到 `gtest` 和 `gmock` 两个项目均是针对单元测试，ynsdfsdfsdsdfsdfsdf
+考虑到 `gtest` 和 `gmock` 两个项目均是针对单元测试
 
 > This repository is a merger of the formerly separate GoogleTest and GoogleMock projects. These were so closely related that it makes sense to maintain and release them together.
 
