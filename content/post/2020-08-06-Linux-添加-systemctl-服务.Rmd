@@ -88,3 +88,4 @@ sudo systemctl --type=service
 
 
 
+![](/images/2020-08-06-Linux-添加-systemctl-服务/systemctl_status.png)
