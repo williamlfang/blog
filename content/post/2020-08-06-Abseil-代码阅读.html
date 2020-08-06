@@ -1,0 +1,33 @@
+---
+title: "Abseil 代码阅读"
+author: William
+date: 2020-08-06
+lastmod: 2020-08-06
+categories: [Programming]
+tags: [Google,Linux,c++,abseil]
+description: Google 退出的开源 C++ 基础库。
+draft: false
+ToC: true
+---
+
+
+
+<p>Google 评价 Abseil 为：</p>
+<blockquote>
+<p>它是从 Google 内部代码块中抽取出来的一系列最基础的软件库。作为基本的组成部分，这些软件库支撑了几乎全部 Google 在运行的项目。以前这些 API 是零零散散地嵌入在 Google 的大部分开源项目中，现在我们将它们规整在一起，形成这样一个全面的项目。</p>
+<p>Abseil 是 Google 代码库的最基本构建模块，其代码经过了生产环节测试，此后还会继续得到完全的维护。</p>
+</blockquote>
+<p>Abseil 中包括如下的库：</p>
+<ul>
+<li><a href="https://github.com/abseil/abseil-cpp/tree/master/absl/base">base</a>：初始化，以及其它的基础代码。</li>
+<li><a href="https://github.com/abseil/abseil-cpp/tree/master/absl/algorithm">algorithm</a>：对 C++ 的<code>&lt;algorithm&gt;</code>库的补充，并为原算法提供了基于容器的版本。</li>
+<li><a href="https://github.com/abseil/abseil-cpp/tree/master/absl/container">container</a>：提供了更多的 STL 类型容器。</li>
+<li><a href="https://github.com/abseil/abseil-cpp/tree/master/absl/debugging">debugging</a>：用于检查泄漏的调试库。</li>
+<li><a href="https://github.com/abseil/abseil-cpp/tree/master/absl/memory">memory</a>：包括兼容 C++ 11 版本的<code>std::make_unique()</code>和内存管理。</li>
+<li><a href="https://github.com/abseil/abseil-cpp/tree/master/absl/meta">meta</a>：包括兼容 C++ 11 版本的类型检查，在 C++ 14 和 C++ 17 版本的 C++ <code>&lt;type_traits&gt;</code>库中可用。</li>
+<li><a href="https://github.com/abseil/abseil-cpp/tree/master/absl/numeric">numeric</a>：兼容 C++ 11 的 128 位整数。</li>
+<li><a href="https://github.com/abseil/abseil-cpp/tree/master/absl/strings">strings</a>：各种字符串工具。</li>
+<li><a href="https://github.com/abseil/abseil-cpp/tree/master/absl/synchronization">synchronization</a>：并发原语和同步抽象。</li>
+<li><a href="https://github.com/abseil/abseil-cpp/tree/master/absl/time">time</a>：抽象了绝对时间点操作和时区操作。</li>
+<li><a href="https://github.com/abseil/abseil-cpp/tree/master/absl/types">types</a>：非容器工具的类型。</li>
+</ul>
