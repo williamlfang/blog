@@ -33,6 +33,8 @@ After=xtp_md service
 
 [Service]
 Type=forking
+Restart=always
+RestartSec=5
 ExecStart=/home/william/workspace/highfort/xtp_md_start.sh 
 ExecReload=/home/william/workspace/highfort/xtp_md_restart.sh
 ExecStop=/home/william/workspace/highfort/xtp_md_stop.sh
@@ -68,7 +70,10 @@ nohup ./md /home/william/workspace/highfort/hippo/app/gw/xtp_gw/config/xtp_test_
 </div>
 <div id="添加执行" class="section level1">
 <h1>添加执行</h1>
-<pre class="bash"><code>sudo systemctl enable xtp_md
+<pre class="bash"><code>## 重新载入
+sudo systemctl daemon-reload
+
+sudo systemctl enable xtp_md
 sudo systemctl start xtp_md
 sudo systemctl status xtp_md
 sudo systemctl stop xtp_md
