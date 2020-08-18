@@ -32,7 +32,7 @@ drwxr-xr-x 10 root root 4.0K Jun  8 16:25 ../
 ```bash
 [Unit]
 Description=XTP mkdata
-After=xtp_md service
+After=network.target network-online.target
 
 [Service]
 Type=forking
