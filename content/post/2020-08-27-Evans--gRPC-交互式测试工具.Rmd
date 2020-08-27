@@ -38,5 +38,31 @@ evans --host 127.0.0.1 --port 50051 helloworld.proto
  more expressive universal gRPC client
 
 helloworld.Greeter@127.0.0.1:50051>
+
+
+helloworld.Greeter@127.0.0.1:50051> show package
++------------+
+|  PACKAGE   |
++------------+
+| helloworld |
++------------+
+
+helloworld.Greeter@127.0.0.1:50051> package helloworld
+
+helloworld@127.0.0.1:50051> show service
++---------+----------+--------------+---------------+
+| SERVICE |   RPC    | REQUEST TYPE | RESPONSE TYPE |
++---------+----------+--------------+---------------+
+| Greeter | SayHello | HelloRequest | HelloReply    |
++---------+----------+--------------+---------------+
+
+helloworld@127.0.0.1:50051> show message
++--------------+
+|   MESSAGE    |
++--------------+
+| HelloReply   |
+| HelloRequest |
++--------------+
+
 ```
 
