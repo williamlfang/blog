@@ -1,0 +1,42 @@
+---
+title: "Evans: gRPC 交互式测试工具"
+author: William
+date: 2020-08-27
+lastmod: 2020-08-27
+categories: [Programming]
+tags: [grpc,evans,测试,cli]
+description: 使用 Evans 进行 gRPC 客户端的交互式测试。
+draft: false
+ToC: true
+---
+
+# 安装
+
+到[项目主页](https://github.com/ktr0731/evans)，找到[发布地址](https://github.com/ktr0731/evans/releases)，然后下载相应操作系统下的可执行文件。
+
+```bash
+cd /tmp
+wget https://github.com/ktr0731/evans/releases/download/0.9.0/evans_linux_amd64.tar.gz
+tar -xvf evans_linux_amd64.tar.gz
+
+## 复制到系统路径
+sudo mv evans /usr/local/bin
+```
+
+# 使用
+
+```bash
+evans --host 127.0.0.1 --port 50051 helloworld.proto
+
+  ______
+ |  ____|
+ | |__    __   __   __ _   _ __    ___
+ |  __|   \ \ / /  / _. | | '_ \  / __|
+ | |____   \ V /  | (_| | | | | | \__ \
+ |______|   \_/    \__,_| |_| |_| |___/
+
+ more expressive universal gRPC client
+
+helloworld.Greeter@127.0.0.1:50051>
+```
+
