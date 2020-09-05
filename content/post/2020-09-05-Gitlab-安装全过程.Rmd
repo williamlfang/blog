@@ -108,6 +108,70 @@ custom_domains = *.*.*.*  ## 可以通过域名解析到自己的网址，现在
 
 这样，可以通过打开网页：<http://*.*.*.*:58080/> 访问我们的 `Gitlab` 了。
 
+# 域名解析
+
+可以在 `godday` 上面使用 `gitlab.wi********fang.com` 进行解析 http://*.*.*.*:58080/。则每次只需要访问 `<http://gitlab.wi********fang.com:58080/>`
+
+# 远程访问
+
+## 使用 http
+
+```bash
+git clone http://gitlab.wi********fang.com:58080/fl/myctp.git
+```
+
+不过这样需要输入密码，可以参考:
+
+修改 `.git/config`
+
+```bash
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = http://你的用户:你的密码@gitlab.wi********fang.com:58080/fl/myctp.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+```
+
+
+
+> 问题: gitlab使用http方式提交代码不输入密码 ?
+>
+> 背景: 假如你创建项目地址为 http://git.ops.test.com.cn/root/puppet.git 。
+>
+> 解决: 如果你已经执行过 `git clone http://git.ops.test.com.cn/root/puppet.git` ,则可以进入puppet目录，修改 `.git/config中url = http://账号:密码@git.ops.test.com.cn/root/puppet.git` ,再提交就发现不要输入密码了；或者直接在克隆仓库的时候直接 `git clone http://账号:密码@git.ops.test.com.cn/root/puppet.git` ，这样下次提交时也不需要输入密码。
+
+## 使用 ssh
+
+上面虽然可以使用 `gitlab`，但是无法直接在**外网**使用项目地址进行clone。比如
+
+```bash
+git clone git@192.168.1.135:fl/myctp.git
+Cloning into 'myctp'...
+ssh: connect to host 192.168.1.135 port 22: No route to host
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+```
+
+这是因为 `192.168.1.135` 是内网，无法被外网解析。这时，我们需要使用 `ssh` 的方式进行操作。
+
+比如，我们已经把 `192.168.1.135` 的 **22** 端口通过 tcp 的方式，映射给了 `*.*.*.*` 的端口号 `6135`， 则可以使用
+
+```bash
+git clone ssh://git@*.*.*.*:6135/fl/myctp.git
+Cloning into 'myctp'...
+remote: Counting objects: 3, done.
+remote: Total 3 (delta 0), reused 0 (delta 0)
+Receiving objects: 100% (3/3), done.
+```
+
 # 参考链接
 
 1.[如何在CentOS 7上安装和配置GitLab](<https://www.myfreax.com/how-to-install-and-configure-gitlab-on-centos-7/>)
