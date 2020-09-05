@@ -354,3 +354,72 @@ drwx------  4 root root 4.0K Jul  4 17:06 log
 drwxr-xr-x  2 root root 4.0K Jul  4 16:39 scripts
 drwxr-xr-x 10 root root 4.0K Jul  4 16:37 src</code></pre>
 </div>
+<div id="使用技巧" class="section level1">
+<h1>使用技巧</h1>
+<p>可以执行变量名称</p>
+<pre class="bash"><code>## 增加额外运行参数
+docker run -d \
+    --name ctpmd -it \
+    --restart=always \
+    --log-driver json-file \
+    --log-opt max-size=1000m \
+    --log-opt max-file=30 \
+    --network=&quot;host&quot; \
+    --ipc=&quot;host&quot; \
+    -e ACCOUNT=local_simnow \
+    -v /home/william/mkdata:/data \
+    registry.corp.highfortfunds.com/highfort/ctpmd:v0.1
+
+## 重新打 tag
+docker tag 8557026cb47e[原来的image id] registry.corp.highfortfunds.com/highfort/ctpmd:v0.1
+
+## 报错无法删除
+## Ref: https://stackoverflow.com/questions/38118791/can-t-delete-docker-image-with-dependent-child-images
+docker rmi $(docker images --filter &quot;dangling=true&quot; -q --no-trunc)
+docker rmi c565603bc87f
+
+# 设置日志文件
+
+docker tag 29db0d77705f  registry.corp.highfortfunds.com/highfort/ctpmd:v0.1
+
+docker push registry.corp.highfortfunds.com/highfort/ctpmd:v0.1
+docker pull registry.corp.highfortfunds.com/highfort/ctpmd:v0.1
+
+docker run -d \
+    --name ctpmd -it \
+    --restart=always \
+    --log-driver json-file \
+    --log-opt max-size=1000m \
+    --log-opt max-file=30 \
+    --network=&quot;host&quot; \
+    --ipc=&quot;host&quot; \
+    -e ACCOUNT=colo_gtja \
+    -v /data:/data \
+    registry.corp.highfortfunds.com/highfort/ctpmd:v0.1
+
+docker run -d \
+    --name ctpmd -it \
+    --restart=always \
+    --log-driver json-file \
+    --log-opt max-size=1000m \
+    --log-opt max-file=30 \
+    --network=&quot;host&quot; \
+    --ipc=&quot;host&quot; \
+    -e ACCOUNT=local_hf \
+    -v /data:/data \
+    registry.corp.highfortfunds.com/highfort/ctpmd:v0.1
+
+docker run -d \
+    --name ctpmd -it \
+    --restart=always \
+    --log-driver json-file \
+    --log-opt max-size=1000m \
+    --log-opt max-file=30 \
+    --network=&quot;host&quot; \
+    --ipc=&quot;host&quot; \
+    -e ACCOUNT=local_zz \
+    -v /data:/data \
+    registry.corp.highfortfunds.com/highfort/ctpmd:v0.1
+
+docker exec -it ctpmd /bin/bash</code></pre>
+</div>
