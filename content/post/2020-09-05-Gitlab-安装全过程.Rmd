@@ -1,0 +1,115 @@
+---
+title: "Gitlab 安装全过程"
+author: William
+date: 2020-09-05
+lastmod: 2020-09-05
+categories: [Programming]
+tags: [git,gitlab,CentOS,frp,代码,仓库,技术,端口转发]
+description: 记录在公司内部安装 Gitlab 全过程。
+draft: false
+ToC: true
+---
+
+# 安装 Gitlab
+
+```bash
+## 安装必需的依赖项
+sudo yum install curl policycoreutils-python openssh-server
+
+## 将 SSH 服务设置成开机自启动
+systemctl enable sshd
+## 启动 SSH 服务
+systemctl start sshd
+
+## 邮件通知
+sudo yum install postfix
+sudo systemctl start postfix
+sudo systemctl enable postfix
+
+## 安装 Gitlab
+curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash
+sudo yum install gitlab-ce
+
+Thank you for installing GitLab!
+...
+Complete!
+
+## 调整防火墙
+## 要访问GitLab界面，您需要打开端口80和443
+sudo systemctl restart firewalld.service
+sudo firewall-cmd --permanent --zone=public --add-service=http
+sudo firewall-cmd --permanent --zone=public --add-service=https
+sudo firewall-cmd --reload
+
+## 配置 Gitlab
+## 默认是 8080 端口，如果 8080 已被占用，需更改为其它端口，并在防火墙开放对应端口
+vim  /etc/gitlab/gitlab.rb
+
+## 修改配置文件中的 external_url 'http://192.168.1.135:58080'
+## 改完之后执行重置
+sudo gitlab-ctl reconfigure
+## 重启
+sudo gitlab-ctl restart
+## 测试
+curl 192.168.1.135:58080/gitlab
+
+## 看到以下内容说明安装正确了
+<html><body>You are being <a href="http://192.168.1.135:58080/users/sign_in">redirected</a>.</body></html>%
+```
+
+# 管理用户
+
+```bash
+## 获取/修改超级管理员root的密码
+## 切换目录
+cd /opt/gitlab/bin
+
+sudo gitlab-rails console production
+
+## 进入 gitlab 终端操作
+## 在irb(main):001:0> 后面运行
+## 查看当前用户
+User.all
+=> #<ActiveRecord::Relation [#<User id:4 @pc>, #<User id:1 @root>, #<User id:2 @fl>, #<User id:3 @lhg>]>
+##　切换用户，使用　id:n 来指定
+u=User.where(id:1).first
+## 输入密码，第一次只有 root, 后面可以通过　Gitlab 网页进行添加
+u.password='******'
+u.password_confirmation='******'
+## 保存，注意后面一定要添加符号　"!"
+u.save!
+```
+
+
+
+# 端口转发
+
+在 `frps.ini`
+
+```bash
+[common]
+bind_port = 7000
+vhost_http_port = 58080
+```
+
+在 `frpc.ini`
+
+```bash
+[common]
+server_addr = *.*.*.*
+server_port = 7000
+
+[ssh135_gitlab]
+type = http
+local_ip = 192.168.1.135
+local_port = 58080
+custom_domains = *.*.*.*  ## 可以通过域名解析到自己的网址，现在先使用 server_addr
+```
+
+这样，可以通过打开网页：<http://*.*.*.*:58080/> 访问我们的 `Gitlab` 了。
+
+# 参考链接
+
+1.[如何在CentOS 7上安装和配置GitLab](<https://www.myfreax.com/how-to-install-and-configure-gitlab-on-centos-7/>)
+
+2.[GitLab 部署及管理员账号初始化](<https://blog.csdn.net/hnmpf/article/details/80518460>)
