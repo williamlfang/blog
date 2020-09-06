@@ -67,6 +67,8 @@ sudo vim /etc/docker/daemon.json
   }
 }
 
+sudo systemctl restart docker
+
 ## 获取镜像
 docker pull docker.williamlfang.com:58080/testing
 
