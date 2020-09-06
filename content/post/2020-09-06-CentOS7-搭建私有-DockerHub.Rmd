@@ -1,0 +1,81 @@
+---
+title: "CentOS7 搭建私有 DockerHub"
+author: William
+date: 2020-09-06
+lastmod: 2020-09-06
+categories: [Programming]
+tags: [centos,docker,hub,私有,容器]
+description: 在 CentOS7 上面搭建公司内部私有 DockerHub.
+draft: false
+ToC: true
+---
+
+# 安装 Docker Register
+
+```bash
+## 使用 docker 进行 registry2 进行管理
+docker pull registry
+
+## 建立一个目录存放 docker 镜像, 默认是存放在 /tmp/registry
+mkdir -p /data/Docker/registy
+docker run -n docker.registry -d -p 5000:5000 -v /data/Docker/registy:/tmp/registry registry
+
+docker ps -a
+
+## 开启防火墙5000端口
+systemctl restart firewalld.service
+firewall-cmd --zone=public --permanent--add-port=5000/tcp
+firewall-cmd --reload
+
+## 测试访问
+curl http://192.168.1.135:5000/v2/
+```
+
+# 使用
+
+```bash
+## 测试
+docker tag hello-world 192.168.1.135:5000/testing
+docker push 192.168.1.135:5000/testing
+```
+
+# 远程
+
+```bash
+## 编辑 /etc/docker/daemon.json
+## 添加 "insecure-registries" 里面的 "docker.williamlfang.com:58080"
+sudo vim /etc/docker/daemon.json
+
+{
+  "registry-mirrors" : [
+    "http://ovfftd6p.mirror.aliyuncs.com",
+    "http://registry.docker-cn.com",
+    "http://docker.mirrors.ustc.edu.cn",
+    "http://hub-mirror.c.163.com"
+  ],
+  "insecure-registries" : [
+    "registry.docker-cn.com",
+    "docker.mirrors.ustc.edu.cn",
+    "docker.williamlfang.com:58080"
+  ],
+  "debug" : true,
+  "experimental" : true,
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "1m",
+    "max-file": "10"
+  }
+}
+
+## 获取镜像
+docker pull docker.williamlfang.com:58080/testing
+
+Using default tag: latest
+latest: Pulling from testing
+Digest: sha256:90659bf80b44ce6be8234e6ff90a1ac34acbeb826903b02cfa0da11c82cbc042
+Status: Downloaded newer image for docker.williamlfang.com:58080/testing:latest
+docker.williamlfang.com:58080/testing:latest
+```
+
+
+

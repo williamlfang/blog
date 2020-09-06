@@ -189,7 +189,7 @@ ToC: true
     ```bash
     sudo yum install -y yum-utils
     sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-
+    
     sudo yum update
     ```
 
@@ -199,20 +199,26 @@ ToC: true
     sudo yum install docker.io
     ```
 
-4. 加入 docker 用户组命令
+4. 也可以使用国内 daocloud 一键安装命令：
+
+    ```
+    curl -sSL https://get.daocloud.io/docker | sh
+    ```
+
+5. 加入 docker 用户组命令
 
     ```bash
     sudo usermod -aG docker trader
     ```
 
-5. 添加启动
+6. 添加启动
 
     ```bash
     sudo systemctl enable docker
     sudo systemctl start docker
     ```
 
-6. 运行测试
+7. 运行测试
 
     ```bash
     sudo docker run hello-world
