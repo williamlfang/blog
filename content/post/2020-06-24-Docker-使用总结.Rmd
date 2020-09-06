@@ -202,6 +202,10 @@ ToC: true
 4. 也可以使用国内 daocloud 一键安装命令：
 
     ```
+    ## 阿里
+    curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
+    
+    ## daocloud
     curl -sSL https://get.daocloud.io/docker | sh
     ```
 
