@@ -1,0 +1,253 @@
+---
+title: "frp 实现域名解析"
+author: William
+date: 2020-09-11
+lastmod: 2020-09-11
+categories: [Programming]
+tags: [frp,godaddy,内网,穿透,端口,域名,解析,网站]
+description: 使用 frp 配合 godday 实现内网服务直接解析成二级域名。
+draft: false
+ToC: true
+---
+
+
+
+<div id="godday-域名解析" class="section level1">
+<h1>godday 域名解析</h1>
+<p><code>godaddy</code> 提供了<strong>泛域名解析</strong>，即通过二级域名即可匹配在服务器特定端口运行的后台服务，如 <code>8080</code> 对应的 <code>gitlab</code> 端口服务。</p>
+<blockquote>
+<p>使用 godaddy 的 DNS Management 面板，增加一条域名解析</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left">类型</td>
+<td align="left">名称</td>
+<td align="left">值</td>
+<td align="left">TTL</td>
+<td align="left">操作</td>
+</tr>
+<tr class="even">
+<td align="left">A</td>
+<td align="left">@</td>
+<td align="left">Parked</td>
+<td align="left">600 秒</td>
+<td align="left">编辑</td>
+</tr>
+<tr class="odd">
+<td align="left">A</td>
+<td align="left">*</td>
+<td align="left">Vps ip 地址</td>
+<td align="left">999999999 秒</td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<div class="figure">
+<img src="images/2020-09-11-frp-实现域名解析/godaddy.png" />
+
+</div>
+</div>
+<div id="vps-开启-804437500-端口" class="section level1">
+<h1>vps 开启 80,443,7500 端口</h1>
+<p>为了能够在浏览器支持直接打开网页地址，我们需要通过 vps 上运行的 frp <code>80</code> 端口去自动匹配相关的转发端口。这样，在客户端，只需要记住相应的二级域名即可。</p>
+<pre class="bash"><code>systemctl start firewalld.service
+
+## http
+firewall-cmd --zone=public --add-port=80/tcp --permanent
+## https
+firewall-cmd --zone=public --add-port=443/tcp --permanent
+## frp 管理端口
+firewall-cmd --zone=public --add-port=7500/tcp --permanent
+
+systemctl stop firewalld.service</code></pre>
+</div>
+<div id="frps-设置" class="section level1">
+<h1>frps 设置</h1>
+<p>在服务器上面，设置 <code>frps.ini</code></p>
+<pre class="bash"><code>[common]
+# A literal address or host name for IPv6 must be enclosed
+# in square brackets, as in &quot;[::1]:80&quot;, &quot;[ipv6-host]:http&quot; or &quot;[ipv6-host%zone]:80&quot;
+bind_addr = 0.0.0.0
+bind_port = 7000
+
+# udp port to help make udp hole to penetrate nat
+#bind_udp_port = 9001
+
+# udp port used for kcp protocol, it can be same with &#39;bind_port&#39;
+# if not set, kcp is disabled in frps
+#kcp_bind_port = 9000
+
+# specify which address proxy will listen for, default value is same with bind_addr
+# proxy_bind_addr = 127.0.0.1
+
+# if you want to support virtual host, you must set the http port for listening (optional)
+# Note: http port and https port can be same with bind_port
+vhost_http_port = 80
+vhost_https_port = 433
+
+# response header timeout(seconds) for vhost http server, default is 60s
+# vhost_http_timeout = 60
+
+# set dashboard_addr and dashboard_port to view dashboard of frps
+# dashboard_addr&#39;s default value is same with bind_addr
+# dashboard is available only if dashboard_port is set
+dashboard_addr = 0.0.0.0
+dashboard_port = 7500
+
+# dashboard user and passwd for basic auth protect, if not set, both default value is admin
+dashboard_user = *********
+dashboard_pwd = *********
+
+# dashboard assets directory(only for debug mode)
+# assets_dir = ./static
+# console or real logFile path like ./frps.log
+#log_file = ./frps.log
+
+# trace, debug, info, warn, error
+log_level = trace
+
+log_max_days = 3
+
+# disable log colors when log_file is console, default is false
+disable_log_color = false
+
+# auth token
+token = *********
+
+# heartbeat configure, it&#39;s not recommended to modify the default value
+# the default value of heartbeat_timeout is 90
+# heartbeat_timeout = 90
+
+# only allow frpc to bind ports you list, if you set nothing, there won&#39;t be any limit
+#allow_ports = 5000-5010,8080
+
+# pool_count in each proxy will change to max_pool_count if they exceed the maximum value
+max_pool_count = 10
+
+# max ports can be used for each client, default value is 0 means no limit
+max_ports_per_client = 0
+
+# if subdomain_host is not empty, you can set subdomain when type is http or https in frpc&#39;s configure file
+# when subdomain is test, the host used by routing is test.frps.com
+subdomain_host = williamlfang.com
+
+# if tcp stream multiplexing is used, default is true
+tcp_mux = true
+
+# custom 404 page for HTTP requests
+# custom_404_page = /path/to/404.html
+
+[plugin.user-manager]
+#addr = 127.0.0.1:9000
+#path = /handler
+#ops = Login
+
+[plugin.port-manager]
+#addr = 127.0.0.1:9001
+#path = /handler
+#ops = NewProxy</code></pre>
+<p>然后运行</p>
+<pre class="bash"><code>nohup ./frps -c frps.ini &amp;</code></pre>
+<p>现在，我们便可以登录网址：<a href="http://frp.williamlfang.com:7500/" class="uri">http://frp.williamlfang.com:7500/</a> ，可视化的管理 frp 窗口了。</p>
+<div class="figure">
+<img src="images/2020-09-11-frp-实现域名解析/frp管理界面.png" />
+
+</div>
+</div>
+<div id="frpc-设置" class="section level1">
+<h1>frpc 设置</h1>
+<p>在客户端设置 <code>frpc</code></p>
+<pre class="bash"><code>[common]
+server_addr = frp.williamlfang.com
+server_port = 7000
+token = 
+
+[ssh135]
+type = tcp
+local_ip = 192.168.1.135
+local_port = 22
+remote_port = 6135
+
+[ssh199]
+type = tcp
+local_ip = 192.168.1.199
+local_port = 22
+remote_port = 6199
+
+[ssh135_gitlab]
+type = http
+local_ip = 192.168.1.135
+local_port = 58080
+subdomain = gitlab
+
+[ssh135_docker]
+type = http
+local_ip = 192.168.1.135
+local_port = 5000
+subdomain = docker
+
+[ssh135_docker_web]
+type = http
+local_ip = 192.168.1.135
+local_port = 5001
+subdomain = dockerweb</code></pre>
+<p>这里的关键步骤是，我们需要把远程的 `<code>server_addr</code> 设置成 <code>frp.williamlfang.com</code>，这个是一级域名，然后通过底下的二级域名 <code>gitlab</code> 找到对应的端口服务。</p>
+<p>可以试着打开 <code>http://gitlab.williamlfang.com/</code>，发现不需要记住端口，即可访问服务器的 <code>gitlab</code> 服务项目了。</p>
+</div>
+<div id="gitlab-如何-clone" class="section level1">
+<h1>gitlab 如何 clone</h1>
+<p>由于 <code>gitlab</code> 是处理当前内部网络，无法直接通过 <code>ssh</code> 进行 <code>git clone</code>，我们可以指定 <code>https</code> 的形式，把相应的端口转发出来。这里，<code>http://192.168.1.135:58080/fl/myctp.git</code> 对应的是 <code>http://gitlab.williamlfang.com/fl/myctp.git</code></p>
+<pre class="bash"><code>git clone http://gitlab.williamlfang.com/fl/myctp.git</code></pre>
+<p>然后可以通过 <code>.git/config</code> 设置账户密码，下次就不用再输入了</p>
+<pre class="bash"><code>vim .git/config
+
+[core]
+    repositoryformatversion = 0
+    filemode = true
+    bare = false
+    logallrefupdates = true
+[remote &quot;origin&quot;]
+    url = http://用户名:密码@gitlab.williamlfang.com/fl/myctp.git
+    fetch = +refs/heads/*:refs/remotes/origin/*
+[branch &quot;master&quot;]
+    remote = origin
+    merge = refs/heads/master</code></pre>
+</div>
+<div id="docker-访问" class="section level1">
+<h1>Docker 访问</h1>
+<p>类似的，我们也可以设置 docker 的访问</p>
+<pre class="bash"><code>## 编辑 /etc/docker/daemon.json
+## 添加 &quot;insecure-registries&quot; 里面的 &quot;docker.williamlfang.com&quot;
+sudo vim /etc/docker/daemon.json
+
+{
+  &quot;registry-mirrors&quot; : [
+    &quot;http://ovfftd6p.mirror.aliyuncs.com&quot;,
+    &quot;http://registry.docker-cn.com&quot;,
+    &quot;http://docker.mirrors.ustc.edu.cn&quot;,
+    &quot;http://hub-mirror.c.163.com&quot;
+  ],
+  &quot;insecure-registries&quot; : [
+    &quot;registry.docker-cn.com&quot;,
+    &quot;docker.mirrors.ustc.edu.cn&quot;,
+    &quot;docker.williamlfang.com&quot;
+  ],
+  &quot;debug&quot; : true,
+  &quot;experimental&quot; : true,
+  &quot;log-driver&quot;: &quot;json-file&quot;,
+  &quot;log-opts&quot;: {
+    &quot;max-size&quot;: &quot;1m&quot;,
+    &quot;max-file&quot;: &quot;10&quot;
+  }
+}
+sudo systemctl restart docker
+## 获取镜像
+docker pull docker.williamlfang.com/testing</code></pre>
+</div>
+<div id="参考链接" class="section level1">
+<h1>参考链接</h1>
+<ul>
+<li><a href="http://iytc.net/wordpress/?p=3299">frp内网穿透服务器搭建及免费frp服务器提供</a></li>
+</ul>
+</div>
