@@ -15,8 +15,7 @@ ToC: true
 <div id="godday-域名解析" class="section level1">
 <h1>godday 域名解析</h1>
 <p><code>godaddy</code> 提供了<strong>泛域名解析</strong>，即通过二级域名即可匹配在服务器特定端口运行的后台服务，如 <code>8080</code> 对应的 <code>gitlab</code> 端口服务。</p>
-<blockquote>
-<p>使用 godaddy 的 DNS Management 面板，增加一条域名解析</p>
+<p>使用 godaddy 的 DNS Management 面板，增加一条域名</p>
 <table>
 <tbody>
 <tr class="odd">
@@ -36,15 +35,14 @@ ToC: true
 <tr class="odd">
 <td align="left">A</td>
 <td align="left">*</td>
-<td align="left">Vps ip 地址</td>
+<td align="left">80.251.219.73</td>
 <td align="left">999999999 秒</td>
 <td align="left"></td>
 </tr>
 </tbody>
 </table>
-</blockquote>
 <div class="figure">
-<img src="images/2020-09-11-frp-实现域名解析/godaddy.png" />
+<img src="/images/2020-09-11-frp-实现域名解析/godaddy.png" />
 
 </div>
 </div>
@@ -151,7 +149,7 @@ tcp_mux = true
 <pre class="bash"><code>nohup ./frps -c frps.ini &amp;</code></pre>
 <p>现在，我们便可以登录网址：<a href="http://frp.williamlfang.com:7500/" class="uri">http://frp.williamlfang.com:7500/</a> ，可视化的管理 frp 窗口了。</p>
 <div class="figure">
-<img src="images/2020-09-11-frp-实现域名解析/frp管理界面.png" />
+<img src="/images/2020-09-11-frp-实现域名解析/frp管理界面.png" />
 
 </div>
 </div>
