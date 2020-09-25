@@ -10,9 +10,42 @@ draft: false
 ToC: true
 ---
 
-
+参考链接: [linux新增大于2T硬盘，分区并挂载](https://blog.csdn.net/u012150360/article/details/81333051)
 
 最近公司给原来的服务器添加了一块 `8T` 的 `Dell`SAS  硬盘，原来存放数据。由于`Linux`采用了逻辑硬盘`LLVM`的方式来组织多块硬盘，我们需要通过以下步骤，实现把新购硬盘添加到系统的逻辑硬盘，并通过磁盘扩容，增加目录 `/data` 的存储空间。
+
+# 扩展 8T 硬盘
+
+```bash
+## 开始执行
+sudo parted /dev/sdb
+
+## 查看
+print 
+
+## 
+mklabel gpt
+
+## 创建分区
+## 只有一卷
+mkpart primary xfs 1 -1
+
+## 安装比例分配
+mkpart primary 0% 25%
+mkpart primary 26% 50%
+mkpart primary 51% 100%
+
+## 退出
+quit
+
+## 开始分区
+sudo mkfs.ext4 /dev/sdb1
+
+pvcreate /dev/sdb1
+pvdisplay
+```
+
+
 
 
 
