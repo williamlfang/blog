@@ -1,0 +1,48 @@
+---
+title: "OpenSSL 源代码编译安装"
+author: William
+date: 2020-10-14
+lastmod: 2020-10-14
+categories: [Programming]
+tags: [OpenSSL,编译]
+description: 通过使用源代码进行编译安装 OpenSSL-1.1.1。
+draft: false
+ToC: true
+---
+
+
+
+# 下载
+
+到[官网](https://www.openssl.org/source/old/)下载
+
+```bash
+wget https://www.openssl.org/source/old/1.1.1/openssl-1.1.1g.tar.gz
+```
+
+
+
+# 安装
+
+```bash
+tar -xvf openssl-1.1.1g.tar.gz
+cd openssl-1.1.1
+
+./config --prefix=/home/lfang/opt --libdir=lib no-shared zlib-dynamic
+make
+make install
+```
+
+# 设置
+
+```bash
+export LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
+echo "export LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64" >> ~/.bashrc
+```
+
+# 版本
+
+```bash
+openssl version -a
+```
+
