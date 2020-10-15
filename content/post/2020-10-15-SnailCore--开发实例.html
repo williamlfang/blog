@@ -78,3 +78,26 @@ int main(int argc, char* argv[])
 }
 </code></pre>
 </div>
+<div id="注意事项" class="section level1">
+<h1>注意事项</h1>
+<ol style="list-style-type: decimal">
+<li>在 <code>bool do_init() override;</code> 的最后，一定要返回 <code>return true;</code>，否则会默认 <code>false</code>，导致后面面的 <code>run</code> 不会再继续运行。</li>
+</ol>
+<p>```c++ bool playground_t::do_init() { if (!base_t::do_init()) return false;</p>
+<pre><code>   return true;  // 需要加上</code></pre>
+<p>} ```</p>
+<ol start="2" style="list-style-type: decimal">
+<li>在 <code>run</code> 继承的时候，最好加上 <code>base_t::run();</code> 以保证可以调用其他的参数</li>
+</ol>
+<p>```c++ void playground_t::run() { base_t::run(); // 需要加上</p>
+<pre><code>   for (auto&amp; td : _calendar.trading_days())
+   {
+       cout &lt;&lt; &quot;night:&quot; &lt;&lt; td.night &lt;&lt; &quot;, day:&quot; &lt;&lt; td.day &lt;&lt; endl;
+   }
+
+   if (_calendar.has_session(microtime::now()))
+   {
+       cout &lt;&lt; &quot;has session:&quot; &lt;&lt; microtime::now().to_zgc_str() &lt;&lt; endl;
+   }</code></pre>
+<p>} ```</p>
+</div>

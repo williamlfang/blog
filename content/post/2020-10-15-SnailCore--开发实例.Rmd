@@ -84,3 +84,36 @@ int main(int argc, char* argv[])
 
 ```
 
+# 注意事项
+
+1. 在 `bool do_init() override;` 的最后，一定要返回 `return true;`，否则会默认 `false`，导致后面面的 `run` 不会再继续运行。
+
+   ```c++
+   bool playground_t::do_init()
+   {
+       if (!base_t::do_init()) return false;
+   
+       return true;  // 需要加上
+   }
+   ```
+
+2. 在 `run` 继承的时候，最好加上 `base_t::run();` 以保证可以调用其他的参数
+
+   ```c++
+   void playground_t::run()
+   {
+       base_t::run();  // 需要加上
+   
+       for (auto& td : _calendar.trading_days())
+       {
+           cout << "night:" << td.night << ", day:" << td.day << endl;
+       }
+   
+       if (_calendar.has_session(microtime::now()))
+       {
+           cout << "has session:" << microtime::now().to_zgc_str() << endl;
+       }
+   }
+   ```
+
+   
