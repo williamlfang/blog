@@ -1,0 +1,80 @@
+---
+title: "SnailCore: 开发实例"
+author: William
+date: 2020-10-15
+lastmod: 2020-10-15
+categories: [Programming]
+tags: [snail,main,app,playground]
+description: 在 SnailCore 继承 util/main.hpp 父类，实现之类实例。
+draft: false
+ToC: true
+---
+
+
+
+<div id="项目结构" class="section level1">
+<h1>项目结构</h1>
+<pre class="bash"><code>.
+├── CMakeLists.txt
+└── main.cpp
+
+0 directories, 2 files</code></pre>
+</div>
+<div id="cmakelists.txt" class="section level1">
+<h1><code>CMakeLists.txt</code></h1>
+<pre class="cmake"><code>########################################################
+snail_add_bin(test main.cpp)
+snail_bin_dep(test util shell)</code></pre>
+</div>
+<div id="main.cpp" class="section level1">
+<h1><code>main.cpp</code></h1>
+<pre class="cpp"><code>#include &lt;shell/main.hpp&gt;
+#include &lt;util/calendar.hpp&gt;
+#include &lt;util/log.hpp&gt;
+
+using namespace snail;
+using namespace std;
+
+class playground_t: public snail::Main
+{
+public:
+    using base_t = snail::Main;
+    using base_t::base_t;
+
+    playground_t() {};
+    ~playground_t() {};
+
+    const char* name() const override { return &quot;playground_t&quot;; };
+    bool do_init() override;
+    void run() override;
+};
+
+bool playground_t::do_init()
+{
+    if (!base_t::do_init()) return false;
+
+    return true;
+}
+
+void playground_t::run()
+{
+    base_t::run();
+
+    for (auto&amp; td : _calendar.trading_days())
+    {
+        cout &lt;&lt; &quot;night:&quot; &lt;&lt; td.night &lt;&lt; &quot;, day:&quot; &lt;&lt; td.day &lt;&lt; endl;
+    }
+
+    if (_calendar.has_session(microtime::now()))
+    {
+        cout &lt;&lt; &quot;has session:&quot; &lt;&lt; microtime::now().to_zgc_str() &lt;&lt; endl;
+    }
+}
+
+int main(int argc, char* argv[])
+{
+    playground_t pl;
+    return pl.main(argc, argv);
+}
+</code></pre>
+</div>

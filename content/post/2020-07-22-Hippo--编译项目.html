@@ -47,6 +47,20 @@ sudo apt install autoconf automake libtool shtool
 git clone --recurse-submodules -b v1.20.0 https://github.com/grpc/grpc
 cd grpc
 
+## ---------------------------------------------------
+## 使用 gcc6.2
+set(CMAKE_CXX_COMPILER &quot;/usr/local/packages/gcc/bin/g++&quot;)
+set(CMAKE_C_COMPILER &quot;/usr/local/packages/gcc/bin/gcc&quot;)
+set(CMAKE_CXX_STANDARD 11)
+
+cmake -DgRPC_INSTALL=ON \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DgRPC_BUILD_TESTS=OFF \
+    -DCMAKE_INSTALL_PREFIX=/home/lfang/opt \
+    -DgRPC_SSL_PROVIDER=package \
+    ../..
+## ---------------------------------------------------
+
 mkdir -p ./cmake/build
 cd ./cmake/build
 cmake -DgRPC_INSTALL=ON \
