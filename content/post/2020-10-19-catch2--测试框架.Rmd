@@ -1,0 +1,18 @@
+---
+title: "catch2: 测试框架"
+author: William
+date: 2020-10-19
+lastmod: 2020-10-19
+categories: [Programming]
+tags: [catch,catch2,c++,test,测试,TDD]
+description: 使用 catch2 作为测试框架。
+draft: false
+ToC: true
+---
+
+# 安装
+
+# Demo
+
+# 技巧
+
