@@ -1,0 +1,71 @@
+---
+title: "Linux 设置超级用户程序"
+author: William
+date: 2020-10-25
+lastmod: 2020-10-25
+categories: [Programming]
+tags: [linux,root,setuid,bash,sh,超级,管理员,服务器]
+description: 通过在 c 程序内部设置权限，使得可执行程序具有管理员的超级权限。
+draft: false
+ToC: true
+---
+
+
+
+<p>参考链接：</p>
+<ul>
+<li><a href="https://stackoverflow.com/questions/556194/calling-a-script-from-a-setuid-root-c-program-script-does-not-run-as-root">Calling a script from a setuid root C program - script does not run as root</a></li>
+<li><a href="https://superuser.com/questions/440363/can-i-make-a-script-always-execute-as-root">Can I make a script always execute as root?</a></li>
+</ul>
+<div id="c程序" class="section level1">
+<h1>c程序</h1>
+<blockquote>
+<p>一定要使用普通用户</p>
+</blockquote>
+<pre class="c"><code>// super.c
+// --------
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;unistd.h&gt;
+
+int main(void)
+{
+        setuid(0);
+        clearenv();
+        system(&quot;/bin/bash&quot;);
+}</code></pre>
+</div>
+<div id="编译" class="section level1">
+<h1>编译</h1>
+<blockquote>
+<p>一定要使用普通用户</p>
+</blockquote>
+<pre class="bash"><code>gcc super.c -o super</code></pre>
+<p>这里可以试一下执行程序，发现依然是当前用户</p>
+<pre class="bash"><code>[trader@localhost ~]$ ll
+total 16
+-rwxrwxr-x 1 trader trader 8216 Oct 25 20:36 super
+-rw-r--r-- 1 root   trader  170 Oct 25 20:34 super.c
+[trader@localhost ~]$ ./super 
+[trader@localhost trader]$ whoami
+trader</code></pre>
+</div>
+<div id="权限" class="section level1">
+<h1>权限</h1>
+<p>下面，我们来设置这个可执行程序的权限，使得其可以在普通用户的环境中，也是可以使用默认的 <code>root</code> 权限运行的。</p>
+<p>使用 <code>root</code> 权限修改可执行程序：</p>
+<pre class="bash"><code>sudo chown root super
+sudo chmod ug+s super </code></pre>
+<p>如此一来，我们便可以通过执行 <code>super</code> 自动获取 <code>root</code> 权限了</p>
+<pre class="bash"><code>[trader@localhost ~]$ ll
+total 16
+-rwsrwsr-x 1 root trader 8216 Oct 25 20:36 super
+-rw-r--r-- 1 root trader  170 Oct 25 20:34 super.c
+[trader@localhost ~]$ ./super 
+[root@localhost trader]# whoami
+root
+[root@localhost trader]# mkdir -p /usr/test
+[root@localhost trader]# rm -rf /usr/test 
+[root@localhost trader]# </code></pre>
+</div>

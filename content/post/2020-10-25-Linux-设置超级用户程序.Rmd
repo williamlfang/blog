@@ -1,0 +1,84 @@
+---
+title: "Linux 设置超级用户程序"
+author: William
+date: 2020-10-25
+lastmod: 2020-10-25
+categories: [Programming]
+tags: [linux,root,setuid,bash,sh,超级,管理员,服务器]
+description: 通过在 c 程序内部设置权限，使得可执行程序具有管理员的超级权限。
+draft: false
+ToC: true
+---
+
+参考链接：
+
+- [Calling a script from a setuid root C program - script does not run as root](https://stackoverflow.com/questions/556194/calling-a-script-from-a-setuid-root-c-program-script-does-not-run-as-root)
+- [Can I make a script always execute as root?](https://superuser.com/questions/440363/can-i-make-a-script-always-execute-as-root)
+
+# c程序
+
+> 一定要使用普通用户
+
+```c
+// super.c
+// --------
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+int main(void)
+{
+        setuid(0);
+        clearenv();
+        system("/bin/bash");
+}
+```
+
+# 编译
+
+>  一定要使用普通用户
+
+```bash
+gcc super.c -o super
+```
+
+这里可以试一下执行程序，发现依然是当前用户
+
+```bash
+[trader@localhost ~]$ ll
+total 16
+-rwxrwxr-x 1 trader trader 8216 Oct 25 20:36 super
+-rw-r--r-- 1 root   trader  170 Oct 25 20:34 super.c
+[trader@localhost ~]$ ./super 
+[trader@localhost trader]$ whoami
+trader
+```
+
+# 权限
+
+下面，我们来设置这个可执行程序的权限，使得其可以在普通用户的环境中，也是可以使用默认的 `root` 权限运行的。
+
+使用 `root` 权限修改可执行程序：
+
+```bash
+sudo chown root super
+sudo chmod ug+s super 
+```
+
+如此一来，我们便可以通过执行 `super` 自动获取 `root` 权限了
+
+```bash
+[trader@localhost ~]$ ll
+total 16
+-rwsrwsr-x 1 root trader 8216 Oct 25 20:36 super
+-rw-r--r-- 1 root trader  170 Oct 25 20:34 super.c
+[trader@localhost ~]$ ./super 
+[root@localhost trader]# whoami
+root
+[root@localhost trader]# mkdir -p /usr/test
+[root@localhost trader]# rm -rf /usr/test 
+[root@localhost trader]# 
+```
+
+
