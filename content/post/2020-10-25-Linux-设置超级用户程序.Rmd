@@ -81,4 +81,7 @@ root
 [root@localhost trader]# 
 ```
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 482ed4b293fc90ed22cc819c79dcaf1d0116262f
