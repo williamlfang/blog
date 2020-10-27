@@ -12,7 +12,7 @@ ToC: true
 
 # 安装
 
-可以参考项目地址：https://github.com/zq1997/deepin-wine。
+可以参考项目地址：[deepin-wine](https://github.com/zq1997/deepin-wine)。
 
 ```bash
 ## 需要添加仓库
