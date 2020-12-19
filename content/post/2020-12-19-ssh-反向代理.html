@@ -1,0 +1,32 @@
+---
+title: "ssh 反向代理"
+author: William
+date: 2020-12-19
+lastmod: 2020-12-19
+categories: [Programming]
+tags: [ssh,反向代理]
+description: 使用 ssh 反向代理机制,实现内网穿透的效果.
+draft: false
+ToC: true
+---
+
+
+
+<div id="服务器端" class="section level1">
+<h1>服务器端</h1>
+<p>假设服务器[京东云]ip是：<code>123.123.111.111</code></p>
+<pre class="bash"><code>## 启动 firewalld 服务，添加端口 6666 
+fuser -k 6666/tcp
+
+systemctl restart firewalld.service
+firewall-cmd --zone=public --add-port=6666/tcp --permanent
+systemctl stop firewalld.service
+
+## 开启代理，通过外部访问 6666 转发到 6166(即内网服务器端口)
+ssh -fNCL *:6666:localhost:6166 localhost</code></pre>
+</div>
+<div id="客户端" class="section level1">
+<h1>客户端</h1>
+<pre class="bash"><code>## 开启 6166，任何访问外网的端口会自动转发到 22，即 ssh 服务
+ssh -4 -fNCR 6166:localhost:22 -o ServerAliveInterval=60 -o ServerAliveCountMax=10 -o ExitOnForwardFailure=True -p 22 root@123.123.111.111</code></pre>
+</div>
