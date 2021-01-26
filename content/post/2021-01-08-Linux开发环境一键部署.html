@@ -1,0 +1,81 @@
+---
+title: "Linux开发环境一键部署"
+author: William
+date: 2021-01-08
+lastmod: 2021-01-08
+categories: [Programming]
+tags: [Linux,zsh,autojump,tmux,vim,c++,python]
+description: 在 Linux 操作环境中一键部署开发套件。
+draft: false
+ToC: true
+---
+
+
+
+<div id="套件" class="section level1">
+<h1>套件</h1>
+<div id="zsh" class="section level2">
+<h2>zsh</h2>
+<pre class="bash"><code>## 可以到主页看一下最新的版本号 
+## https://www.zsh.org/
+wget https://sunsite.icm.edu.pl/pub/unix/shells/zsh/zsh-5.8.tar.xz
+
+tar -xvf zsh-5.8.tar.xz
+cd zsh-5.8
+./configure --prefix=/home/lfang/opt
+make -j &amp;&amp; make install
+
+## 安装 oh-my-zsh
+## sh -c &quot;$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)&quot;
+wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+bash install.sh
+
+## 如果报错，则把 install.sh 里面的 https 换成 git，这是因为 curl 可能不是最新版的
+# Cloning Oh My Zsh...
+# Cloning into &#39;/home/lfang/.oh-my-zsh&#39;...
+# fatal: unable to find remote helper for &#39;https&#39; 
+# Error: git clone of oh-my-zsh repo failed
+
+## 安装 antigen
+mkdir -p ~/.zsh
+curl -L git.io/antigen &gt; ~/.zsh/antigen.zsh
+
+echo &quot;
+## 需要找到相应的路径
+fpath=(/home/lfang/opt/share/zsh/5.8/functions $fpath)
+export FPATH=&quot;/home/lfang/opt/share/zsh/5.8/functions:$FPATH&quot;
+
+source ~/.zsh/antigen.zsh
+
+# Bundles from the default repo (robbyrussell&#39;s oh-my-zsh).
+antigen bundles &lt;&lt;EOBUNDLES
+command-not-found
+colored-man-pages
+magic-enter
+heroku
+pip
+lein
+extract
+tmux
+ssh-agent
+zsh-users/zsh-completions
+zsh-users/zsh-autosuggestions
+hlissner/zsh-autopair
+zsh-users/zsh-syntax-highlighting
+zsh-users/zsh-history-substring-search # load after zsh-syntax-highlighting
+HeroCC/LS_COLORS
+rupa/z
+djui/alias-tips # Alias reminder when launching a command that is aliased
+EOBUNDLES
+
+# Tell Antigen that you&#39;re done.
+antigen apply
+&quot; &gt;&gt; ~/.zshrc
+
+source ~/.zshrc</code></pre>
+</div>
+<div id="autojump" class="section level2">
+<h2>autojump</h2>
+<pre class="bash"><code></code></pre>
+</div>
+</div>

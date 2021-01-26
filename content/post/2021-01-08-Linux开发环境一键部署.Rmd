@@ -1,0 +1,84 @@
+---
+title: "Linux开发环境一键部署"
+author: William
+date: 2021-01-08
+lastmod: 2021-01-08
+categories: [Programming]
+tags: [Linux,zsh,autojump,tmux,vim,c++,python]
+description: 在 Linux 操作环境中一键部署开发套件。
+draft: false
+ToC: true
+---
+
+# 套件
+
+## zsh
+
+```bash
+## 可以到主页看一下最新的版本号 
+## https://www.zsh.org/
+wget https://sunsite.icm.edu.pl/pub/unix/shells/zsh/zsh-5.8.tar.xz
+
+tar -xvf zsh-5.8.tar.xz
+cd zsh-5.8
+./configure --prefix=/home/lfang/opt
+make -j && make install
+
+## 安装 oh-my-zsh
+## sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+bash install.sh
+
+## 如果报错，则把 install.sh 里面的 https 换成 git，这是因为 curl 可能不是最新版的
+# Cloning Oh My Zsh...
+# Cloning into '/home/lfang/.oh-my-zsh'...
+# fatal: unable to find remote helper for 'https' 
+# Error: git clone of oh-my-zsh repo failed
+
+## 安装 antigen
+mkdir -p ~/.zsh
+curl -L git.io/antigen > ~/.zsh/antigen.zsh
+
+echo "
+## 需要找到相应的路径
+fpath=(/home/lfang/opt/share/zsh/5.8/functions $fpath)
+export FPATH="/home/lfang/opt/share/zsh/5.8/functions:$FPATH"
+
+source ~/.zsh/antigen.zsh
+
+# Bundles from the default repo (robbyrussell's oh-my-zsh).
+antigen bundles <<EOBUNDLES
+command-not-found
+colored-man-pages
+magic-enter
+heroku
+pip
+lein
+extract
+tmux
+ssh-agent
+zsh-users/zsh-completions
+zsh-users/zsh-autosuggestions
+hlissner/zsh-autopair
+zsh-users/zsh-syntax-highlighting
+zsh-users/zsh-history-substring-search # load after zsh-syntax-highlighting
+HeroCC/LS_COLORS
+rupa/z
+djui/alias-tips # Alias reminder when launching a command that is aliased
+EOBUNDLES
+
+# Tell Antigen that you're done.
+antigen apply
+" >> ~/.zshrc
+
+source ~/.zshrc
+```
+
+## autojump
+
+```bash
+
+```
+
+
+

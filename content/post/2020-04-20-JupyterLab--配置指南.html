@@ -26,6 +26,26 @@ python -c &quot;import jupyterlab; print(jupyterlab.__version__)&quot;</code></p
 </div>
 <div id="设置" class="section level1">
 <h1>设置</h1>
+<div id="允许外部访问" class="section level2">
+<h2>允许外部访问</h2>
+<pre class="python"><code>## 设置运行所有ip都可以访问 ----------------------------
+## The IP address the notebook server will listen on.
+##c.NotebookApp.ip = &#39;localhost&#39;
+c.NotebookApp.ip = &#39;0.0.0.0&#39;
+
+## 设置默认端口打开 -----------------------------
+## The port the notebook server will listen on.
+##c.NotebookApp.port = 8888
+c.NotebookApp.port = 9999
+
+## 设置服务器端不要打开网页，使用客户端在浏览器打开 -----------------------------------
+## Whether to open in a browser after starting. The specific browser used is
+##  platform dependent and determined by the python standard library `webbrowser`
+##  module, unless it is overridden using the --browser (NotebookApp.browser)
+##  configuration option.
+##c.NotebookApp.open_browser = True
+c.NotebookApp.open_browser = False</code></pre>
+</div>
 <div id="显示" class="section level2">
 <h2>显示</h2>
 <pre class="bash"><code>jupyter notebook list</code></pre>
